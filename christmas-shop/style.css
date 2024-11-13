@@ -1,5 +1,21 @@
 :root {
     font-family: Montserrat;
+    --color-primary: rgba(255, 70, 70, 1);
+    --dark: #181c29;
+	--static-white: #fff;
+	--content-background: #ecf3f8;
+	--tag-purple: #4361ff;
+	--tag-pink: #ff43f7;
+	--tag-green: #06a44f;
+	--primary-10: rgba(255, 70, 70, 0.1);
+	--static-white-20: rgba(255, 255, 255, 0.2);
+	--static-white-40: rgba(255, 255, 255, 0.4);
+	--overlay: rgba(24, 28, 41, 0.8);
+
+
+    --font-family: "Montserrat", sans-serif;
+    --second-family: "Allura", sans-serif;
+    --third-family: "SF Pro", sans-serif;
 }
 
 body {
@@ -19,20 +35,27 @@ h1 {
 .wraper {
     max-width: 1440px;
     margin: 0 auto;
-    display: flex;
 }
 
-header {
+
+.header_container {
     height: 64px;
-    width: 100%;
     display: flex;
-    align-items: center;
 }
 
+.header_content {
+    height: 64px;
+    width: 88%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
 
 .logo_container {
     display: flex;
     align-items: center;
+    width: 10.4%;
+    justify-content: space-evenly;
 
     p {
         font-size: 12px;
@@ -42,12 +65,13 @@ header {
     }
 }
 
-
 .navigation_container {
-display: flex;
+    width: 27%;
+    display: flex;
 }
 
 .navigation_list {
+    width: 100%;
     display: flex;
     list-style: none;
     justify-content: space-between;
@@ -55,9 +79,9 @@ display: flex;
     padding: 0;
     align-items: center;
 }
-.navigation_item{
-    display: flex;
 
+.navigation_item {
+    display: flex;
 }
 
 .navigation_link {
@@ -67,4 +91,3 @@ display: flex;
     line-height: 15.6px;
     letter-spacing: 0.05em;
 }
-

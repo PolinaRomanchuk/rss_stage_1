@@ -45,7 +45,7 @@ h1 {
 
 .header_content {
     height: 64px;
-    width: 88%;
+    width: 86%;
     margin: auto;
     display: flex;
     justify-content: space-between;
@@ -54,7 +54,7 @@ h1 {
 .logo_container {
     display: flex;
     align-items: center;
-    width: 10.4%;
+    width: 8.6%;
     justify-content: space-evenly;
 
     p {

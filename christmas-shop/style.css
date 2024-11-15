@@ -2,15 +2,15 @@
     font-family: Montserrat;
     --color-primary: rgba(255, 70, 70, 1);
     --dark: #181c29;
-	--static-white: #fff;
-	--content-background: #ecf3f8;
-	--tag-purple: #4361ff;
-	--tag-pink: #ff43f7;
-	--tag-green: #06a44f;
-	--primary-10: rgba(255, 70, 70, 0.1);
-	--static-white-20: rgba(255, 255, 255, 0.2);
-	--static-white-40: rgba(255, 255, 255, 0.4);
-	--overlay: rgba(24, 28, 41, 0.8);
+    --static-white: #fff;
+    --content-background: #ecf3f8;
+    --tag-purple: #4361ff;
+    --tag-pink: #ff43f7;
+    --tag-green: #06a44f;
+    --primary-10: rgba(255, 70, 70, 0.1);
+    --static-white-20: rgba(255, 255, 255, 0.2);
+    --static-white-40: rgba(255, 255, 255, 0.4);
+    --overlay: rgba(24, 28, 41, 0.8);
 
 
     --font-family: "Montserrat", sans-serif;
@@ -90,4 +90,108 @@ h1 {
     font-weight: 600;
     line-height: 15.6px;
     letter-spacing: 0.05em;
+}
+
+footer {
+    height: 496px;
+
+    .wraper {
+        height: 100%;
+    }
+}
+
+.footer_container {
+    height: 496px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.footer_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 88.6%;
+    height: 75.8%;
+}
+
+.contacts_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.contact_card_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 20px;
+    width: 417px;
+    height: 204px;
+    background: var(--content-background);
+}
+
+.contact_img_container {
+    display: flex;
+    justify-content: center;
+}
+
+.contact_name {
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 152%;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--dark);
+}
+
+.contact_doing {
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 152%;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--dark);
+}
+
+.socials_container {
+    height: 112px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.social_icons_container {
+    display: flex;
+    width: 196px;
+    height: 40px;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.copyright {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 148%;
+    text-align: center;
+    color: var(--dark);
+}
+
+.author {
+    font-family: var(--second-family);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0.05em;
+    text-align: center;
+    color: var(--dark);
 }

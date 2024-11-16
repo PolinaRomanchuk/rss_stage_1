@@ -1,0 +1,89 @@
+.gifts_section {
+    height: 1394px;
+
+    .wraper {
+        height: 100%;
+        background: var(--color-primary);
+        border-radius: 20px;
+    }
+
+    .gifts_container {
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 11px;
+    }
+}
+
+.gifts_section_container {
+    height: 1394px;
+    display: flex;
+}
+
+.gifts_section_content {
+    display: flex;
+    flex-direction: column;
+}
+
+.gifts_section_header_container {
+    height: 200px;
+    display: flex;
+    background: url('../assets/img/bg-garland.png');
+    align-items: flex-end;
+    justify-content: center;
+
+    p {
+        display: flex;
+        width: 426px;
+        height: 144px;
+        font-family: var(--font-family);
+        font-weight: 600;
+        font-size: 32px;
+        line-height: 150%;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--static-white);
+        margin: 0;
+    }
+}
+
+.tabs_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    margin: 22px;
+    justify-content: space-between;
+}
+
+.tabs_content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 474px;
+    height: 40px;
+    margin: auto;
+    justify-content: space-around;
+}
+
+
+.tab {
+    display: flex;
+
+    p {
+        font-family: var(--font-family);
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 130%;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--static-white);
+    }
+
+    &.active {
+        border-radius: 12px;
+        background: var(--static-white-20);
+    }
+}

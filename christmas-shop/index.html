@@ -26,19 +26,21 @@
         <div class="wraper">
             <div class="header_container">
                 <div class="header_content">
-                    <div class="logo_container">
+                    <a href="index.html" class="logo_container">
                         <div class="logo_img_container"> <img src="./assets/img/snowflake.png" alt="logo_site">
                         </div>
                         <div class="site_name">
                             <p> THE GIFTS</p>
                         </div>
-                    </div>
+                    </a>
                     <nav class="navigation_container">
                         <ul class="navigation_list">
-                            <li class="navigation_item"><a class="navigation_link">GIFTS</a></li>
-                            <li class="navigation_item"><a class="navigation_link">ABOUT</a></li>
-                            <li class="navigation_item"><a class="navigation_link">BEST</a></li>
-                            <li class="navigation_item"><a class="navigation_link">CONTACTS</a></li>
+                            <li class="navigation_item">
+                                <a class="navigation_link" href="gifts.html">GIFTS</a>
+                            </li>
+                            <li class="navigation_item"><a class="navigation_link" href="#about">ABOUT</a></li>
+                            <li class="navigation_item"><a class="navigation_link" href="#best">BEST</a></li>
+                            <li class="navigation_item"><a class="navigation_link" href="#contacts">CONTACTS</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -47,22 +49,22 @@
     </header>
 
     <main>
-        <div class="hero_section">
+        <section class="hero_section">
             <div class="wraper">
                 <div class="hero_section_container">
                     <div class="hero_section_content">
                         <div class="caption part_one">Merry Christmas</div>
                         <h1 class="slogan">Gift yourself the magic of new possibilities</h1>
-                        <button class="hero_section_button">
+                        <a href="gifts.html" class="hero_section_button">
                             <p>Explore Magical Gifts</p>
-                        </button>
+                        </a>
                         <div class="caption part_two">and Happy New Year</div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="about_section">
+        <section class="about_section" id="about">
             <div class="wraper">
                 <div class="about_section_container">
                     <div class="about_section_content">
@@ -81,9 +83,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="slider_section">
+        <section class="slider_section">
             <div class="wraper">
                 <div class="slider_section_container">
                     <div class="slider_section_content">
@@ -119,9 +121,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="best_gift_section">
+        <section class="best_gift_section" id="best">
             <div class="wraper">
                 <div class="best_gift_section_container">
                     <div class="best_gift_section_content">
@@ -173,17 +175,17 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="CTA_section">
+        <section class="CTA_section">
             <div class="wraper">
                 <div class="CTA_section_container">
                     <div class="CTA_section_content_container">
                         <div class="CTA_section_content">
                             <div class="CTA_header"> Ready to start your journey to a better version of yourself? </div>
-                            <button class="CTA_btn">
+                            <a href="gifts.html" class="CTA_btn">
                                 <p>Explore Magical Gifts</p>
-                            </button>
+                            </a>
                             <div class="caption">The New Year is Coming Soon...</div>
                             <div class="timer_container">
                                 <div class="timer_content">
@@ -213,16 +215,16 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
 
-    <footer>
+    <footer id="contacts">
         <div class="wraper">
             <div class="footer_container">
                 <div class="footer_content">
                     <div class="contacts_container">
-                        <div class="contact_card_container">
+                        <a href="tel:+375 (29) 111-22-33" class="contact_card_container">
                             <div class="contact_img_container">
                                 <svg width="81" height="80" viewBox="0 0 81 80" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -516,8 +518,8 @@
                             </div>
                             <div class="contact_name">+375 (29) 111-22-33</div>
                             <div class="contact_doing">Call Us</div>
-                        </div>
-                        <div class="contact_card_container">
+                        </a>
+                        <a target="_blank" href="https://maps.app.goo.gl/uyRBkZGGGKNARYT16" class="contact_card_container">
                             <div class="contact_img_container">
                                 <svg width="80" height="80" viewBox="0 0 80 80" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -787,8 +789,8 @@
                             </div>
                             <div class="contact_name">Magic forest</div>
                             <div class="contact_doing">meet us</div>
-                        </div>
-                        <div class="contact_card_container">
+                        </a>
+                        <a href="mailto:gifts@magic.com" class="contact_card_container">
                             <div class="contact_img_container">
                                 <svg width="81" height="80" viewBox="0 0 81 80" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -1091,7 +1093,7 @@
                             </div>
                             <div class="contact_name">gifts@magic.com</div>
                             <div class="contact_doing">write us</div>
-                        </div>
+                        </a>
 
                     </div>
                     <div class="socials_container">
@@ -1133,7 +1135,7 @@
                             </svg>
                         </div>
                         <div class="copyright">© Copyright 2025, All Rights Reserved</div>
-                        <div class="author">Made in Rolling Scopes School</div>
+                        <a target="_blank" href="https://rs.school/" class="author">Made in Rolling Scopes School</a>
                     </div>
                 </div>
             </div>

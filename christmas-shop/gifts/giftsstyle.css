@@ -2,14 +2,13 @@
     height: 1394px;
 
     .wraper {
-        height: 100%;
         background: var(--color-primary);
         border-radius: 20px;
     }
 
     .gifts_container {
-        flex-wrap: wrap;
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         gap: 11px;
@@ -29,60 +28,49 @@
 .gifts_section_header_container {
     height: 200px;
     display: flex;
-    background: url('../assets/img/bg-garland.png');
     align-items: flex-end;
     justify-content: center;
+    background: url('../assets/img/bg-garland.png');
 
-    p {
-        display: flex;
+    h1 {
         width: 426px;
-        height: 144px;
-        font-family: var(--font-family);
-        font-weight: 600;
-        font-size: 32px;
-        line-height: 150%;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        text-align: center;
-        color: var(--static-white);
-        margin: 0;
     }
 }
 
 .tabs_container {
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
-    margin: 22px;
     justify-content: space-between;
+    margin: 22px;
 }
 
 .tabs_content {
+    width: 474px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 474px;
-    height: 40px;
-    margin: auto;
     justify-content: space-around;
+    margin: auto;
 }
-
 
 .tab {
     display: flex;
 
     p {
-        font-family: var(--font-family);
-        font-weight: 600;
-        font-size: 12px;
-        line-height: 130%;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
+        padding: 12px 20px;
         color: var(--static-white);
     }
 
     &.active {
+        border-radius: 12px;
+        background: var(--static-white-20);
+    }
+
+    &:hover {
+        cursor: pointer;
         border-radius: 12px;
         background: var(--static-white-20);
     }

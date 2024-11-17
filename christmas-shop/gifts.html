@@ -16,9 +16,10 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="./home/homestyle.css">
-    <link rel="icon" type="image/x-icon" href="./assets/favicons/christmasthree.png">
-    <title>Home</title>
+    <link rel="stylesheet" href="./gifts/giftsstyle.css">
+
+    <link rel="icon" type="image/x-icon" href="./assets/favicons/gift.png">
+    <title>Gifts</title>
 </head>
 
 <body>
@@ -35,18 +36,16 @@
                     </a>
                     <nav class="navigation_container">
                         <ul class="navigation_list">
-                            <li class="navigation_item">
-                                <a class="navigation_link" href="gifts.html">
+                            <li class="navigation_item clicked"><a class="navigation_link">
                                     <p class="action_small">GIFTS</p>
-                                </a>
-                            </li>
-                            <li class="navigation_item"><a class="navigation_link" href="#about">
+                                </a></li>
+                            <li class="navigation_item"><a href="index.html#about" class="navigation_link">
                                     <p class="action_small">ABOUT</p>
                                 </a></li>
-                            <li class="navigation_item"><a class="navigation_link" href="#best">
+                            <li class="navigation_item"><a href="index.html#best" class="navigation_link">
                                     <p class="action_small">BEST</p>
                                 </a></li>
-                            <li class="navigation_item"><a class="navigation_link" href="#contacts">
+                            <li class="navigation_item"><a href="#contacts" class="navigation_link">
                                     <p class="action_small">CONTACTS</p>
                                 </a></li>
                         </ul>
@@ -55,94 +54,31 @@
             </div>
         </div>
     </header>
-
     <main>
-        <section class="hero_section ">
+        <div class="gifts_section">
             <div class="wraper">
-                <div class="hero_section_container">
-                    <div class="hero_section_content">
-                        <div class="caption">Merry Christmas</div>
-                        <h1 class="slogan">Gift yourself the magic of new possibilities</h1>
-                        <a href="gifts.html" class="christmas_button">
-                            <p class="action_small">Explore Magical Gifts</p>
-                        </a>
-                        <div class="caption part_two">and Happy New Year</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="about_section" id="about">
-            <div class="wraper background-wrapper">
-                <div class="about_section_container">
-                    <div class="about_section_content">
-                        <div class="about_section_text_container">
-                            <div class="about_section_text_content">
-                                <div class="caption about">About</div>
-                                <h2 class="about_section_header">Unleash your inner superhero!</h2>
-                                <p class="about_section_text">This New Year marks the beginning of your journey to
-                                    inner harmony and new strengths. We offer unique gifts that will help you improve
-                                    your life.</p>
-                            </div>
+                <div class="gifts_section_container">
+                    <div class="gifts_section_content">
+                        <div class="gifts_section_header_container">
+                            <h1> Achieve health, harmony, and inner strength</h1>
                         </div>
-                        <div class="about_section_img_container">
-                            <img src="./assets/img/santa.png" alt="santa">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="slider_section">
-            <div class="wraper background-wrapper">
-                <div class="slider_section_container">
-                    <div class="slider_section_content">
-                        <div class="slider_text_container">
-                            <div class="caption slider_caption">Become Happier!</div>
-                            <h2 class="slider_header">in the new 2025</h2>
-                        </div>
-                        <div class="slider_slider_container">
-                            <div class="slider">
-                                <div class="slider_text">Live</div>
-                                <div class="slider_img_container"><img src="./assets/img/img1.png" alt="snowman"></div>
-                                <div class="slider_text">Create</div>
-                                <div class="slider_img_container"><img src="./assets/img/img2.png" alt="christmasthree">
+                        <div class="tabs_container">
+                            <div class="tabs_content">
+                                <div class="tab active">
+                                    <p class="action_small active">All</p>
                                 </div>
-                                <div class="slider_text">Love</div>
-                                <div class="slider_img_container"><img src="./assets/img/img3.png" alt="ball"></div>
+                                <div class="tab">
+                                    <p class="action_small">for work</p>
+                                </div>
+                                <div class="tab">
+                                    <p class="action_small">for health</p>
+                                </div>
+                                <div class="tab">
+                                    <p class="action_small">for harmony</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="arrow_container">
-                            <div class="button_container">
-                                <button class="slider_button left not_clickeable">
-                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M13.5 7H1M1 7L7 1M1 7L7 13" stroke="white" stroke-opacity="0.4"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                                <button class="slider_button right clickeable">
-                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1 7H13.5M13.5 7L7.5 1M13.5 7L7.5 13" stroke="white"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <section class="best_gift_section" id="best">
-            <div class="wraper background-wrapper">
-                <div class="best_gift_section_container">
-                    <div class="best_gift_section_content">
-                        <div class="best_gift_text_container">
-                            <div class="caption">Best Gifts</div>
-                            <h2 class="best_gift_header">especially for you</h2>
-                        </div>
                         <div class="gifts_container">
                             <div class="card_container">
                                 <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
@@ -157,6 +93,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="card_container">
                                 <div class="card_img_container"><img src="./assets/img/health_ball.png" alt="ball">
                                 </div>
@@ -166,11 +103,26 @@
                                             <h4>For health</h4>
                                         </div>
                                         <div class="ball_name">
-                                            <h3>Hydration Bot</h3>
+                                            <h3>Step Master</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="card_container">
+                                <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
+                                <div class="card_desc_container">
+                                    <div class="card_desc_content">
+                                        <div class="ball_propose health">
+                                            <h4>For work</h4>
+                                        </div>
+                                        <div class="ball_name">
+                                            <h3>Bug Magnet</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="card_container">
                                 <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
                                 <div class="card_desc_container">
@@ -179,17 +131,122 @@
                                             <h4>For work</h4>
                                         </div>
                                         <div class="ball_name">
+                                            <h3>Shortcut Cheater</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card_container">
+                                <div class="card_img_container"><img src="./assets/img/health_ball.png" alt="ball">
+                                </div>
+                                <div class="card_desc_container">
+                                    <div class="card_desc_content">
+                                        <div class="ball_propose">
+                                            <h4>For health</h4>
+                                        </div>
+                                        <div class="ball_name">
+                                            <h3>Posture Levitation</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card_container">
+                                <div class="card_img_container"><img src="./assets/img/harmony_ball.png" alt="ball">
+                                </div>
+                                <div class="card_desc_container">
+                                    <div class="card_desc_content">
+                                        <div class="ball_propose">
+                                            <h4>For harmony</h4>
+                                        </div>
+                                        <div class="ball_name">
+                                            <h3>Bug Acceptance Guru</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card_container">
+                                <div class="card_img_container"><img src="./assets/img/health_ball.png" alt="ball">
+                                </div>
+                                <div class="card_desc_container">
+                                    <div class="card_desc_content">
+                                        <div class="ball_propose">
+                                            <h4>For health</h4>
+                                        </div>
+                                        <div class="ball_name">
+                                            <h3>Snack Resister</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card_container">
+                                <div class="card_img_container"><img src="./assets/img/harmony_ball.png" alt="ball">
+                                </div>
+                                <div class="card_desc_container">
+                                    <div class="card_desc_content">
+                                        <div class="ball_propose">
+                                            <h4>For harmony</h4>
+                                        </div>
+                                        <div class="ball_name">
+                                            <h3>Error Laugher</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card_container">
+                                <div class="card_img_container"><img src="./assets/img/health_ball.png" alt="ball">
+                                </div>
+                                <div class="card_desc_container">
+                                    <div class="card_desc_content">
+                                        <div class="ball_propose">
+                                            <h4>For health</h4>
+                                        </div>
+                                        <div class="ball_name">
+                                            <h3>Hydration Bot</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card_container">
+                                <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
+                                <div class="card_desc_container">
+                                    <div class="card_desc_content">
+                                        <div class="ball_propose">
+                                            <h4>For work</h4>
+                                        </div>
+                                        <div class="ball_name">
                                             <h3>Merge Master</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="card_container">
+                                <div class="card_img_container"><img src="./assets/img/harmony_ball.png" alt="ball">
+                                </div>
+                                <div class="card_desc_container">
+                                    <div class="card_desc_content">
+                                        <div class="ball_propose">
+                                            <h4>For harmony</h4>
+                                        </div>
+                                        <div class="ball_name">
+                                            <h3>Joy Charger</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="card_container">
                                 <div class="card_img_container"><img src="./assets/img/harmony_ball.png" alt="ball">
                                 </div>
                                 <div class="card_desc_container">
                                     <div class="card_desc_content last">
-                                        <div class="ball_propose harmony">
+                                        <div class="ball_propose">
                                             <h4>For harmony</h4>
                                         </div>
                                         <div class="ball_name">
@@ -199,53 +256,12 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section class="CTA_section">
-            <div class="wraper">
-                <div class="CTA_section_container">
-                    <div class="CTA_section_content_container">
-                        <div class="CTA_section_content">
-                            <h2 class="CTA_header"> Ready to start your journey to a better version of yourself? </h2>
-                            <a href="gifts.html" class="christmas_button">
-                                <p class="action_small">Explore Magical Gifts</p>
-                            </a>
-                            <div class="caption">The New Year is Coming Soon...</div>
-                            <div class="timer_container">
-                                <div class="timer_content">
-                                    <h2 class="number">47</h2>
-                                    <h4 class="name_timer_cont">days</h4>
-                                </div>
-                                <p class="separator"></p>
-                                <div class="timer_content">
-                                    <h2 class="number">5</h2>
-                                    <h4 class="name_timer_cont">hours</h4>
-                                </div>
-                                <p class="separator"></p>
-
-                                <div class="timer_content">
-                                    <h2 class="number">34</h2>
-                                    <h4 class="name_timer_cont">minutes</h4>
-                                </div>
-                                <p class="separator"></p>
-
-                                <div class="timer_content">
-                                    <h2 class="number">12</h2>
-                                    <h4 class="name_timer_cont">seconds</h4>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
-
     <footer id="contacts">
         <div class="wraper">
             <div class="footer_container">

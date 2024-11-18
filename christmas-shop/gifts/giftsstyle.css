@@ -64,13 +64,14 @@
         color: var(--static-white);
     }
 
-    &.active {
+    &:hover {
+        cursor: pointer;
         border-radius: 12px;
         background: var(--static-white-20);
     }
 
-    &:hover {
-        cursor: pointer;
+    &.active {
+        cursor: unset;
         border-radius: 12px;
         background: var(--static-white-20);
     }

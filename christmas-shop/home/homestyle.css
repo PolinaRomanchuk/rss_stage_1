@@ -229,6 +229,10 @@
         border-radius: 0 0 20px 20px;
     }
 
+    .caption {
+        height: 13px;
+    }
+
     .CTA_section_container {
         height: 668px;
         display: flex;
@@ -267,30 +271,41 @@
     }
 
     .timer_content {
-        width: 80px;
+        width: 78px;
         height: 52px;
         display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
 
         .number {
-            width: 80px;
+            width: 100%;
             text-align: center;
             display: flex;
             justify-content: center;
+            margin: 0;
+            margin-block-end: unset;
+            margin-block-start: unset;
         }
 
         .name_timer_cont {
-            width: 80px;
+            width: 100%;
             text-align: center;
             display: flex;
             justify-content: center;
+            margin: 0;
+
         }
     }
 
     .separator {
-        width: 20px;
-        height: 0px;
+        height: 20px;
+        margin: 16px 0;
         border: 1px solid var(--static-white-40);
-        transform: rotate(90deg);
     }
+
+    .timer_content_container {
+        display: flex;
+    }
+
 }

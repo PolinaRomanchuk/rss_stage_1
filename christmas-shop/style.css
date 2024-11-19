@@ -192,13 +192,13 @@ header {
             }
         }
 
-        &.clicked:hover {
-            border-radius: unset;
-            background: unset;
-            pointer-events: none;
+        &.clicked {
+            border-radius: 12px;
+            background: rgba(255, 70, 70, 0.1);
+            cursor: unset;
 
             p {
-                color: unset;
+                color: #ff4646;
             }
         }
     }

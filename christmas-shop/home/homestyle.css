@@ -111,6 +111,7 @@
         align-items: center;
         justify-content: space-between;
         color: var(--static-white);
+        overflow: hidden;
     }
 
     .slider_text_container {
@@ -214,6 +215,7 @@
     .gifts_container {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 }
 

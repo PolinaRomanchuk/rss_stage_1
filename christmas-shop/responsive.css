@@ -126,4 +126,20 @@
             width: 111%;
         }
     }
+
+    .gifts_section {
+        height: 2456px;
+
+        .gifts_section_container {
+            height: 2456px;
+        }
+
+        .gifts_container {
+            gap: 12px;
+        }
+
+        .gifts_section_header_container {
+            background-size: contain; 
+        }
+    }
 }

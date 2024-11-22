@@ -109,6 +109,15 @@ p {
     margin: 0;
 }
 
+.hidden {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+}
+
 body {
     margin: 0 auto;
 }
@@ -182,9 +191,10 @@ header {
 
     .navigation_item {
         position: relative;
+        border-radius: 12px;
+
 
         &:hover {
-            border-radius: 12px;
             background: rgba(255, 70, 70, 0.1);
 
             p {
@@ -193,7 +203,6 @@ header {
         }
 
         &.clicked {
-            border-radius: 12px;
             background: rgba(255, 70, 70, 0.1);
             cursor: unset;
 
@@ -412,3 +421,5 @@ footer {
     }
 
 }
+
+

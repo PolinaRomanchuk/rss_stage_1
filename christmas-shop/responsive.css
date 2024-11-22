@@ -139,7 +139,175 @@
         }
 
         .gifts_section_header_container {
-            background-size: contain; 
+            background-size: contain;
         }
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .wraper {
+        width: 380px;
+    }
+
+    header {
+        .logo_container {
+            width: 27% !important;
+        }
+    }
+
+    .hero_section {
+        height: 572px;
+
+        .hero_section_content {
+            width: 90% !important;
+            height: 355px;
+        }
+
+    }
+
+    .about_section {
+        height: 1000px;
+
+
+        .about_section_content {
+            height: 1000px;
+            flex-direction: column;
+
+        }
+
+        .about_section_content {
+            height: 880px;
+        }
+
+        .about_section_text_container {
+            width: 100%;
+            height: 40%;
+
+        }
+
+        .about_section_content {
+            width: 95.9% !important;
+        }
+
+        .about_section_img_container {
+            width: 364px !important;
+        }
+
+        .about_section_text_content {
+            width: 88.7% !important;
+            height: 66.1% !important;
+        }
+
+        .about_section_text {
+            width: 100% !important;
+        }
+    }
+
+    .slider_section {
+        .slider_slider_container {
+            width: 98%;
+        }
+
+        .button_container {
+            width: 36.3% !important;
+        }
+    }
+
+    .best_gift_section {
+        height: 1616px !important;
+
+        .best_gift_section_content {
+            width: 89.6%;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .best_gift_section_container {
+            height: 1616px !important;
+        }
+
+        .best_gift_section_content {
+            height: 92.7%;
+        }
+
+        .gifts_container {
+            height: 1404px;
+
+        }
+    }
+
+    .CTA_section {
+        height: 704px;
+
+        .CTA_section_container {
+            height: 704px;
+        }
+
+        .CTA_section_content {
+            width: 100% !important;
+            height: 66%;
+        }
+
+        .CTA_section_content_container {
+            width: 96.6%;
+        }
+
+        .CTA_section_content_container {
+            height: 74.5%;
+        }
+    }
+
+    .gifts_section {
+        height: 4676px;
+
+        .gifts_section_container {
+            height: 4676px;
+        }
+
+        .gifts_section_content {
+            width: 380px;
+        }
+
+        .gifts_section_header_container {
+            height: 300px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        h1 {
+            display: flex;
+            height: 60%;
+            width: 90%;
+        }
+
+        .tabs_container {
+            width: 354px;
+        }
+
+        .tab {
+            p {
+                padding: 12px 6px;
+            }
+        }
+
+        .tabs_container {
+
+            margin: 20px;
+        }
+
+        .tabs_content {
+            width: 343px;
+            margin: 0;
+            justify-content: space-between;
+        }
+    }
+}
+
+@media (hover: none) {
+    *:hover {
+       
     }
 }

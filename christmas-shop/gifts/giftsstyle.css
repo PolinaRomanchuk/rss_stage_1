@@ -58,6 +58,7 @@
 
 .tab {
     display: flex;
+    border-radius: 12px;
 
     p {
         padding: 12px 20px;
@@ -66,13 +67,11 @@
 
     &:hover {
         cursor: pointer;
-        border-radius: 12px;
         background: var(--static-white-20);
     }
 
     &.active {
         cursor: unset;
-        border-radius: 12px;
         background: var(--static-white-20);
     }
 }

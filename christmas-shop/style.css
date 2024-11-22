@@ -182,9 +182,10 @@ header {
 
     .navigation_item {
         position: relative;
+        border-radius: 12px;
+
 
         &:hover {
-            border-radius: 12px;
             background: rgba(255, 70, 70, 0.1);
 
             p {
@@ -193,7 +194,6 @@ header {
         }
 
         &.clicked {
-            border-radius: 12px;
             background: rgba(255, 70, 70, 0.1);
             cursor: unset;
 

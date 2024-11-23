@@ -33,6 +33,14 @@
     }
 }
 
+@media screen and (max-width: 1338px) {
+    header {
+        .logo_container {
+            width: 10%;
+        }
+    }
+}
+
 @media screen and (max-width: 1298px) {
     .header_content {
         width: 96%;
@@ -101,7 +109,7 @@
 
 @media screen and (max-width: 1099px) {
     .hero_section_content {
-        height: 65% !important;
+        height: 65%;
     }
 }
 
@@ -256,9 +264,9 @@
     }
 }
 
-@media screen and (max-width: 760px) {
+@media screen and (max-width: 767px) {
     .wraper {
-        width: 100%;
+        max-width: 100%;
     }
 
     header {
@@ -309,6 +317,7 @@
     }
 
 }
+
 @media screen and (max-width: 631px) {
     .gifts_section {
         height: 4676px;
@@ -409,6 +418,18 @@
     }
 }
 
+@media screen and (max-width: 500px) {
+    .tabs_content {
+        width: 380px;
+    }
+
+    .tab {
+        p {
+            padding: 12px 10px;
+        }
+    }
+}
+
 @media screen and (max-width: 444px) {
     header {
         .logo_container {
@@ -439,15 +460,15 @@
 
 }
 
-@media screen and (max-width: 500px) {
-    .tabs_content {
-        width: 380px;
+@media screen and (max-width: 403px) {
+    .tabs_container {
+        margin: 5px;
     }
+}
 
-    .tab {
-        p {
-            padding: 12px 10px;
-        }
+@media screen and (max-width: 390px) {
+    .tabs_container {
+        margin: 0;
     }
 }
 
@@ -519,5 +540,3 @@
         }
     }
 }
-
-@media (hover: none) {}

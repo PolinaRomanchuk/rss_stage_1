@@ -146,6 +146,17 @@
         justify-content: space-between;
     }
 
+    @media (hover: hover) {
+        .slider_button:hover {
+            border: 1px solid var(--static-white);
+            background: var(--static-white);
+
+            svg path {
+                stroke: var(--color-primary);
+            }
+        }
+    }
+
     .slider_button {
         cursor: pointer;
         width: 56px;
@@ -162,14 +173,7 @@
             }
         }
 
-        &:hover {
-            border: 1px solid var(--static-white);
-            background: var(--static-white);
 
-            svg path {
-                stroke: var(--color-primary);
-            }
-        }
 
         &.not_clickeable {
             border: 1px solid var(--static-white-40);

@@ -48,6 +48,16 @@
 
 }
 
+@media screen and (max-width: 1272px) {
+    .gifts_section {
+        height: 1890px;
+
+        .gifts_section_container {
+            height: 1890px;
+        }
+    }
+}
+
 @media screen and (max-width: 1241px) {
     .header_container {
 
@@ -102,6 +112,16 @@
 
     .button_container {
         width: 17.3% !important;
+    }
+}
+
+@media screen and (max-width: 951px) {
+    .gifts_section {
+        height: 2456px;
+
+        .gifts_section_container {
+            height: 2456px;
+        }
     }
 }
 
@@ -289,6 +309,29 @@
     }
 
 }
+@media screen and (max-width: 631px) {
+    .gifts_section {
+        height: 4676px;
+
+        .gifts_section_container {
+            height: 4676px;
+        }
+    }
+}
+
+@media screen and (max-width: 626px) {
+    .gifts_section {
+        height: 4676px;
+
+        .gifts_section_container {
+            height: 4676px;
+        }
+    }
+
+    .tabs_container {
+        margin: 10px;
+    }
+}
 
 @media screen and (max-width: 580px) {
     .about_section {
@@ -378,6 +421,34 @@
             width: 34.3% !important;
         }
     }
+
+    .gifts_section {
+        .gifts_section_header_container {
+            height: 300px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        h1 {
+            display: flex;
+            height: 60%;
+            width: 90%;
+        }
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+    .tabs_content {
+        width: 380px;
+    }
+
+    .tab {
+        p {
+            padding: 12px 10px;
+        }
+    }
 }
 
 @media screen and (max-width: 380px) {
@@ -411,10 +482,6 @@
         }
     }
 
-
-
-
-
     .gifts_section {
         height: 4676px;
 
@@ -426,18 +493,9 @@
             width: 380px;
         }
 
-        .gifts_section_header_container {
-            height: 300px;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
 
-        h1 {
-            display: flex;
-            height: 60%;
-            width: 90%;
-        }
+
+
 
         .tabs_container {
             width: 354px;
@@ -462,8 +520,4 @@
     }
 }
 
-
-
-@media (hover: none) {
-    *:hover {}
-}
+@media (hover: none) {}

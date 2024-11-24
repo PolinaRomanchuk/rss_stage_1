@@ -212,9 +212,6 @@ header {
             }
         }
     }
-
-
-
 }
 
 footer {
@@ -398,6 +395,7 @@ footer {
             margin: auto;
             height: 75px;
             justify-content: space-between;
+            padding-bottom: 17px;
         }
     }
 

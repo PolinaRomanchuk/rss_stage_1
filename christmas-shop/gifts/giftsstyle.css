@@ -11,7 +11,7 @@
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        gap: 11px;
+        gap: 12px;
     }
 }
 
@@ -30,7 +30,8 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    background: url('../assets/img/bg-garland.png');
+    background: url('../assets/img/bg-garland.png') no-repeat;
+    background-size: contain;
 
     h1 {
         width: 426px;
@@ -56,6 +57,14 @@
     margin: auto;
 }
 
+
+@media (hover: hover) {
+    .tab:hover {
+        cursor: pointer;
+        background: var(--static-white-20);
+    }
+}
+
 .tab {
     display: flex;
     border-radius: 12px;
@@ -63,11 +72,6 @@
     p {
         padding: 12px 20px;
         color: var(--static-white);
-    }
-
-    &:hover {
-        cursor: pointer;
-        background: var(--static-white-20);
     }
 
     &.active {

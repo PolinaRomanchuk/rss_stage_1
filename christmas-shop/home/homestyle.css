@@ -30,7 +30,6 @@
     }
 }
 
-
 .about_section {
     height: 648px;
 
@@ -91,9 +90,11 @@
     }
 }
 
-
 .slider_section {
     height: 488px;
+    .wraper{
+        overflow: hidden;
+    }
 
     .slider_section_container {
         height: 100%;
@@ -133,6 +134,15 @@
         }
     }
 
+    .slider_img_container {
+        img {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+
+        }
+    }
+
     .arrow_container {
         width: 100%;
         display: flex;
@@ -143,6 +153,17 @@
         width: 10.3%;
         display: flex;
         justify-content: space-between;
+    }
+
+    @media (hover: hover) {
+        .slider_button:hover {
+            border: 1px solid var(--static-white);
+            background: var(--static-white);
+
+            svg path {
+                stroke: var(--color-primary);
+            }
+        }
     }
 
     .slider_button {
@@ -161,15 +182,6 @@
             }
         }
 
-        &:hover {
-            border: 1px solid var(--static-white);
-            background: var(--static-white);
-
-            svg path {
-                stroke: var(--color-primary);
-            }
-        }
-
         &.not_clickeable {
             border: 1px solid var(--static-white-40);
             background: none;
@@ -182,7 +194,6 @@
         }
     }
 }
-
 
 .best_gift_section {
     height: 554px;
@@ -214,9 +225,9 @@
     .gifts_container {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
     }
 }
-
 
 .CTA_section {
     height: 668px;
@@ -294,7 +305,6 @@
             display: flex;
             justify-content: center;
             margin: 0;
-
         }
     }
 
@@ -307,5 +317,4 @@
     .timer_content_container {
         display: flex;
     }
-
 }

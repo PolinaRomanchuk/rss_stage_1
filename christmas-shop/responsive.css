@@ -201,14 +201,28 @@
             justify-content: space-evenly;
             visibility: visible;
             width: 40px;
-            height: 30px;
+            height: 40px;
             overflow: visible;
             opacity: 1;
 
             .burger-menu_line {
                 display: flex;
-                stroke-width: 1px;
-                stroke: var(--dark);
+                border: 1px solid var(--dark);
+                width: 20px;
+                height: 0px;
+            }
+
+            &.clicked {
+                justify-content: center;
+
+                .burger-menu_line.first {
+                    transform: rotate(130deg);
+                }
+
+                .burger-menu_line.second {
+                    transform: rotate(-130deg);
+                }
+
             }
         }
     }

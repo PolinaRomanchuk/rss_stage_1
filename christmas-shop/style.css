@@ -459,10 +459,7 @@ footer {
     }
 
     &.clicked{
-        transform: translateX(0%);
-        background: rgba(40, 40, 40, 0.5);
-        opacity: 1;
-        visibility: visible;
+        visibility: hidden;
     }
 
 }

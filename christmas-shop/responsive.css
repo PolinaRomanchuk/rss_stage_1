@@ -227,6 +227,14 @@
         }
     }
 
+    .mobile-menu.clicked {
+        transform: translateX(0%);
+        background: rgba(40, 40, 40, 0.5);
+        opacity: 1;
+        visibility: visible;
+
+    }
+
     .hero_section {
         .hero_section_content {
             width: 56%;
@@ -528,6 +536,12 @@
         }
     }
 
+    .mobile-menu {
+        .mobile-menu_container {
+            height: 748px;
+        }
+    }
+
     .hero_section {
         height: 572px;
 
@@ -578,4 +592,5 @@
             justify-content: space-between;
         }
     }
+
 }

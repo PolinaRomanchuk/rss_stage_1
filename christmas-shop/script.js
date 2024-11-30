@@ -1,6 +1,11 @@
-let giftsContainer = document.querySelector('.gifts_container');
 let modalWindow = document.querySelector('.modal-window');
 let closeButton = document.querySelector(".modal-window_close");
+let tabsContainer = document.querySelector('.tabs_container');
+let tab = document.querySelectorAll(".tab");
+let upArrow = document.querySelector('.to-up_btn');
+
+let currentTab = 'All';
+
 
 async function getGiftsData() {
     const response = await fetch('../christmas-shop/assets/data.json');
@@ -19,6 +24,11 @@ async function getRandomGifts(number) {
         }
     }
     return randomGiftList;
+}
+
+async function getGiftsByCategory(category) {
+    const datagifts = await getGiftsData();
+    return datagifts.filter(gift => gift.category === category);
 }
 
 function createCard(gift) {
@@ -87,12 +97,32 @@ function getClassNameCategory(gift) {
 }
 
 async function drawCards() {
-    const giftsList = await getRandomGifts(4);
-    giftsContainer.innerHTML = '';
-    giftsList.forEach(gift => {
-        let card = createCard(gift);
-        giftsContainer.append(card);
-    });
+    let homeGiftsContainer = document.querySelector('.gifts_container.home');
+    let giftsGiftsContainer = document.querySelector('.gifts_container.gifts');
+
+    const [homeGiftsList, giftsGiftsList] = await Promise.all([
+        homeGiftsContainer ? getRandomGifts(4) : Promise.resolve([]),
+
+        currentTab === 'All'
+            ? (giftsGiftsContainer ? getRandomGifts(36) : Promise.resolve([]))
+            : (giftsGiftsContainer ? getGiftsByCategory(currentTab) : Promise.resolve([]))
+    ]);
+
+    const appendGiftsToContainer = (container, gifts) => {
+        container.innerHTML = '';
+        gifts.forEach(gift => {
+            const card = createCard(gift);
+            container.append(card);
+        });
+    };
+
+    if (homeGiftsContainer) {
+        appendGiftsToContainer(homeGiftsContainer, homeGiftsList);
+    }
+
+    if (giftsGiftsContainer) {
+        appendGiftsToContainer(giftsGiftsContainer, giftsGiftsList);
+    }
 }
 
 function countActiveSnowflakes(gift) {
@@ -128,5 +158,36 @@ function drawSnowFlakes(gift) {
     drawSnowflakesInContainer(createContainer, createPower);
     drawSnowflakesInContainer(dreamContainer, dreamPower);
 }
+
+
+tabsContainer.onclick = function (e) {
+    const clickedTab = e.target.closest('.tab');
+    if (!clickedTab) return;
+    if (clickedTab.textContent.trim() === currentTab) return;
+
+
+    const activeTab = tabsContainer.querySelector('.active');
+    if (activeTab) {
+        activeTab.classList.remove('active');
+    }
+
+    clickedTab.classList.add('active');
+    currentTab = clickedTab.textContent.trim();
+    drawCards();
+};
+
+
+upArrow.onclick = function(){
+    let linkPath = '#start-gifts';
+    document.querySelector(linkPath).scrollIntoView({ behavior: 'smooth' });
+}
+
+window.onscroll = function() {
+    if (window.scrollY > 300) {
+        upArrow.style.display = 'block'; 
+    } else {
+        upArrow.style.display = 'none'; 
+    }
+};
 
 drawCards();

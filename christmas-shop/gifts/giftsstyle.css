@@ -1,5 +1,5 @@
 .gifts_section {
-    height: 1394px;
+    min-height: 1394px;
 
     .wraper {
         background: var(--color-primary);
@@ -16,7 +16,7 @@
 }
 
 .gifts_section_container {
-    height: 1394px;
+    min-height: 1394px;
     display: flex;
 }
 
@@ -77,5 +77,24 @@
     &.active {
         cursor: unset;
         background: var(--static-white-20);
+    }
+}
+
+.to-up_btn {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    border: 1px solid var(--color-primary);
+    background: var(--static-white);
+    border-radius: 100px;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    z-index: 10;
+}
+@media (max-width: 768px) {
+    .to-up_btn {
+        display: block; 
     }
 }

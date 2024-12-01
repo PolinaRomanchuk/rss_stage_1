@@ -2,7 +2,6 @@ let modalWindow = document.querySelector('.modal-window');
 let closeButton = document.querySelector(".modal-window_close");
 let tabsContainer = document.querySelector('.tabs_container');
 let tab = document.querySelectorAll(".tab");
-let upArrow = document.querySelector('.to-up_btn');
 
 let currentTab = 'All';
 
@@ -159,35 +158,25 @@ function drawSnowFlakes(gift) {
     drawSnowflakesInContainer(dreamContainer, dreamPower);
 }
 
-
-tabsContainer.onclick = function (e) {
-    const clickedTab = e.target.closest('.tab');
-    if (!clickedTab) return;
-    if (clickedTab.textContent.trim() === currentTab) return;
-
-
-    const activeTab = tabsContainer.querySelector('.active');
-    if (activeTab) {
-        activeTab.classList.remove('active');
-    }
-
-    clickedTab.classList.add('active');
-    currentTab = clickedTab.textContent.trim();
-    drawCards();
-};
+if (tabsContainer) {
+    tabsContainer.onclick = function (e) {
+        const clickedTab = e.target.closest('.tab');
+        if (!clickedTab) return;
+        if (clickedTab.textContent.trim() === currentTab) return;
 
 
-upArrow.onclick = function(){
-    let linkPath = '#start-gifts';
-    document.querySelector(linkPath).scrollIntoView({ behavior: 'smooth' });
+        const activeTab = tabsContainer.querySelector('.active');
+        if (activeTab) {
+            activeTab.classList.remove('active');
+        }
+
+        clickedTab.classList.add('active');
+        currentTab = clickedTab.textContent.trim();
+        drawCards();
+    };
 }
 
-window.onscroll = function() {
-    if (window.scrollY > 300) {
-        upArrow.style.display = 'block'; 
-    } else {
-        upArrow.style.display = 'none'; 
-    }
-};
+
+
 
 drawCards();

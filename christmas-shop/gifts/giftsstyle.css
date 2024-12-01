@@ -93,8 +93,3 @@
     cursor: pointer;
     z-index: 10;
 }
-@media (max-width: 768px) {
-    .to-up_btn {
-        display: block; 
-    }
-}

@@ -54,21 +54,33 @@
                         </ul>
                     </nav>
                     <div class="burger-menu_container hidden">
-                        <div class="burger-menu_line"><svg width="22" height="2" viewBox="0 0 22 2" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1H21" stroke="#181C29" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg></div>
-                        <div class="burger-menu_line">
-                            <svg width="22" height="2" viewBox="0 0 22 2" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1H21" stroke="#181C29" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
+                        <div class="burger-menu_line first"></div>
+                        <div class="burger-menu_line second"> </div>
                     </div>
                 </div>
             </div>
-        </div>
     </header>
+    <div class="mobile-menu ">
+        <div class="wraper">
+            <nav class="mobile-menu_container">
+                <ul class="mobile-menu_navigation_list">
+                    <li class="navigation_item"> <a class="navigation_link mobile" href="gifts.html">
+                            <p class="action_large">GIFTS</p>
+                        </a>
+                    </li>
+                    <li class="navigation_item"><a class="navigation_link mobile" href="#about">
+                            <p class="action_large">ABOUT</p>
+                        </a></li>
+                    <li class="navigation_item"><a class="navigation_link mobile" href="#best">
+                            <p class="action_large">BEST</p>
+                        </a></li>
+                    <li class="navigation_item"><a class="navigation_link mobile" href="#contacts">
+                            <p class="action_large">CONTACTS</p>
+                        </a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 
     <main>
         <section class="hero_section ">
@@ -120,10 +132,11 @@
                                 <div class="slider_text">Live</div>
                                 <div class="slider_img_container"><img src="./assets/img/img1.png" alt="snowman"></div>
                                 <div class="slider_text">Create</div>
-                                <div class="slider_img_container"><img src="./assets/img/img2.png" alt="christmasthree">
-                                </div>
+                                <div class="slider_img_container"><img src="./assets/img/img2.png" alt="christmasthree"></div>
                                 <div class="slider_text">Love</div>
                                 <div class="slider_img_container"><img src="./assets/img/img3.png" alt="ball"></div>
+                                <div class="slider_text">Dream</div>
+                                <div class="slider_img_container"><img src="./assets/img/img4.png" alt="ball"></div>
                             </div>
                         </div>
                         <div class="arrow_container">
@@ -157,65 +170,66 @@
                             <div class="caption">Best Gifts</div>
                             <h2 class="best_gift_header">especially for you</h2>
                         </div>
-                        <div class="gifts_container">
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose work">
-                                            <h4>For work</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Console.log Guru</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/health_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose health">
-                                            <h4>For health</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Hydration Bot</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose work">
-                                            <h4>For work</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Merge Master</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/harmony_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content last">
-                                        <div class="ball_propose harmony">
-                                            <h4>For harmony</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Spontaneous Coding Philosopher Spontaneous Coding Philosopher</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="gifts_container home">
 
+                        </div>
                     </div>
                 </div>
+
+                <div class="modal-window ">
+                    <div class="modal-window_content">
+                        <div class="modal-window_close">
+                            <img src="./assets/img/close.png" alt="close">
+                        </div>
+                        <div class="modal-window-photo_container">
+                            <img src="./assets/img/harmony_ball.png" alt="ball" class="modal-window-photo">
+                        </div>
+                        <div class="modal-window_text_container">
+                            <h4 class="modal-window_ball_category ball_propose"></h4>
+                            <h3 class="modal-window_ball_name"></h3>
+                            <p class="modal-window_description"></p>
+                            <ul class="modal-list">
+                                <h4> Adds superpowers to:</h4>
+                                <li class="modal-list-item">
+                                    <p class="live">Live </p>
+                                    <div class="power_container">
+                                        <p class="live-power">+500</p>
+                                        <div class="snowflakes_container live">
+
+                                        </div>
+                                    </div>
+                                <li class="modal-list-item">
+                                    <p class="create">Create </p>
+                                    <div class="power_container">
+                                        <p class="create-power">+500</p>
+                                        <div class="snowflakes_container create">
+
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="modal-list-item">
+                                    <p class="love">Love </p>
+                                    <div class="power_container">
+                                        <p class="love-power">+300</p>
+                                        <div class="snowflakes_container love">
+
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="modal-list-item">
+                                    <p class="dream">Dream </p>
+                                    <div class="power_container">
+                                        <p class="dream-power">+500</p>
+                                        <div class="snowflakes_container dream">
+
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -232,24 +246,24 @@
                             <div class="timer_container">
                                 <div class="timer_content_container">
                                     <div class="timer_content">
-                                        <h2 class="number">47</h2>
+                                        <h2 class="number number_days"></h2>
                                         <h4 class="name_timer_cont">days</h4>
                                     </div>
                                     <p class="separator"></p>
                                     <div class="timer_content">
-                                        <h2 class="number">5</h2>
+                                        <h2 class="number number_hours"></h2>
                                         <h4 class="name_timer_cont">hours</h4>
                                     </div>
                                     <p class="separator"></p>
 
                                     <div class="timer_content">
-                                        <h2 class="number">34</h2>
+                                        <h2 class="number number_minutes"></h2>
                                         <h4 class="name_timer_cont">minutes</h4>
                                     </div>
                                     <p class="separator"></p>
 
                                     <div class="timer_content">
-                                        <h2 class="number">12</h2>
+                                        <h2 class="number number_seconds"></h2>
                                         <h4 class="name_timer_cont">seconds</h4>
                                     </div>
                                 </div>
@@ -357,6 +371,14 @@
             </div>
         </div>
     </footer>
+
+    <script src="burgerscript.js"></script>
+    <script src="timerscript.js"></script>
+    <script src="caruselscript.js"></script>
+
+    <script src="script.js"></script>
+
+
 </body>
 
 </html>

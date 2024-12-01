@@ -69,10 +69,10 @@
 
 @media screen and (max-width: 1289px) {
     .gifts_section {
-        height: 1890px;
+        min-height: 1890px;
 
         .gifts_section_container {
-            height: 1890px;
+            min-height: 1890px;
         }
     }
 }
@@ -147,10 +147,10 @@
 
 @media screen and (max-width: 951px) {
     .gifts_section {
-        height: 2456px;
+        min-height: 2456px;
 
         .gifts_section_container {
-            height: 2456px;
+            min-height: 2456px;
         }
     }
 }
@@ -201,16 +201,38 @@
             justify-content: space-evenly;
             visibility: visible;
             width: 40px;
-            height: 30px;
+            height: 40px;
             overflow: visible;
             opacity: 1;
 
             .burger-menu_line {
                 display: flex;
-                stroke-width: 1px;
-                stroke: var(--dark);
+                border: 1px solid var(--dark);
+                width: 20px;
+                height: 0px;
+            }
+
+            &.clicked {
+                justify-content: center;
+
+                .burger-menu_line.first {
+                    transform: rotate(130deg);
+                }
+
+                .burger-menu_line.second {
+                    transform: rotate(-130deg);
+                }
+
             }
         }
+    }
+
+    .mobile-menu.clicked {
+        transform: translateX(0%);
+        background: rgba(40, 40, 40, 0.5);
+        opacity: 1;
+        visibility: visible;
+
     }
 
     .hero_section {
@@ -284,10 +306,10 @@
     }
 
     .gifts_section {
-        height: 2456px;
+        min-height: 2456px;
 
         .gifts_section_container {
-            height: 2456px;
+            min-height: 2456px;
         }
 
         .gifts_container {
@@ -354,20 +376,20 @@
 
 @media screen and (max-width: 631px) {
     .gifts_section {
-        height: 4676px;
+        min-height: 4676px;
 
         .gifts_section_container {
-            height: 4676px;
+            min-height: 4676px;
         }
     }
 }
 
 @media screen and (max-width: 626px) {
     .gifts_section {
-        height: 4676px;
+        min-height: 4676px;
 
         .gifts_section_container {
-            height: 4676px;
+            min-height: 4676px;
         }
 
         .tabs_container {
@@ -514,6 +536,12 @@
         }
     }
 
+    .mobile-menu {
+        .mobile-menu_container {
+            height: 748px;
+        }
+    }
+
     .hero_section {
         height: 572px;
 
@@ -534,10 +562,10 @@
     }
 
     .gifts_section {
-        height: 4676px;
+        min-height: 4676px;
 
         .gifts_section_container {
-            height: 4676px;
+            min-height: 4676px;
         }
 
         .gifts_section_content {
@@ -564,4 +592,5 @@
             justify-content: space-between;
         }
     }
+
 }

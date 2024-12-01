@@ -52,23 +52,40 @@
                         </ul>
                     </nav>
                     <div class="burger-menu_container hidden">
-                        <div class="burger-menu_line"><svg width="22" height="2" viewBox="0 0 22 2" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1H21" stroke="#181C29" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg></div>
-                        <div class="burger-menu_line">
-                            <svg width="22" height="2" viewBox="0 0 22 2" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1H21" stroke="#181C29" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
+                        <div class="burger-menu_line first"></div>
+                        <div class="burger-menu_line second"></div>
                     </div>
                 </div>
             </div>
-        </div>
     </header>
+
+    <div class="mobile-menu ">
+        <div class="wraper">
+            <nav class="mobile-menu_container">
+                <ul class="mobile-menu_navigation_list">
+                    <li class="navigation_item"> <a class="navigation_link mobile">
+                            <p class="action_large">GIFTS</p>
+                        </a>
+                    </li>
+                    <li class="navigation_item"><a class="navigation_link mobile" href="index.html#about">
+                            <p class="action_large">ABOUT</p>
+                        </a></li>
+                    <li class="navigation_item"><a class="navigation_link mobile" href="index.html#best">
+                            <p class="action_large">BEST</p>
+                        </a></li>
+                    <li class="navigation_item"><a class="navigation_link mobile" href="#contacts">
+                            <p class="action_large">CONTACTS</p>
+                        </a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+
+
     <main>
-        <div class="gifts_section">
+        <section class="gifts_section" id="start-gifts">
             <div class="wraper">
                 <div class="gifts_section_container">
                     <div class="gifts_section_content">
@@ -78,201 +95,84 @@
                         <div class="tabs_container">
                             <div class="tabs_content">
                                 <div class="tab active">
-                                    <p class="action_small active">All</p>
+                                    <p class="action_small">All</p>
                                 </div>
                                 <div class="tab">
-                                    <p class="action_small">for work</p>
+                                    <p class="action_small">For Work</p>
                                 </div>
                                 <div class="tab">
-                                    <p class="action_small">for health</p>
+                                    <p class="action_small">For Health</p>
                                 </div>
                                 <div class="tab">
-                                    <p class="action_small">for harmony</p>
+                                    <p class="action_small">For Harmony</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="gifts_container">
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose work">
-                                            <h4>For work</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Console.log Guru</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="gifts_container gifts">
 
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/health_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose health">
-                                            <h4>For health</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Step Master</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-window ">
+                    <div class="modal-window_content">
+                        <div class="modal-window_close">
+                            <img src="./assets/img/close.png" alt="close">
+                        </div>
+                        <div class="modal-window-photo_container">
+                            <img src="./assets/img/harmony_ball.png" alt="ball" class="modal-window-photo">
+                        </div>
+                        <div class="modal-window_text_container">
+                            <h4 class="modal-window_ball_category ball_propose"></h4>
+                            <h3 class="modal-window_ball_name"></h3>
+                            <p class="modal-window_description"></p>
+                            <ul class="modal-list">
+                                <h4> Adds superpowers to:</h4>
+                                <li class="modal-list-item">
+                                    <p class="live">Live </p>
+                                    <div class="power_container">
+                                        <p class="live-power">+500</p>
+                                        <div class="snowflakes_container live">
 
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose health">
-                                            <h4>For work</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Bug Magnet</h3>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                <li class="modal-list-item">
+                                    <p class="create">Create </p>
+                                    <div class="power_container">
+                                        <p class="create-power">+500</p>
+                                        <div class="snowflakes_container create">
 
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose work">
-                                            <h4>For work</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Shortcut Cheater</h3>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </li>
+                                <li class="modal-list-item">
+                                    <p class="love">Love </p>
+                                    <div class="power_container">
+                                        <p class="love-power">+300</p>
+                                        <div class="snowflakes_container love">
 
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/health_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose">
-                                            <h4>For health</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Posture Levitation</h3>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </li>
+                                <li class="modal-list-item">
+                                    <p class="dream">Dream </p>
+                                    <div class="power_container">
+                                        <p class="dream-power">+500</p>
+                                        <div class="snowflakes_container dream">
 
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/harmony_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose">
-                                            <h4>For harmony</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Bug Acceptance Guru</h3>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/health_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose">
-                                            <h4>For health</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Snack Resister</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/harmony_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose">
-                                            <h4>For harmony</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Error Laugher</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/health_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose">
-                                            <h4>For health</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Hydration Bot</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/work_ball.png" alt="ball"></div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose">
-                                            <h4>For work</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Merge Master</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/harmony_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content">
-                                        <div class="ball_propose">
-                                            <h4>For harmony</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Joy Charger</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card_container">
-                                <div class="card_img_container"><img src="./assets/img/harmony_ball.png" alt="ball">
-                                </div>
-                                <div class="card_desc_container">
-                                    <div class="card_desc_content last">
-                                        <div class="ball_propose">
-                                            <h4>For harmony</h4>
-                                        </div>
-                                        <div class="ball_name">
-                                            <h3>Spontaneous Coding Philosopher Spontaneous Coding Philosopher</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <button class="to-up_btn">
+            <span> <img src="./assets/img/arrow-up.png" alt="arrow up"></span>
+        </button>
 
     </main>
     <footer id="contacts">
@@ -371,6 +271,10 @@
             </div>
         </div>
     </footer>
+    <script src="burgerscript.js"></script>
+    <script src="uparrowscript.js"></script>
+    <script src="script.js"></script>
+
 </body>
 
 </html>

@@ -22,7 +22,7 @@ function moveSlider(direction, step) {
         leftArrow.classList.add('clickeable');
     }
 
-    if (currentClicksNumber == maxIndex) {
+    if (currentClicksNumber == maxClicksNumber) {
         rightArrow.classList.add('not_clickeable');
         rightArrow.classList.remove('clickeable');
 
@@ -51,7 +51,7 @@ leftArrow.onclick = function () {
 
 rightArrow.onclick = function () {
     getSlidesMaxIndex();
-    if (currentClicksNumber !== maxIndex) {
+    if (currentClicksNumber !== maxClicksNumber) {
         currentClicksNumber += 1;
         moveSlider('right', stepPercent);
     }

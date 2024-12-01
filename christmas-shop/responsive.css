@@ -548,6 +548,12 @@
         }
     }
 
+    .modal-window.clicked {
+        .modal-window_content {
+            width: 364px;
+        }
+    }
+
     .hero_section {
         height: 572px;
 

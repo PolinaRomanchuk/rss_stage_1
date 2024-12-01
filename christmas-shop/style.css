@@ -495,7 +495,6 @@ footer {
         display: flex;
         flex-direction: column;
         position: relative;
-
     }
 
     .modal-window_close {

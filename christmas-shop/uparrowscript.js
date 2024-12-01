@@ -12,3 +12,12 @@ window.onscroll = function () {
         upArrow.style.display = 'none';
     }
 };
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth <= 768 ) {
+        upArrow.style.display = 'block';
+    } else {
+        upArrow.style.display = 'none';
+    }
+
+});

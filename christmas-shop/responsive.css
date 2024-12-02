@@ -216,11 +216,11 @@
                 justify-content: center;
 
                 .burger-menu_line.first {
-                    transform: rotate(130deg);
+                    transform: rotate(135deg);
                 }
 
                 .burger-menu_line.second {
-                    transform: rotate(-130deg);
+                    transform: rotate(-135deg);
                 }
 
             }
@@ -228,6 +228,7 @@
     }
 
     .mobile-menu.clicked {
+        width: 100%;
         transform: translateX(0%);
         background: rgba(40, 40, 40, 0.5);
         opacity: 1;
@@ -539,6 +540,17 @@
     .mobile-menu {
         .mobile-menu_container {
             height: 748px;
+        }
+
+        &.clicked {
+            background: var(--static-white);
+            height: 100%;
+        }
+    }
+
+    .modal-window.clicked {
+        .modal-window_content {
+            width: 364px;
         }
     }
 

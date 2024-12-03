@@ -39,3 +39,15 @@ burgerNavigationLinks.forEach(link => {
     }
 });
 
+function hiddenMenu() {
+    burgerIcon.classList.remove('clicked');
+    menu.classList.remove('clicked');
+    body.classList.remove('clicked');
+}
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        hiddenMenu();
+    }
+});
+

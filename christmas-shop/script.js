@@ -78,10 +78,14 @@ modalWindow.onclick = function (e) {
 
 function fillModal(gift) {
     let category = getClassNameCategory(gift);
+    let ballCategory =  document.querySelector('.modal-window_ball_category');
 
     document.querySelector('.modal-window-photo').src = `./assets/img/${category}_ball.png`;
     document.querySelector('.modal-window_ball_category').textContent = gift.category;
-    document.querySelector('.modal-window_ball_category').classList.add(category);
+
+    ballCategory.className = 'modal-window_ball_category ball_propose';
+    ballCategory.classList.add(category);
+
     document.querySelector('.modal-window_ball_name').textContent = gift.name;
     document.querySelector('.modal-window_description').textContent = gift.description;
     document.querySelector('.live-power').textContent = gift.superpowers.live;

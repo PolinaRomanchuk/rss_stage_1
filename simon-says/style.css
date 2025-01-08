@@ -1,0 +1,28 @@
+body {
+  height: 97vh;
+  width: 97vw;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.rule-window-container {
+  width: 30vw;
+  height: 35vh;
+  padding:  20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.level-container{
+  display: flex;
+  flex-direction: column;
+  height: 35%;
+  justify-content: space-evenly;
+}
+
+.play-btn{
+  height: 50px;
+  cursor: pointer;
+}

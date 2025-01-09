@@ -4,25 +4,49 @@ body {
   margin: 0;
   display: flex;
   align-items: center;
+  font-family: "Comic Neue", serif;
 }
 
 .rule-window-container {
   width: 30vw;
   height: 35vh;
-  padding:  20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
 
-.level-container{
+.level-container {
   display: flex;
   flex-direction: column;
   height: 35%;
   justify-content: space-evenly;
 }
 
-.play-btn{
+.play-btn {
   height: 50px;
   cursor: pointer;
+  font-family: "Itim", serif;
+}
+
+.game-window-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 65vw;
+  height: 97vh;
+}
+
+.selected-level {
+  display: flex;
+  flex-direction: row-reverse;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+}
+
+.manage-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }

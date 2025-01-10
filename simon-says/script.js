@@ -41,11 +41,6 @@ function createGame() {
   let stage = createElement("div", "user-stage", "1/5");
   let gameBtn = createElement("button", "repeat-btn", "Repeat");
 
-  gameBtn.addEventListener("click", (e) => {
-    showRandomChain();
-    isRepeated = true;
-  });
-
   manageContainer.append(newGameBtn);
   manageContainer.append(stage);
   manageContainer.append(gameBtn);
@@ -56,6 +51,20 @@ function createGame() {
   gameContainer.append(manageContainer);
 
   body.append(gameContainer);
+
+  newGameBtn.addEventListener("click", (e) => {
+    let game = document.querySelector(".game-window-container");
+    game.classList.add("hidden");
+    let rulewindow = document.querySelector(".rule-window-container");
+    rulewindow.classList.remove("hidden");
+    deleteGame();
+    updateGameField();
+  });
+
+  gameBtn.addEventListener("click", (e) => {
+    showRandomChain();
+    isRepeated = true;
+  });
 }
 
 function checkLevelAndCreateArr() {
@@ -205,6 +214,13 @@ function showRandomChain() {
       }
     }, index * 6 * 100);
   });
+}
+
+function deleteGame() {
+  let gameContainer = document.querySelector(".game-window-container");
+  gameContainer.remove();
+  isRepeated = false;
+  currentStage = 1;
 }
 
 createstartWindow();

@@ -1,6 +1,9 @@
 let body = document.body;
 let currentLevel = "Easy";
+let currentStage = 1;
 let gameField = {};
+let gameChain = [];
+let isRepeated = false;
 
 function createstartWindow() {
   createRuleWindow();
@@ -15,6 +18,14 @@ function createRuleWindow() {
   ruleContainer.append(levelBlock);
   ruleContainer.append(playButton);
 
+  playButton.addEventListener("click", (e) => {
+    let rulewindow = document.querySelector(".rule-window-container");
+    rulewindow.classList.add("hidden");
+    createGame();
+    gameChain = getRandomChain(2);
+    showRandomChain();
+  });
+
   body.append(ruleContainer);
 }
 
@@ -22,11 +33,20 @@ function createGame() {
   let gameContainer = createElement("div", "game-window-container", "");
   let selectedLevel = createElement("div", "selected-level", currentLevel);
   let userField = createElement("input", "user-input", "");
+  userField.setAttribute("readonly", true);
 
   let manageContainer = createElement("div", "manage-container");
+  let newGameBtn = createElement("button", "new-game-btn", "New Game");
+
   let stage = createElement("div", "user-stage", "1/5");
   let gameBtn = createElement("button", "repeat-btn", "Repeat");
 
+  gameBtn.addEventListener("click", (e) => {
+    showRandomChain();
+    isRepeated = true;
+  });
+
+  manageContainer.append(newGameBtn);
   manageContainer.append(stage);
   manageContainer.append(gameBtn);
 
@@ -154,6 +174,37 @@ function createAlphabetArray() {
     alphabetArray.push(String.fromCharCode(i));
   }
   return alphabetArray;
+}
+
+function getRandomChain(number) {
+  const buttons = gameField.querySelectorAll(".element-game");
+  const values = Array.from(buttons).map((element) => element.textContent);
+  const randomValues = values.sort(() => Math.random() - 0.5).slice(0, number);
+
+  return randomValues;
+}
+
+function showRandomChain() {
+  if (isRepeated) {
+    return;
+  }
+
+  const buttons = gameField.querySelectorAll(".element-game");
+  const values = Array.from(buttons);
+
+  gameChain.forEach((chainValue, index) => {
+    setTimeout(() => {
+      const button = values.find((btn) => btn.textContent === chainValue);
+
+      if (button) {
+        button.classList.add("highlight");
+
+        setTimeout(() => {
+          button.classList.remove("highlight");
+        }, 5 * 100);
+      }
+    }, index * 6 * 100);
+  });
 }
 
 createstartWindow();

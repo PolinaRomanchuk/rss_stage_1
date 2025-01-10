@@ -1,5 +1,12 @@
 let body = document.body;
-let level = "Easy";
+let currentLevel = "Easy";
+let gameField = {};
+
+function createstartWindow() {
+  createRuleWindow();
+  gameField = createGameField(checkLevelAndCreateArr());
+  body.append(gameField);
+}
 
 function createRuleWindow() {
   let ruleContainer = createElement("div", "rule-window-container", "");
@@ -13,9 +20,7 @@ function createRuleWindow() {
 
 function createGame() {
   let gameContainer = createElement("div", "game-window-container", "");
-  let selectedLevel = createElement("div", "selected-level", level);
-  let gameField = createGameField(createAlphabetArray());
-  
+  let selectedLevel = createElement("div", "selected-level", currentLevel);
   let userField = createElement("input", "user-input", "");
 
   let manageContainer = createElement("div", "manage-container");
@@ -31,6 +36,19 @@ function createGame() {
   gameContainer.append(manageContainer);
 
   body.append(gameContainer);
+}
+
+function checkLevelAndCreateArr() {
+  if (currentLevel == "Easy") {
+    return createNumberArray();
+  } else if (currentLevel == "Medium") {
+    return createAlphabetArray();
+  } else if (currentLevel == "Hard") {
+    let newArr = [];
+    newArr.push(createNumberArray());
+    newArr.push(createAlphabetArray());
+    return newArr.flat();
+  }
 }
 
 function createElement(tagName, className, context) {
@@ -58,6 +76,12 @@ function createRadioOption(id, name, value, labelText, isChecked) {
   label.htmlFor = id;
   levelOption.append(radioInput);
   levelOption.append(label);
+
+  radioInput.addEventListener("change", (event) => {
+    currentLevel = event.target.value;
+    updateGameField();
+  });
+
   return levelOption;
 }
 
@@ -68,21 +92,21 @@ function createLevelBox() {
   let easyOption = createRadioOption(
     "easy",
     "difficulty",
-    "easy",
+    "Easy",
     "Easy",
     true
   );
   let mediumOption = createRadioOption(
     "medium",
     "difficulty",
-    "medium",
+    "Medium",
     "Medium",
     false
   );
   let hardOption = createRadioOption(
     "hard",
     "difficulty",
-    "hard",
+    "Hard",
     "Hard",
     false
   );
@@ -105,6 +129,17 @@ function createGameField(arr) {
   return gameField;
 }
 
+function updateGameField() {
+  let oldGameField = document.querySelector(".game-field");
+  if (oldGameField) {
+    oldGameField.remove();
+  }
+
+  gameField = createGameField(checkLevelAndCreateArr());
+
+  body.append(gameField);
+}
+
 function createNumberArray() {
   let numberArray = [];
   for (let i = 0; i <= 9; i++) {
@@ -121,5 +156,4 @@ function createAlphabetArray() {
   return alphabetArray;
 }
 
-createRuleWindow();
-createGame();
+createstartWindow();

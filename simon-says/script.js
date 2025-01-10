@@ -4,6 +4,7 @@ let currentStage = 1;
 let gameField = {};
 let gameChain = [];
 let isRepeated = false;
+let isShowing = true;
 
 function createstartWindow() {
   createRuleWindow();
@@ -53,6 +54,9 @@ function createGame() {
   body.append(gameContainer);
 
   newGameBtn.addEventListener("click", (e) => {
+    if (isShowing) {
+      return;
+    }
     let game = document.querySelector(".game-window-container");
     game.classList.add("hidden");
     let rulewindow = document.querySelector(".rule-window-container");
@@ -62,6 +66,9 @@ function createGame() {
   });
 
   gameBtn.addEventListener("click", (e) => {
+    if (isShowing) {
+      return;
+    }
     showRandomChain();
     isRepeated = true;
   });
@@ -155,6 +162,7 @@ function createGameField(arr) {
     let button = createElement("button", "element-game", el);
     gameField.append(button);
   });
+
   return gameField;
 }
 
@@ -197,7 +205,8 @@ function showRandomChain() {
   if (isRepeated) {
     return;
   }
-
+  isShowing = true;
+  disableUserActions();
   const buttons = gameField.querySelectorAll(".element-game");
   const values = Array.from(buttons);
 
@@ -212,6 +221,12 @@ function showRandomChain() {
           button.classList.remove("highlight");
         }, 5 * 100);
       }
+      if (index === gameChain.length - 1) {
+        setTimeout(() => {
+          isShowing = false;
+          enableUserActions();
+        }, 500);
+      }
     }, index * 6 * 100);
   });
 }
@@ -221,6 +236,28 @@ function deleteGame() {
   gameContainer.remove();
   isRepeated = false;
   currentStage = 1;
+}
+
+function disableUserActions() {
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((button) => {
+    button.disabled = true;
+  });
+  document.querySelector(".user-input").disabled = true;
+}
+
+function enableUserActions() {
+  const repeatBtn = document.querySelector(".repeat-btn");
+
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((button) => {
+    button.disabled = false;
+  });
+  if (isRepeated) {
+    repeatBtn.disabled = true;
+  }
+
+  document.querySelector(".user-input").disabled = false;
 }
 
 createstartWindow();

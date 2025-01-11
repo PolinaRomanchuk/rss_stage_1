@@ -257,7 +257,42 @@ function enableUserActions() {
     repeatBtn.disabled = true;
   }
 
-  document.querySelector(".user-input").disabled = false;
+  let inputField = document.querySelector(".user-input");
+  inputField.disabled = false;
+  inputField.value = "";
+
+  getKeyBoardInput();
+  getButtonInput();
+}
+
+function getKeyBoardInput() {
+  const inputField = document.querySelector(".user-input");
+
+  function handleKeyDown(event) {
+    if (!isShowing) {
+      if (inputField.value.length < gameChain.length) {
+        inputField.value += event.key;
+      }
+    }
+  }
+
+  if (inputField.value.length >= gameChain.length) {
+    document.removeEventListener("keydown", handleKeyDown);
+  }
+
+  document.addEventListener("keydown", handleKeyDown);
+}
+
+function getButtonInput() {
+  const inputField = document.querySelector(".user-input");
+  const buttons = document.querySelectorAll(".element-game");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!isShowing && inputField.value.length < gameChain.length) {
+        inputField.value += button.textContent;
+      }
+    });
+  });
 }
 
 createstartWindow();

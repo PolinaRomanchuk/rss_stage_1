@@ -39,7 +39,7 @@ function createGame() {
   let manageContainer = createElement("div", "manage-container");
   let newGameBtn = createElement("button", "new-game-btn", "New Game");
 
-  let stage = createElement("div", "user-stage", "1/5");
+  let stage = createElement("div", "user-stage", `${currentStage}/5`);
   let gameBtn = createElement("button", "repeat-btn", "Repeat");
 
   manageContainer.append(newGameBtn);
@@ -277,9 +277,7 @@ function getKeyBoardInput() {
     }
   }
 
-  if (inputField.value.length >= gameChain.length) {
-    document.removeEventListener("keydown", handleKeyDown);
-  }
+  document.removeEventListener("keydown", handleKeyDown);
 
   document.addEventListener("keydown", handleKeyDown);
 }
@@ -287,7 +285,15 @@ function getKeyBoardInput() {
 function getButtonInput() {
   const inputField = document.querySelector(".user-input");
   const buttons = document.querySelectorAll(".element-game");
+
   buttons.forEach((button) => {
+    const newButton = button.cloneNode(true);
+    button.replaceWith(newButton);
+  });
+
+  const newButtons = document.querySelectorAll(".element-game");
+
+  newButtons.forEach((button) => {
     button.addEventListener("click", () => {
       if (!isShowing && inputField.value.length < gameChain.length) {
         inputField.value += button.textContent;
@@ -296,6 +302,7 @@ function getButtonInput() {
     });
   });
 }
+
 function checkInput() {
   const inputField = document.querySelector(".user-input");
   const userInput = inputField.value;
@@ -319,6 +326,27 @@ function error() {
 
 function nextLevel() {
   console.log("next");
+
+  let gameBtn = document.querySelector(".repeat-btn");
+  gameBtn.classList.add("hidden");
+
+  let manageContainer = document.querySelector(".manage-container");
+  let nextBtn = createElement("button", "next-btn", "Next");
+  manageContainer.append(nextBtn);
+
+  nextBtn.addEventListener("click", (e) => {
+    let stage = document.querySelector(".user-stage");
+    currentStage += 1;
+    stage.textContent = `${currentStage}/5`;
+
+    nextBtn.classList.add("hidden");
+    gameBtn.classList.remove("hidden");
+
+    const inputField = document.querySelector(".user-input");
+    inputField.value = "";
+    gameChain = getRandomChain(currentStage * 2);
+    showRandomChain();
+  });
 }
 
 createstartWindow();

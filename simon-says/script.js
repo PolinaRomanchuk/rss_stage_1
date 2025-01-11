@@ -267,19 +267,30 @@ function enableUserActions() {
 
 function getKeyBoardInput() {
   const inputField = document.querySelector(".user-input");
+  
 
   function handleKeyDown(event) {
-    if (!isShowing) {
-      if (inputField.value.length < gameChain.length) {
-        inputField.value += event.key;
-        checkInput();
-      }
+    if (!isShowing && inputField.value.length < gameChain.length) {
+      inputField.value += event.key;
+      checkInput();
+      highlightButton(event.key);
     }
   }
-
-  document.removeEventListener("keydown", handleKeyDown);
-
+  function highlightButton(key) {
+    const buttons = document.querySelectorAll(".element-game");
+    const button = Array.from(buttons).find(
+      (button) => button.textContent.trim() === key
+    );
+    if (button) {
+      button.classList.add("highlight");
+      setTimeout(() => {
+        button.classList.remove("highlight");
+      }, 600);
+    }
+  }
+  if (document.listenerAdded) return;
   document.addEventListener("keydown", handleKeyDown);
+  document.listenerAdded = true;
 }
 
 function getButtonInput() {
@@ -297,6 +308,10 @@ function getButtonInput() {
     button.addEventListener("click", () => {
       if (!isShowing && inputField.value.length < gameChain.length) {
         inputField.value += button.textContent;
+        button.classList.add("highlight");
+        setTimeout(() => {
+          button.classList.remove("highlight");
+        }, 300);
         checkInput();
       }
     });
@@ -310,17 +325,26 @@ function checkInput() {
   for (let i = 0; i < userInput.length; i++) {
     if (userInput[i] !== gameChain[i]) {
       error();
+    } else {
+      if (userInput.length !== gameChain.length) {
+        let sound = new Audio("good.mp3");
+        sound.play();
+      }
     }
   }
   if (
     userInput.length === gameChain.length &&
     userInput === gameChain.join("")
   ) {
+    let sound = new Audio("win.mp3");
+    sound.play();
     nextLevel();
   }
 }
 
 function error() {
+  let sound = new Audio("wrong.mp3");
+  sound.play();
   console.log("err");
 }
 

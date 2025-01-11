@@ -272,6 +272,7 @@ function getKeyBoardInput() {
     if (!isShowing) {
       if (inputField.value.length < gameChain.length) {
         inputField.value += event.key;
+        checkInput();
       }
     }
   }
@@ -290,9 +291,34 @@ function getButtonInput() {
     button.addEventListener("click", () => {
       if (!isShowing && inputField.value.length < gameChain.length) {
         inputField.value += button.textContent;
+        checkInput();
       }
     });
   });
+}
+function checkInput() {
+  const inputField = document.querySelector(".user-input");
+  const userInput = inputField.value;
+
+  for (let i = 0; i < userInput.length; i++) {
+    if (userInput[i] !== gameChain[i]) {
+      error();
+    }
+  }
+  if (
+    userInput.length === gameChain.length &&
+    userInput === gameChain.join("")
+  ) {
+    nextLevel();
+  }
+}
+
+function error() {
+  console.log("err");
+}
+
+function nextLevel() {
+  console.log("next");
 }
 
 createstartWindow();

@@ -7,6 +7,7 @@ let isRepeated = false;
 let isShowing = true;
 let keyboardHandler;
 let isInputBlocked = false;
+let victoryMusic;
 
 function createstartWindow() {
   createRuleWindow();
@@ -64,7 +65,6 @@ function createGame() {
     game.classList.add("hidden");
     let rulewindow = document.querySelector(".rule-window-container");
     rulewindow.classList.remove("hidden");
-
     deleteGame();
     updateGameField();
     enableUserActions();
@@ -74,6 +74,7 @@ function createGame() {
     if (isShowing) {
       return;
     }
+    userField.value = "";
     showRandomChain();
     isRepeated = true;
   });
@@ -176,9 +177,7 @@ function updateGameField() {
   if (oldGameField) {
     oldGameField.remove();
   }
-
   gameField = createGameField(checkLevelAndCreateArr());
-
   body.append(gameField);
 }
 
@@ -238,11 +237,21 @@ function showRandomChain() {
 
 function deleteGame() {
   let gameContainer = document.querySelector(".game-window-container");
+  const wingif = document.querySelector(".victory-gif");
+
   let input = document.querySelector(".user-input");
   input.value = "";
   gameContainer.remove();
   isRepeated = false;
   currentStage = 1;
+
+  if (wingif) {
+    wingif.remove();
+  }
+  if (victoryMusic && !victoryMusic.paused) {
+    victoryMusic.pause();
+    victoryMusic.currentTime = 0;
+  }
 }
 
 function disableUserActions() {
@@ -265,8 +274,10 @@ function enableUserActions() {
   }
 
   let inputField = document.querySelector(".user-input");
-  inputField.disabled = false;
-  inputField.value = "";
+  if (inputField) {
+    inputField.disabled = false;
+    inputField.value = "";
+  }
 
   getKeyBoardInput();
   getButtonInput();
@@ -392,10 +403,10 @@ function checkInput() {
     if (userInput[i] !== gameChain[i]) {
       error();
     } else {
-      if (userInput.length !== gameChain.length) {
+      /* if (userInput.length !== gameChain.length) {
         let sound = new Audio("good.mp3");
         sound.play();
-      }
+      } */
     }
   }
   if (
@@ -405,8 +416,8 @@ function checkInput() {
     if (currentStage == 5) {
       let gameBtn = document.querySelector(".repeat-btn");
       const inputField = document.querySelector(".user-input");
-      let sound = new Audio("victory.mp3");
-      sound.play();
+      victoryMusic = new Audio("victory.mp3");
+      victoryMusic.play();
       gameBtn.disabled = true;
       var img = new Image(500, 500);
       img.src = "victory.gif";

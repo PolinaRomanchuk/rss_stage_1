@@ -5,6 +5,7 @@ let gameField = {};
 let gameChain = [];
 let isRepeated = false;
 let isShowing = true;
+let keyboardHandler;
 
 function createstartWindow() {
   createRuleWindow();
@@ -62,8 +63,10 @@ function createGame() {
     game.classList.add("hidden");
     let rulewindow = document.querySelector(".rule-window-container");
     rulewindow.classList.remove("hidden");
+
     deleteGame();
     updateGameField();
+    enableUserActions();
   });
 
   gameBtn.addEventListener("click", (e) => {
@@ -234,6 +237,8 @@ function showRandomChain() {
 
 function deleteGame() {
   let gameContainer = document.querySelector(".game-window-container");
+  let input = document.querySelector(".user-input");
+  input.value = "";
   gameContainer.remove();
   isRepeated = false;
   currentStage = 1;
@@ -311,10 +316,14 @@ function getKeyBoardInput() {
     return simbolsMap[key] || key;
   }
 
+  let isProcessing = false;
   function handleKeyDown(event) {
+    if (isProcessing) return;
+    isProcessing = true;
     const inputKey = convertToEnglish(event.key.toLowerCase());
 
     if (!validValues.includes(inputKey)) {
+      isProcessing = false;
       return;
     }
 
@@ -323,6 +332,9 @@ function getKeyBoardInput() {
       checkInput();
       highlightButton(inputKey);
     }
+    setTimeout(function () {
+      isProcessing = false;
+    }, 100);
   }
   function highlightButton(key) {
     const buttons = document.querySelectorAll(".element-game");
@@ -336,9 +348,11 @@ function getKeyBoardInput() {
       }, 600);
     }
   }
-  if (document.listenerAdded) return;
-  document.addEventListener("keydown", handleKeyDown);
-  document.listenerAdded = true;
+  if (keyboardHandler) {
+    document.removeEventListener("keydown", keyboardHandler);
+  }
+  keyboardHandler = handleKeyDown;
+  document.addEventListener("keydown", keyboardHandler);
 }
 
 function getButtonInput() {

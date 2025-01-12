@@ -80,3 +80,10 @@ body {
   background-color: rgb(136, 0, 255);
   transition: background-color 0.3s ease;
 }
+
+.victory-gif{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -25,6 +25,7 @@ function createRuleWindow() {
     createGame();
     gameChain = getRandomChain(2);
     showRandomChain();
+    console.log(gameChain);
   });
 
   body.append(ruleContainer);
@@ -267,7 +268,6 @@ function enableUserActions() {
 
 function getKeyBoardInput() {
   const inputField = document.querySelector(".user-input");
-  
 
   function handleKeyDown(event) {
     if (!isShowing && inputField.value.length < gameChain.length) {
@@ -336,41 +336,71 @@ function checkInput() {
     userInput.length === gameChain.length &&
     userInput === gameChain.join("")
   ) {
-    let sound = new Audio("win.mp3");
-    sound.play();
-    nextLevel();
+    if (currentStage == 5) {
+      let gameBtn = document.querySelector(".repeat-btn");
+      const inputField = document.querySelector(".user-input");
+      let sound = new Audio("victory.mp3");
+      sound.play();
+      gameBtn.disabled = true;
+      var img = new Image(500, 500);
+      img.src = "victory.gif";
+      img.classList.add("victory-gif");
+      body.append(img);
+      setTimeout(function () {
+        img.remove();
+      }, 15 * 1000);
+      inputField.value = "You win!";
+    } else {
+      let sound = new Audio("win.mp3");
+      sound.play();
+      nextLevel();
+    }
   }
 }
 
 function error() {
-  let sound = new Audio("wrong.mp3");
-  sound.play();
-  console.log("err");
+  const inputField = document.querySelector(".user-input");
+  inputField.value = "You can try again. Press the repeat button";
+  if (!isRepeated) {
+    let sound = new Audio("wrong.mp3");
+    sound.play();
+  }
+
+  if (isRepeated) {
+    inputField.value = "Game over. You can start new game";
+    let sound = new Audio("gameover.mp3");
+    sound.play();
+  }
 }
 
 function nextLevel() {
-  console.log("next");
-
   let gameBtn = document.querySelector(".repeat-btn");
   gameBtn.classList.add("hidden");
 
   let manageContainer = document.querySelector(".manage-container");
-  let nextBtn = createElement("button", "next-btn", "Next");
-  manageContainer.append(nextBtn);
+  let nextBtn = document.querySelector(".next-btn");
 
-  nextBtn.addEventListener("click", (e) => {
-    let stage = document.querySelector(".user-stage");
-    currentStage += 1;
-    stage.textContent = `${currentStage}/5`;
+  if (!nextBtn) {
+    nextBtn = createElement("button", "next-btn", "Next");
+    manageContainer.append(nextBtn);
 
-    nextBtn.classList.add("hidden");
-    gameBtn.classList.remove("hidden");
+    nextBtn.addEventListener("click", (e) => {
+      let stage = document.querySelector(".user-stage");
+      currentStage += 1;
+      stage.textContent = `${currentStage}/5`;
 
-    const inputField = document.querySelector(".user-input");
-    inputField.value = "";
-    gameChain = getRandomChain(currentStage * 2);
-    showRandomChain();
-  });
+      nextBtn.classList.add("hidden");
+      gameBtn.classList.remove("hidden");
+
+      const inputField = document.querySelector(".user-input");
+      inputField.value = "";
+      isRepeated = false;
+      gameChain = getRandomChain(currentStage * 2);
+      showRandomChain();
+      console.log(gameChain);
+    });
+  }
+  nextBtn.classList.remove("hidden");
 }
 
 createstartWindow();

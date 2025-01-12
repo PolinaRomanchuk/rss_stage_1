@@ -268,12 +268,60 @@ function enableUserActions() {
 
 function getKeyBoardInput() {
   const inputField = document.querySelector(".user-input");
+  const buttons = gameField.querySelectorAll(".element-game");
+  const validValues = Array.from(buttons).map((element) => element.textContent);
+
+  const simbolsMap = {
+    а: "f",
+    б: ",",
+    в: "d",
+    г: "u",
+    д: "l",
+    е: "t",
+    ё: "`",
+    ж: ";",
+    з: "p",
+    и: "b",
+    й: "q",
+    к: "r",
+    л: "k",
+    м: "v",
+    н: "y",
+    о: "j",
+    п: "g",
+    р: "h",
+    с: "c",
+    т: "n",
+    у: "e",
+    ф: "a",
+    х: "[",
+    ц: "w",
+    ч: "x",
+    ш: "i",
+    щ: "o",
+    ъ: "]",
+    ы: "s",
+    ь: "m",
+    э: "'",
+    ю: ".",
+    я: "z",
+  };
+
+  function convertToEnglish(key) {
+    return simbolsMap[key] || key;
+  }
 
   function handleKeyDown(event) {
+    const inputKey = convertToEnglish(event.key.toLowerCase());
+
+    if (!validValues.includes(inputKey)) {
+      return;
+    }
+
     if (!isShowing && inputField.value.length < gameChain.length) {
-      inputField.value += event.key;
+      inputField.value += inputKey;
       checkInput();
-      highlightButton(event.key);
+      highlightButton(inputKey);
     }
   }
   function highlightButton(key) {

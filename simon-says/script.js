@@ -9,11 +9,14 @@ let keyboardHandler;
 let isInputBlocked = false;
 let victoryMusic;
 
+
 function createStartWindow() {
   createGameControlWindow();
+
   gameField = createGameField(checkLevelAndCreateArr());
   body.append(gameField);
 }
+
 
 function createGameControlWindow() {
   let gameControlContainer = createElement("div", "rule-window-container", "");
@@ -41,10 +44,12 @@ function createGameWindow() {
   userInputField.setAttribute("readonly", true);
   userInputField.id = "input";
 
+
   let manageContainer = createElement("div", "manage-container");
   let newGameBtn = createElement("button", "new-game-btn", "New Game");
 
   let stage = createElement("div", "user-stage", `${currentStage}/5`);
+
   let repeatGameBtn = createElement("button", "repeat-btn", "Repeat");
 
   manageContainer.append(newGameBtn);
@@ -66,10 +71,12 @@ function createGameWindow() {
     gameWindowContainer.classList.add("hidden");
     let gameControlWindow = document.querySelector(".rule-window-container");
     gameControlWindow.classList.remove("hidden");
+
     deleteGame();
     updateGameField();
     enableUserActions();
   });
+
 
   repeatGameBtn.addEventListener("click", () => {
     if (isShowing) {
@@ -77,6 +84,7 @@ function createGameWindow() {
     }
     userInputField.value = "";
     showChain();
+
     isRepeated = true;
   });
 }
@@ -206,7 +214,9 @@ function getRandomChain(number) {
   return randomValues;
 }
 
+
 function showChain() {
+
   if (isRepeated) {
     return;
   }
@@ -238,6 +248,7 @@ function showChain() {
 
 function deleteGame() {
   let gameContainer = document.querySelector(".game-window-container");
+
   const winGif = document.querySelector(".victory-gif");
 
   let input = document.querySelector(".user-input");
@@ -246,8 +257,10 @@ function deleteGame() {
   isRepeated = false;
   currentStage = 1;
 
+
   if (winGif) {
     winGif.remove();
+
   }
   if (victoryMusic && !victoryMusic.paused) {
     victoryMusic.pause();
@@ -265,6 +278,7 @@ function disableUserActions() {
 
 function enableUserActions() {
   const repeatBtn = document.querySelector(".repeat-btn");
+
   const buttons = document.querySelectorAll("button");
   buttons.forEach((button) => {
     button.disabled = false;
@@ -288,7 +302,9 @@ function getKeyBoardInput() {
   const buttons = gameField.querySelectorAll(".element-game");
   const validValues = Array.from(buttons).map((element) => element.textContent);
 
+
   const symbolsMap = {
+
     а: "f",
     б: ",",
     в: "d",
@@ -325,7 +341,9 @@ function getKeyBoardInput() {
   };
 
   function convertToEnglish(key) {
+
     return symbolsMap[key] || key;
+
   }
 
   function handleKeyDown(event) {
@@ -348,6 +366,8 @@ function getKeyBoardInput() {
       isInputBlocked = false;
     }, 300);
   }
+
+
 
   function highlightButton(key) {
     const buttons = document.querySelectorAll(".element-game");

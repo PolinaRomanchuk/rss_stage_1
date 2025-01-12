@@ -58,6 +58,7 @@ button:disabled {
 
 .rule-window-container {
   width: 42vw;
+
   height: 35vh;
   padding: 20px;
   display: flex;
@@ -66,6 +67,7 @@ button:disabled {
 }
 
 .level-container {
+
   height: 35%;
   display: flex;
   flex-direction: column;
@@ -78,16 +80,19 @@ button:disabled {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+
   margin: 0 auto;
 }
 
 .selected-level {
+
   position: absolute;
   top: 40px;
   right: 40px;
   display: flex;
   flex-direction: row-reverse;
   font-size: x-large;
+
 }
 
 .manage-container {

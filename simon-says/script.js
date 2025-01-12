@@ -6,6 +6,7 @@ let gameChain = [];
 let isRepeated = false;
 let isShowing = true;
 let keyboardHandler;
+let isInputBlocked = false;
 
 function createstartWindow() {
   createRuleWindow();
@@ -316,10 +317,9 @@ function getKeyBoardInput() {
     return simbolsMap[key] || key;
   }
 
-  let isProcessing = false;
   function handleKeyDown(event) {
-    if (isProcessing) return;
-    isProcessing = true;
+    if (isInputBlocked) return;
+
     const inputKey = convertToEnglish(event.key.toLowerCase());
 
     if (!validValues.includes(inputKey)) {
@@ -328,13 +328,14 @@ function getKeyBoardInput() {
     }
 
     if (!isShowing && inputField.value.length < gameChain.length) {
+      isInputBlocked = true;
       inputField.value += inputKey;
       checkInput();
       highlightButton(inputKey);
     }
     setTimeout(function () {
-      isProcessing = false;
-    }, 100);
+      isInputBlocked = false;
+    }, 300);
   }
   function highlightButton(key) {
     const buttons = document.querySelectorAll(".element-game");
@@ -356,6 +357,7 @@ function getKeyBoardInput() {
 }
 
 function getButtonInput() {
+  if (isInputBlocked) return;
   const inputField = document.querySelector(".user-input");
   const buttons = document.querySelectorAll(".element-game");
 
@@ -369,10 +371,12 @@ function getButtonInput() {
   newButtons.forEach((button) => {
     button.addEventListener("click", () => {
       if (!isShowing && inputField.value.length < gameChain.length) {
+        isInputBlocked = true;
         inputField.value += button.textContent;
         button.classList.add("highlight");
         setTimeout(() => {
           button.classList.remove("highlight");
+          isInputBlocked = false;
         }, 300);
         checkInput();
       }

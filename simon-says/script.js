@@ -9,73 +9,74 @@ let keyboardHandler;
 let isInputBlocked = false;
 let victoryMusic;
 
-function createstartWindow() {
-  createRuleWindow();
+function createStartWindow() {
+  createGameControlWindow();
   gameField = createGameField(checkLevelAndCreateArr());
   body.append(gameField);
 }
 
-function createRuleWindow() {
-  let ruleContainer = createElement("div", "rule-window-container", "");
-  let levelBlock = createLevelBox();
-  let playButton = createElement("button", "play-btn", "Start");
-  ruleContainer.append(levelBlock);
-  ruleContainer.append(playButton);
+function createGameControlWindow() {
+  let gameControlContainer = createElement("div", "rule-window-container", "");
+  let selectLevelBlock = createLevelBox();
+  let startGameButton = createElement("button", "play-btn", "Start");
+  gameControlContainer.append(selectLevelBlock);
+  gameControlContainer.append(startGameButton);
 
-  playButton.addEventListener("click", (e) => {
-    let rulewindow = document.querySelector(".rule-window-container");
-    rulewindow.classList.add("hidden");
-    createGame();
+  startGameButton.addEventListener("click", () => {
+    let gameControlWindow = document.querySelector(".rule-window-container");
+    gameControlWindow.classList.add("hidden");
+    createGameWindow();
     gameChain = getRandomChain(2);
-    showRandomChain();
+    showChain();
     console.log(gameChain);
   });
 
-  body.append(ruleContainer);
+  body.append(gameControlContainer);
 }
 
-function createGame() {
-  let gameContainer = createElement("div", "game-window-container", "");
+function createGameWindow() {
+  let gameWindowContainer = createElement("div", "game-window-container", "");
   let selectedLevel = createElement("div", "selected-level", currentLevel);
-  let userField = createElement("input", "user-input", "");
-  userField.setAttribute("readonly", true);
+  let userInputField = createElement("input", "user-input", "");
+  userInputField.setAttribute("readonly", true);
+  userInputField.id = "input";
 
   let manageContainer = createElement("div", "manage-container");
   let newGameBtn = createElement("button", "new-game-btn", "New Game");
 
   let stage = createElement("div", "user-stage", `${currentStage}/5`);
-  let gameBtn = createElement("button", "repeat-btn", "Repeat");
+  let repeatGameBtn = createElement("button", "repeat-btn", "Repeat");
 
   manageContainer.append(newGameBtn);
   manageContainer.append(stage);
-  manageContainer.append(gameBtn);
+  manageContainer.append(repeatGameBtn);
 
-  gameContainer.append(selectedLevel);
-  gameContainer.append(gameField);
-  gameContainer.append(userField);
-  gameContainer.append(manageContainer);
+  gameWindowContainer.append(selectedLevel);
+  gameWindowContainer.append(gameField);
+  gameWindowContainer.append(userInputField);
+  gameWindowContainer.append(manageContainer);
 
-  body.append(gameContainer);
+  body.append(gameWindowContainer);
 
-  newGameBtn.addEventListener("click", (e) => {
+  newGameBtn.addEventListener("click", () => {
     if (isShowing) {
       return;
     }
-    let game = document.querySelector(".game-window-container");
-    game.classList.add("hidden");
-    let rulewindow = document.querySelector(".rule-window-container");
-    rulewindow.classList.remove("hidden");
+    let gameWindowContainer = document.querySelector(".game-window-container");
+    gameWindowContainer.classList.add("hidden");
+    let gameControlWindow = document.querySelector(".rule-window-container");
+    gameControlWindow.classList.remove("hidden");
     deleteGame();
     updateGameField();
     enableUserActions();
   });
 
-  gameBtn.addEventListener("click", (e) => {
+  repeatGameBtn.addEventListener("click", () => {
     if (isShowing) {
       return;
     }
-    userField.value = "";
-    showRandomChain();
+    userInputField.value = "";
+    showChain();
     isRepeated = true;
   });
 }
@@ -205,7 +206,7 @@ function getRandomChain(number) {
   return randomValues;
 }
 
-function showRandomChain() {
+function showChain() {
   if (isRepeated) {
     return;
   }
@@ -237,7 +238,7 @@ function showRandomChain() {
 
 function deleteGame() {
   let gameContainer = document.querySelector(".game-window-container");
-  const wingif = document.querySelector(".victory-gif");
+  const winGif = document.querySelector(".victory-gif");
 
   let input = document.querySelector(".user-input");
   input.value = "";
@@ -245,8 +246,8 @@ function deleteGame() {
   isRepeated = false;
   currentStage = 1;
 
-  if (wingif) {
-    wingif.remove();
+  if (winGif) {
+    winGif.remove();
   }
   if (victoryMusic && !victoryMusic.paused) {
     victoryMusic.pause();
@@ -264,7 +265,6 @@ function disableUserActions() {
 
 function enableUserActions() {
   const repeatBtn = document.querySelector(".repeat-btn");
-
   const buttons = document.querySelectorAll("button");
   buttons.forEach((button) => {
     button.disabled = false;
@@ -288,7 +288,7 @@ function getKeyBoardInput() {
   const buttons = gameField.querySelectorAll(".element-game");
   const validValues = Array.from(buttons).map((element) => element.textContent);
 
-  const simbolsMap = {
+  const symbolsMap = {
     а: "f",
     б: ",",
     в: "d",
@@ -325,7 +325,7 @@ function getKeyBoardInput() {
   };
 
   function convertToEnglish(key) {
-    return simbolsMap[key] || key;
+    return symbolsMap[key] || key;
   }
 
   function handleKeyDown(event) {
@@ -348,6 +348,7 @@ function getKeyBoardInput() {
       isInputBlocked = false;
     }, 300);
   }
+
   function highlightButton(key) {
     const buttons = document.querySelectorAll(".element-game");
     const button = Array.from(buttons).find(
@@ -473,11 +474,11 @@ function nextLevel() {
       inputField.value = "";
       isRepeated = false;
       gameChain = getRandomChain(currentStage * 2);
-      showRandomChain();
+      showChain();
       console.log(gameChain);
     });
   }
   nextBtn.classList.remove("hidden");
 }
 
-createstartWindow();
+createStartWindow();

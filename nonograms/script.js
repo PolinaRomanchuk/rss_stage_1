@@ -123,23 +123,22 @@ function createLevelField() {
 }
 
 function createGameCells() {
-let cells = createElement("div", "game-grid-cells", "");
-for (let i = 0; i < 5 * 5; i++) {
-  let cell = createElement("div", "game-grid-cell", "");
-  cells.appendChild(cell);
-}
-return cells;
+  let cells = createElement("div", "game-grid-cells", "");
+  for (let i = 0; i < 5 * 5; i++) {
+    let cell = createElement("div", "game-grid-cell", "");
+    cells.appendChild(cell);
+  }
+  return cells;
 }
 
 function createHints(className) {
   let hints = createElement("div", `${className}s`, "");
-  for (let i = 0; i < 5 ; i++) {
+  for (let i = 0; i < 5; i++) {
     let hint = createElement("div", `${className}`, "1");
     hints.appendChild(hint);
   }
   return hints;
-  }
- 
+}
 
 function createGameField() {
   let container = createElement("div", "game-container", "");
@@ -154,15 +153,43 @@ function createGameField() {
   return container;
 }
 
+function createSettingGameInFooter() {
+  let container = createElement("div", "footer-game-setting-container");
+  let settingIcon = createElement("button", "setting-btn");
+  let solutionBtn = createElement("button", "solution-btn", "Solution");
+
+  let hiddenBtnContainer = createElement("div", "hidden-btn-container");
+  let resetBtn = createElement("button", "reset-btn", "Reset game");
+  let saveBtn = createElement("button", "save-btn", "Save game");
+  let continueBtn = createElement(
+    "button",
+    "continue-btn",
+    "Continue last game"
+  );
+
+  let settingContainer = createElement("div", "setting-container", "");
+  hiddenBtnContainer.append(resetBtn);
+  hiddenBtnContainer.append(saveBtn);
+  hiddenBtnContainer.append(continueBtn);
+
+  container.append(solutionBtn);
+  settingContainer.append(settingIcon);
+  settingContainer.append(hiddenBtnContainer);
+  container.append(settingContainer);
+  return container;
+}
+
 function createGameWindow() {
   let gameWindow = createElement("div", "game-window");
   let header = createManageHeader();
   let level = createLevelField();
   let game = createGameField();
+  let footer = createSettingGameInFooter();
 
   gameWindow.append(header);
   gameWindow.append(level);
   gameWindow.append(game);
+  gameWindow.append(footer);
 
   return gameWindow;
 }

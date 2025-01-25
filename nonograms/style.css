@@ -29,6 +29,7 @@ body {
   height: 600px;
   border-radius: 20px;
   padding: 20px;
+  position: relative;
 }
 
 .manage-header-container {
@@ -38,7 +39,8 @@ body {
 }
 
 .light-btn,
-.statistic-btn {
+.statistic-btn,
+.setting-btn {
   width: 30px;
   height: 30px;
   padding: 10px;
@@ -143,7 +145,11 @@ input[type="radio"]:checked + .level-label {
   justify-content: center;
   cursor: pointer;
 }
-.random-game {
+.random-game,
+.solution-btn,
+.reset-btn,
+.save-btn,
+.continue-btn {
   display: flex;
   align-items: center;
   height: 40px;
@@ -227,4 +233,29 @@ input[type="radio"]:checked + .level-label {
 
 .horisontal-hint {
   justify-content: end;
+}
+
+.setting-container {
+  display: flex;
+}
+
+.setting-btn {
+  background: url(./assets/img/setting.png);
+  background-size: cover;
+  bottom: 25px;
+  left: 25px;
+}
+
+.hidden-btn-container {
+  display: flex;
+  justify-content: center;
+  bottom: 25px;
+  left: 50px;
+}
+
+.footer-game-setting-container {
+  display: flex;
+  flex-direction: column;
+  height: 21%;
+  justify-content: space-between;
 }

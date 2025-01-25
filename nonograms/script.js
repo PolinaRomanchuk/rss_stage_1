@@ -13,7 +13,7 @@ function createElement(tagName, className, context) {
 }
 
 function createBackground() {
-  let backgraund = createElement("video", "video-background", "");
+  let backgraund = createElement("video", "video-background");
   backgraund.src = "./assets/img/light-back.mp4";
   backgraund.autoplay = true;
   backgraund.loop = true;
@@ -22,13 +22,15 @@ function createBackground() {
 }
 
 function createManageHeader() {
-  let container = createElement("div", "manage-header-container", "");
+  let container = createElement("div", "manage-header-container");
   let timer = createElement("div", "timer", "00:00");
 
-  let iconsContainer = createElement("div", "icons-container", "");
-  let light = createElement("button", "light-btn", "");
+  let iconsContainer = createElement("div", "icons-container");
+  let light = createElement("button", "light-btn");
+  light.classList.add("icon-btn");
   light.classList.add("on");
-  let statistic = createElement("button", "statistic-btn", "");
+  let statistic = createElement("button", "statistic-btn");
+  statistic.classList.add("icon-btn");
   iconsContainer.append(light);
   iconsContainer.append(statistic);
   container.append(timer);
@@ -37,7 +39,7 @@ function createManageHeader() {
 }
 
 function createRadioOption(id, name, value, labelText, isChecked) {
-  let levelOption = createElement("div", "level-option", "");
+  let levelOption = createElement("div", "level-option");
   let radioInput = document.createElement("input");
   radioInput.type = "radio";
   radioInput.id = id;
@@ -47,6 +49,7 @@ function createRadioOption(id, name, value, labelText, isChecked) {
     radioInput.checked = true;
   }
   let label = createElement("label", "level-label", labelText);
+  label.classList.add("text-btn");
   label.htmlFor = id;
   levelOption.append(radioInput);
   levelOption.append(label);
@@ -60,7 +63,7 @@ function createRadioOption(id, name, value, labelText, isChecked) {
 }
 
 function createLevelBox() {
-  let levelContainer = createElement("div", "level-options-list", "");
+  let levelContainer = createElement("div", "level-options-list");
   let easyOption = createRadioOption(
     "easy",
     "difficulty",
@@ -91,7 +94,8 @@ function createLevelBox() {
 
 function createGamePictures() {
   let container = createElement("button", "dropdown-btn", "Picture");
-  let dropContainer = createElement("ul", "dropdown-content", "");
+  container.classList.add("text-btn");
+  let dropContainer = createElement("ul", "dropdown-content");
   let dropItem1 = createElement("li", "dropdown-item", "1");
   let dropItem2 = createElement("li", "dropdown-item", "2");
   let dropItem3 = createElement("li", "dropdown-item", "3");
@@ -105,12 +109,13 @@ function createGamePictures() {
 }
 
 function createLevelField() {
-  let container = createElement("div", "level-container", "");
+  let container = createElement("div", "level-container");
   let levelBlock = createLevelBox();
 
-  let btnContainer = createElement("div", "btn-container", "");
+  let btnContainer = createElement("div", "btn-container");
   let dropPicture = createGamePictures();
-  let randomGameBtn = createElement("button", "random-game", "Random game");
+  let randomGameBtn = createElement("button", "random-game-btn", "Random game");
+  randomGameBtn.classList.add("text-btn");
   container.append(levelBlock);
 
   btnContainer.append(dropPicture);
@@ -123,16 +128,16 @@ function createLevelField() {
 }
 
 function createGameCells() {
-  let cells = createElement("div", "game-grid-cells", "");
+  let cells = createElement("div", "game-grid-cells");
   for (let i = 0; i < 5 * 5; i++) {
-    let cell = createElement("div", "game-grid-cell", "");
+    let cell = createElement("div", "game-grid-cell");
     cells.appendChild(cell);
   }
   return cells;
 }
 
 function createHints(className) {
-  let hints = createElement("div", `${className}s`, "");
+  let hints = createElement("div", `${className}s`);
   for (let i = 0; i < 5; i++) {
     let hint = createElement("div", `${className}`, "1");
     hints.appendChild(hint);
@@ -141,8 +146,8 @@ function createHints(className) {
 }
 
 function createGameField() {
-  let container = createElement("div", "game-container", "");
-  let gridContainer = createElement("div", "game-grid-container", "");
+  let container = createElement("div", "game-container");
+  let gridContainer = createElement("div", "game-grid-container");
   let horisHints = createHints("horisontal-hint");
   let verticHints = createHints("vertical-hint");
   let cells = createGameCells();
@@ -156,17 +161,22 @@ function createGameField() {
 function createSettingGameInFooter() {
   let container = createElement("div", "footer-game-setting-container");
   let settingIcon = createElement("button", "setting-btn");
+  settingIcon.classList.add("icon-btn");
   let solutionBtn = createElement("button", "solution-btn", "Solution");
+  solutionBtn.classList.add("text-btn");
 
   let hiddenBtnContainer = createElement("div", "hidden-btn-container");
   let resetBtn = createElement("button", "reset-btn", "Reset game");
+  resetBtn.classList.add("text-btn");
   let saveBtn = createElement("button", "save-btn", "Save game");
+  saveBtn.classList.add("text-btn");
   let continueBtn = createElement(
     "button",
     "continue-btn",
     "Continue last game"
   );
 
+  continueBtn.classList.add("text-btn");
   let settingContainer = createElement("div", "setting-container", "");
   hiddenBtnContainer.append(resetBtn);
   hiddenBtnContainer.append(saveBtn);

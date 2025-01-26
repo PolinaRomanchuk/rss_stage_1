@@ -93,7 +93,7 @@ function createLevelBox() {
 }
 
 function createGamePictures() {
-  let container = createElement("button", "dropdown-btn", "Picture");
+  let container = createElement("button", "dropdown-btn", "Cat");
   container.classList.add("text-btn");
   let dropContainer = createElement("ul", "dropdown-content");
   let dropItem1 = createElement("li", "dropdown-item", "1");
@@ -165,6 +165,8 @@ function createSettingGameInFooter() {
   let solutionBtn = createElement("button", "solution-btn", "Solution");
   solutionBtn.classList.add("text-btn");
 
+  solutionBtn.addEventListener("click", () => showPicture());
+
   let hiddenBtnContainer = createElement("div", "hidden-btn-container");
   let resetBtn = createElement("button", "reset-btn", "Reset game");
   resetBtn.classList.add("text-btn");
@@ -212,3 +214,31 @@ function createStartWindow() {
 }
 
 createStartWindow();
+
+const catPicture = [
+  [0, 0, 1, 0, 1],
+  [0, 0, 1, 1, 1],
+  [1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 0],
+  [1, 1, 1, 1, 1],
+];
+
+function showPicture() {
+  let oldcells = document.querySelector(".game-grid-cells");
+  oldcells.innerHTML = "";
+  let cells = createElement("div", "game-grid-cells");
+
+  for (let i = 0; i < catPicture.length; i++) {
+    for (let j = 0; j < catPicture[i].length; j++) {
+      let cell = createElement("div", "game-grid-cell");
+
+      if (catPicture[i][j] === 1) {
+        cell.classList.add("clicked");
+      }
+      cells.appendChild(cell);
+    }
+  }
+
+  let gridContainer = document.querySelector(".game-grid-container");
+  gridContainer.append(cells);
+}

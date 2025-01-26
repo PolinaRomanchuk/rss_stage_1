@@ -160,7 +160,7 @@ input[type="radio"]:checked + .level-label {
   padding-inline-start: 0px;
 }
 
-.dropdown-btn:hover .dropdown-content {
+.dropdown-content.show {
   display: block;
 }
 

@@ -1,5 +1,14 @@
 let body = document.body;
-currentLevel = "Easy";
+let currentLevel = "Easy";
+let nameGamePicture = "cat";
+let gamePicture = [
+  [0, 0, 1, 0, 1],
+  [0, 0, 1, 1, 1],
+  [1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 0],
+  [1, 1, 1, 1, 1],
+];
+
 let userClicks = Array(5)
   .fill()
   .map(() => Array(5).fill(0));
@@ -8,13 +17,46 @@ let seconds = 0;
 let minutes = 0;
 let timerInterval;
 
-const catPicture = [
-  [0, 0, 1, 0, 1],
-  [0, 0, 1, 1, 1],
-  [1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 0],
-  [1, 1, 1, 1, 1],
-];
+const easyPictures = {
+  cat: [
+    [0, 0, 1, 0, 1],
+    [0, 0, 1, 1, 1],
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0],
+    [1, 1, 1, 1, 1],
+  ],
+  dinosaur: [
+    [0, 0, 0, 1, 1],
+    [0, 0, 0, 1, 0],
+    [0, 1, 1, 1, 0],
+    [0, 1, 1, 1, 0],
+    [1, 1, 0, 1, 0],
+  ],
+  watch: [
+    [0, 1, 1, 1, 0],
+    [1, 0, 1, 0, 1],
+    [1, 0, 1, 1, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0],
+  ],
+  rabbit: [
+    [0, 1, 1, 0, 0],
+    [0, 0, 0, 1, 1],
+    [0, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0],
+    [0, 1, 1, 1, 1],
+  ],
+  fountain: [
+    [0, 1, 0, 1, 0],
+    [1, 0, 1, 0, 1],
+    [0, 0, 1, 0, 0],
+    [1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 0],
+  ],
+};
+
+const mediumPictures = {};
+const hardPictures = {};
 
 function createElement(tagName, className, context) {
   let element = document.createElement(tagName);
@@ -112,17 +154,59 @@ function createLevelBox() {
 }
 
 function createGamePictures() {
-  let container = createElement("button", "dropdown-btn", "Cat");
+  let container = createElement("button", "dropdown-btn");
   container.classList.add("text-btn");
+
+  let displayText = createElement("span", "", "сat");
+  container.append(displayText);
+
   let dropContainer = createElement("ul", "dropdown-content");
-  let dropItem1 = createElement("li", "dropdown-item", "1");
-  let dropItem2 = createElement("li", "dropdown-item", "2");
-  let dropItem3 = createElement("li", "dropdown-item", "3");
-  dropContainer.append(dropItem1);
-  dropContainer.append(dropItem2);
-  dropContainer.append(dropItem3);
+
+  Object.keys(easyPictures).forEach((key) => {
+    let dropItem = createElement("li", "dropdown-item", key);
+    dropContainer.append(dropItem);
+
+    dropItem.addEventListener("click", (event) => {
+      event.stopPropagation();
+      displayText.textContent = dropItem.textContent;
+      dropContainer.classList.remove("show");
+      nameGamePicture = dropItem.textContent;
+      gamePicture = findPicture(currentLevel, nameGamePicture);
+
+      updateHints();
+    });
+  });
+
+  function updateHints() {
+    let horHints = document.querySelectorAll(".horisontal-hint");
+    let vertHints = document.querySelectorAll(".vertical-hint");
+
+    const horisontal = countHorisontalHints();
+    const vertical = countVerticalHints();
+
+    for (let i = 0; i < horHints.length; i++) {
+      let hintText = horisontal[i].join(" ");
+      horHints[i].textContent = hintText;
+    }
+
+    for (let i = 0; i < vertHints.length; i++) {
+      let verticalHintText = vertical[i];
+      let hintContainer = vertHints[i];
+      let hintColumns = hintContainer.querySelectorAll(".vertical-hint-text");
+
+      for (let j = 0; j < hintColumns.length; j++) {
+        if (verticalHintText[j] !== undefined) {
+          hintColumns[j].textContent = verticalHintText[j];
+        }
+      }
+    }
+  }
 
   container.append(dropContainer);
+
+  container.addEventListener("click", () => {
+    dropContainer.classList.toggle("show");
+  });
 
   return container;
 }
@@ -207,6 +291,10 @@ function createHints(className) {
 }
 
 function createGameField() {
+  let content = document.querySelector(".game-container");
+  if (content) {
+    content.innerHTML = "";
+  }
   let container = createElement("div", "game-container");
   let gridContainer = createElement("div", "game-grid-container");
   let horisHints = createHints("horisontal-hint");
@@ -286,11 +374,11 @@ function showPicture() {
   oldcells.innerHTML = "";
   let cells = createElement("div", "game-grid-cells");
 
-  for (let i = 0; i < catPicture.length; i++) {
-    for (let j = 0; j < catPicture[i].length; j++) {
+  for (let i = 0; i < gamePicture.length; i++) {
+    for (let j = 0; j < gamePicture[i].length; j++) {
       let cell = createElement("div", "game-grid-cell");
 
-      if (catPicture[i][j] === 1) {
+      if (gamePicture[i][j] === 1) {
         cell.classList.add("clicked");
       }
       cells.appendChild(cell);
@@ -303,11 +391,11 @@ function showPicture() {
 
 function countHorisontalHints() {
   let allHints = [];
-  for (let i = 0; i < catPicture.length; i++) {
+  for (let i = 0; i < gamePicture.length; i++) {
     let count = 0;
     let hints = [];
-    for (let j = 0; j < catPicture[i].length; j++) {
-      if (catPicture[i][j] === 1) {
+    for (let j = 0; j < gamePicture[i].length; j++) {
+      if (gamePicture[i][j] === 1) {
         count += 1;
       } else if (count > 0) {
         hints.push(count);
@@ -328,11 +416,11 @@ function countHorisontalHints() {
 
 function countVerticalHints() {
   let allHints = [];
-  for (let col = 0; col < catPicture[0].length; col++) {
+  for (let col = 0; col < gamePicture[0].length; col++) {
     let count = 0;
     let hints = [];
-    for (let row = 0; row < catPicture.length; row++) {
-      if (catPicture[row][col] === 1) {
+    for (let row = 0; row < gamePicture.length; row++) {
+      if (gamePicture[row][col] === 1) {
         count += 1;
       } else if (count > 0) {
         hints.push(count);
@@ -354,9 +442,9 @@ function countVerticalHints() {
 function checkResult() {
   let isCorrect = true;
 
-  for (let i = 0; i < catPicture.length; i++) {
-    for (let j = 0; j < catPicture[i].length; j++) {
-      if (userClicks[i][j] !== catPicture[i][j]) {
+  for (let i = 0; i < gamePicture.length; i++) {
+    for (let j = 0; j < gamePicture[i].length; j++) {
+      if (userClicks[i][j] !== gamePicture[i][j]) {
         isCorrect = false;
         break;
       }
@@ -444,4 +532,13 @@ function resetGame() {
   userClicks = Array(5)
     .fill()
     .map(() => Array(5).fill(0));
+}
+
+function findPicture(level, name) {
+  const levels = {
+    Easy: easyPictures,
+    Medium: mediumPictures,
+    Hard: hardPictures,
+  };
+  return levels[level][name];
 }

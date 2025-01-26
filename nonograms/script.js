@@ -1,6 +1,14 @@
 let body = document.body;
 currentLevel = "Easy";
 
+const catPicture = [
+  [0, 0, 1, 0, 1],
+  [0, 0, 1, 1, 1],
+  [1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 0],
+  [1, 1, 1, 1, 1],
+];
+
 function createElement(tagName, className, context) {
   let element = document.createElement(tagName);
   if (className) {
@@ -137,12 +145,25 @@ function createGameCells() {
 }
 
 function createHints(className) {
-  let hints = createElement("div", `${className}s`);
-  for (let i = 0; i < 5; i++) {
-    let hint = createElement("div", `${className}`, "1");
-    hints.appendChild(hint);
+  if (className == "horisontal-hint") {
+    const horisontal = countHorisontalHints();
+    let hints = createElement("div", `${className}s`);
+
+    for (let i = 0; i < horisontal.length; i++) {
+      let hintText = horisontal[i].join(" ");
+      let hint = createElement("div", `${className}`, `${hintText}`);
+      hints.appendChild(hint);
+    }
+
+    return hints;
+  } else {
+    let hints = createElement("div", `${className}s`);
+    for (let i = 0; i < 5; i++) {
+      let hint = createElement("div", `${className}`, "1");
+      hints.appendChild(hint);
+    }
+    return hints;
   }
-  return hints;
 }
 
 function createGameField() {
@@ -215,14 +236,6 @@ function createStartWindow() {
 
 createStartWindow();
 
-const catPicture = [
-  [0, 0, 1, 0, 1],
-  [0, 0, 1, 1, 1],
-  [1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 0],
-  [1, 1, 1, 1, 1],
-];
-
 function showPicture() {
   let oldcells = document.querySelector(".game-grid-cells");
   oldcells.innerHTML = "";
@@ -241,4 +254,29 @@ function showPicture() {
 
   let gridContainer = document.querySelector(".game-grid-container");
   gridContainer.append(cells);
+}
+
+function countHorisontalHints() {
+  let allHints = [];
+  for (let i = 0; i < catPicture.length; i++) {
+    let count = 0;
+    let hints = [];
+    for (let j = 0; j < catPicture[i].length; j++) {
+      if (catPicture[i][j] === 1) {
+        count += 1;
+      } else if (count > 0) {
+        hints.push(count);
+        count = 0;
+      }
+    }
+    if (count > 0) {
+      hints.push(count);
+    }
+    if (hints.length === 0) {
+      hints.push(0);
+    }
+    allHints.push(hints);
+  }
+  console.log(allHints);
+  return allHints;
 }

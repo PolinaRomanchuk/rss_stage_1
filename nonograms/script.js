@@ -231,6 +231,11 @@ function createSettingGameInFooter() {
   let hiddenBtnContainer = createElement("div", "hidden-btn-container");
   let resetBtn = createElement("button", "reset-btn", "Reset game");
   resetBtn.classList.add("text-btn");
+
+  resetBtn.addEventListener("click", () => {
+    resetGame();
+  });
+
   let saveBtn = createElement("button", "save-btn", "Save game");
   saveBtn.classList.add("text-btn");
   let continueBtn = createElement(
@@ -427,4 +432,13 @@ function resetTimer() {
 
   minutesElement.textContent = "00:";
   secondsElement.textContent = "00";
+}
+
+function resetGame() {
+  resetTimer();
+  let cell = document.querySelectorAll(".game-grid-cell");
+  cell.forEach((element) => element.classList.remove("clicked"));
+  userClicks = Array(5)
+    .fill()
+    .map(() => Array(5).fill(0));
 }

@@ -377,12 +377,11 @@ function win() {
   winWindow.append(text);
   winWindow.append(gifContainer);
 
-
-  close.addEventListener("click", ()=>{
+  close.addEventListener("click", () => {
     winWindow.classList.toggle("hidden");
-  })
+  });
 
   body.append(winWindow);
+  let sound = new Audio("./assets/audio/win.mp3");
+  sound.play();
 }
-
-

@@ -351,12 +351,38 @@ function checkResult() {
   }
 
   if (isCorrect) {
-   // win();
+    win();
   }
 }
 
-/*
-function win(){
+function win() {
   let winWindow = createElement("div", "win-window");
+  let close = createElement("button", "close-btn");
+  let closeContainer = createElement("div", "close-btn-container");
+
+  close.classList.add("icon-btn");
+  let text = createElement(
+    "div",
+    "win-text",
+    "Great! You have solved the nonogram!"
+  );
+  let gifContainer = createElement("div", "gif-win-container");
+
+  let gif = createElement("div", "gif-win");
+
+  gifContainer.append(gif);
+
+  closeContainer.append(close);
+  winWindow.append(closeContainer);
+  winWindow.append(text);
+  winWindow.append(gifContainer);
+
+
+  close.addEventListener("click", ()=>{
+    winWindow.classList.toggle("hidden");
+  })
+
   body.append(winWindow);
-}*/
+}
+
+

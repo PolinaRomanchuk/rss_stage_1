@@ -55,6 +55,11 @@ button {
   left: 25px;
 }
 
+.close-btn {
+  background: url("./assets/img/crose.png");
+  background-size: cover;
+}
+
 .text-btn {
   height: 40px;
   width: 90px;
@@ -216,7 +221,6 @@ input[type="radio"]:checked + .level-label {
 .game-grid-cell.right-clicked {
   background: url(./assets/img/crose.png), white;
   background-size: cover;
-
 }
 
 .vertical-hints {
@@ -270,4 +274,50 @@ input[type="radio"]:checked + .level-label {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.win-window {
+  width: 350px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-accent);
+  margin: auto 0;
+  position: fixed;
+  border-radius: 5px;
+}
+
+.win-text {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.close-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hidden {
+  display: none;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+.gif-win-container {
+  display: flex;
+  justify-content: center;
+}
+
+.gif-win {
+  width: 100px;
+  height: 100px;
+  background: url(./assets/img/win.gif);
+  background-size: cover;
+  display: flex;
 }

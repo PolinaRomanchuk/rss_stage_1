@@ -157,9 +157,19 @@ function createHints(className) {
 
     return hints;
   } else {
+    const vertical = countVerticalHints();
     let hints = createElement("div", `${className}s`);
-    for (let i = 0; i < 5; i++) {
-      let hint = createElement("div", `${className}`, "1");
+
+    for (let i = 0; i < vertical.length; i++) {
+      let hint = createElement("div", `${className}`);
+      for (let j = 0; j < vertical[i].length; j++) {
+        let hintColumn = createElement(
+          "div",
+          `${className}-text`,
+          `${vertical[i][j]}`
+        );
+        hint.appendChild(hintColumn);
+      }
       hints.appendChild(hint);
     }
     return hints;
@@ -280,3 +290,29 @@ function countHorisontalHints() {
   console.log(allHints);
   return allHints;
 }
+
+function countVerticalHints() {
+  let allHints = [];
+  for (let col = 0; col < catPicture[0].length; col++) {
+    let count = 0;
+    let hints = [];
+    for (let row = 0; row < catPicture.length; row++) {
+      if (catPicture[row][col] === 1) {
+        count += 1;
+      } else if (count > 0) {
+        hints.push(count);
+        count = 0;
+      }
+    }
+    if (count > 0) {
+      hints.push(count);
+    }
+    if (hints.length === 0) {
+      hints.push(0);
+    }
+    allHints.push(hints);
+  }
+  console.log(allHints);
+  return allHints;
+}
+countVerticalHints();

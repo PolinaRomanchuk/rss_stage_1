@@ -371,6 +371,9 @@ function checkResult() {
 
 function win() {
   stopTimer();
+  const minutesElement = document.querySelector(".minutes");
+  const secondsElement = document.querySelector(".seconds");
+
   let winWindow = createElement("div", "win-window");
   let close = createElement("button", "close-btn");
   let closeContainer = createElement("div", "close-btn-container");
@@ -379,7 +382,7 @@ function win() {
   let text = createElement(
     "div",
     "win-text",
-    "Great! You have solved the nonogram!"
+    `Great! You have solved the nonogram  in ${minutesElement.textContent}${secondsElement.textContent} seconds!`
   );
   let gifContainer = createElement("div", "gif-win-container");
 

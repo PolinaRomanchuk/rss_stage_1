@@ -213,6 +213,12 @@ input[type="radio"]:checked + .level-label {
   background-color: lightgray;
 }
 
+.game-grid-cell.right-clicked {
+  background: url(./assets/img/crose.png), white;
+  background-size: cover;
+
+}
+
 .vertical-hints {
   height: 60px;
   display: grid;

@@ -1,5 +1,8 @@
 let body = document.body;
 currentLevel = "Easy";
+let userClicks = Array(5)
+  .fill()
+  .map(() => Array(5).fill(0));
 
 const catPicture = [
   [0, 0, 1, 0, 1],
@@ -139,8 +142,26 @@ function createGameCells() {
   let cells = createElement("div", "game-grid-cells");
   for (let i = 0; i < 5 * 5; i++) {
     let cell = createElement("div", "game-grid-cell");
+    cell.addEventListener("click", () => {
+      let row = Math.floor(i / 5);
+      let col = i % 5;
+      userClicks[row][col] = userClicks[row][col] === 1 ? 0 : 1;
+      console.log(userClicks);
+      cell.classList.toggle("clicked");
+      let sound = new Audio("./assets/audio/click.mp3");
+      sound.play();
+      checkResult();
+    });
+    cell.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      cell.classList.toggle("right-clicked");
+      let sound = new Audio("./assets/audio/click.mp3");
+      sound.play();
+    });
+
     cells.appendChild(cell);
   }
+
   return cells;
 }
 
@@ -315,4 +336,27 @@ function countVerticalHints() {
   console.log(allHints);
   return allHints;
 }
-countVerticalHints();
+
+function checkResult() {
+  let isCorrect = true;
+
+  for (let i = 0; i < catPicture.length; i++) {
+    for (let j = 0; j < catPicture[i].length; j++) {
+      if (userClicks[i][j] !== catPicture[i][j]) {
+        isCorrect = false;
+        break;
+      }
+    }
+    if (!isCorrect) break;
+  }
+
+  if (isCorrect) {
+   // win();
+  }
+}
+
+/*
+function win(){
+  let winWindow = createElement("div", "win-window");
+  body.append(winWindow);
+}*/

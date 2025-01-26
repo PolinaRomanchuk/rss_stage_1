@@ -4,6 +4,10 @@ let userClicks = Array(5)
   .fill()
   .map(() => Array(5).fill(0));
 
+let seconds = 0;
+let minutes = 0;
+let timerInterval;
+
 const catPicture = [
   [0, 0, 1, 0, 1],
   [0, 0, 1, 1, 1],
@@ -34,8 +38,12 @@ function createBackground() {
 
 function createManageHeader() {
   let container = createElement("div", "manage-header-container");
-  let timer = createElement("div", "timer", "00:00");
+  let timer = createElement("div", "timer");
+  let minutes = createElement("div", "minutes", "00:");
+  let seconds = createElement("div", "seconds", "00");
 
+  timer.append(minutes);
+  timer.append(seconds);
   let iconsContainer = createElement("div", "icons-container");
   let light = createElement("button", "light-btn");
   light.classList.add("icon-btn");
@@ -143,6 +151,7 @@ function createGameCells() {
   for (let i = 0; i < 5 * 5; i++) {
     let cell = createElement("div", "game-grid-cell");
     cell.addEventListener("click", () => {
+      startTimer();
       let row = Math.floor(i / 5);
       let col = i % 5;
       userClicks[row][col] = userClicks[row][col] === 1 ? 0 : 1;
@@ -356,6 +365,7 @@ function checkResult() {
 }
 
 function win() {
+  stopTimer();
   let winWindow = createElement("div", "win-window");
   let close = createElement("button", "close-btn");
   let closeContainer = createElement("div", "close-btn-container");
@@ -384,4 +394,37 @@ function win() {
   body.append(winWindow);
   let sound = new Audio("./assets/audio/win.mp3");
   sound.play();
+}
+
+function startTimer() {
+  if (timerInterval) return;
+  const minutesElement = document.querySelector(".minutes");
+  const secondsElement = document.querySelector(".seconds");
+
+  timerInterval = setInterval(() => {
+    seconds++;
+    if (seconds === 60) {
+      minutes++;
+      seconds = 0;
+    }
+    minutesElement.textContent = minutes < 10 ? `0${minutes}:` : `${minutes}:`;
+    secondsElement.textContent = seconds < 10 ? `0${seconds}` : `${seconds}`;
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  minutes = 0;
+  seconds = 0;
+
+  const minutesElement = document.querySelector(".minutes");
+  const secondsElement = document.querySelector(".seconds");
+
+  minutesElement.textContent = "00:";
+  secondsElement.textContent = "00";
 }

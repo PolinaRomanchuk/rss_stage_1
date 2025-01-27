@@ -1,6 +1,7 @@
 let body = document.body;
 let currentLevel = "Easy";
 let nameGamePicture = "cat";
+let gameSize = 5;
 let gamePicture = [
   [0, 0, 1, 0, 1],
   [0, 0, 1, 1, 1],
@@ -8,10 +9,47 @@ let gamePicture = [
   [1, 1, 1, 1, 0],
   [1, 1, 1, 1, 1],
 ];
+let matrixs = {
+  cat: [
+    [0, 0, 1, 0, 1],
+    [0, 0, 1, 1, 1],
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0],
+    [1, 1, 1, 1, 1],
+  ],
+  dinosaur: [
+    [0, 0, 0, 1, 1],
+    [0, 0, 0, 1, 0],
+    [0, 1, 1, 1, 0],
+    [0, 1, 1, 1, 0],
+    [1, 1, 0, 1, 0],
+  ],
+  watch: [
+    [0, 1, 1, 1, 0],
+    [1, 0, 1, 0, 1],
+    [1, 0, 1, 1, 1],
+    [1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 0],
+  ],
+  rabbit: [
+    [0, 1, 1, 0, 0],
+    [0, 0, 0, 1, 1],
+    [0, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0],
+    [0, 1, 1, 1, 1],
+  ],
+  fountain: [
+    [0, 1, 0, 1, 0],
+    [1, 0, 1, 0, 1],
+    [0, 0, 1, 0, 0],
+    [1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 0],
+  ],
+};
 
-let userClicks = Array(5)
+let userClicks = Array(gameSize)
   .fill()
-  .map(() => Array(5).fill(0));
+  .map(() => Array(gameSize).fill(0));
 
 let seconds = 0;
 let minutes = 0;
@@ -55,8 +93,155 @@ const easyPictures = {
   ],
 };
 
-const mediumPictures = {};
-const hardPictures = {};
+const mediumPictures = {
+  rhinoceros: [
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 1, 0, 1, 0, 0, 0],
+    [1, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+    [1, 0, 0, 0, 1, 0, 1, 0, 1, 0],
+    [1, 1, 1, 0, 0, 0, 0, 0, 0, 1],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+    [0, 0, 1, 0, 0, 0, 1, 0, 0, 1],
+    [0, 0, 1, 0, 1, 0, 1, 1, 0, 1],
+  ],
+  mashroom: [
+    [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+    [0, 1, 0, 0, 0, 0, 1, 1, 1, 0],
+    [1, 0, 1, 1, 0, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 0, 1, 0, 0, 1, 0, 1, 1],
+    [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  ],
+  worm: [
+    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+    [1, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0, 0, 1, 1, 1, 0],
+    [0, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+    [0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+  ],
+  beer: [
+    [0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+    [1, 1, 0, 0, 0, 0, 0, 1, 1, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [1, 1, 0, 1, 0, 0, 1, 1, 1, 1],
+    [0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+    [0, 1, 0, 1, 1, 1, 1, 1, 0, 1],
+    [0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+    [0, 1, 1, 0, 1, 1, 1, 1, 0, 1],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+  ],
+  helicopter: [
+    [1, 1, 1, 0, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [1, 1, 0, 1, 1, 1, 1, 0, 0, 1],
+    [1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+  ],
+};
+const hardPictures = {
+  snail: [
+    [1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+    [1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
+    [0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+    [1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1],
+    [1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0],
+    [1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0],
+    [1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0],
+    [1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0],
+    [0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+    [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
+    [1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1],
+    [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+  ],
+  man: [
+    [0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+    [1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1],
+    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0],
+    [1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1],
+    [0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1],
+    [0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0],
+    [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0],
+    [1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0],
+    [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
+  ],
+  elk: [
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1],
+    [1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1],
+    [0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0],
+    [0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0],
+    [0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
+    [0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+    [0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+  ],
+  octopus: [
+    [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0],
+    [1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1],
+    [1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1],
+    [0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0],
+    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+    [1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1],
+    [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0],
+    [0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+    [0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1],
+    [0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1],
+    [1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0],
+  ],
+  unicorn: [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+    [0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+    [0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0],
+    [0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+    [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
+    [1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0],
+    [0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0],
+    [0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+  ],
+};
 
 function createElement(tagName, className, context) {
   let element = document.createElement(tagName);
@@ -117,10 +302,30 @@ function createRadioOption(id, name, value, labelText, isChecked) {
 
   radioInput.addEventListener("change", (event) => {
     currentLevel = event.target.value;
-    //updateGameField();
+    getGameSize();
+
+    updateGamePictures(matrixs);
+    updateGameField();
+    updateGameStyles();
   });
 
   return levelOption;
+}
+
+function getGameSize() {
+  if (currentLevel === "Easy") {
+    gameSize = 5;
+    matrixs = easyPictures;
+    gamePicture = easyPictures.cat;
+  } else if (currentLevel === "Medium") {
+    gameSize = 10;
+    matrixs = mediumPictures;
+    gamePicture = mediumPictures.rhinoceros;
+  } else if (currentLevel === "Hard") {
+    gameSize = 15;
+    matrixs = hardPictures;
+    gamePicture = hardPictures.snail;
+  }
 }
 
 function createLevelBox() {
@@ -157,12 +362,12 @@ function createGamePictures() {
   let container = createElement("button", "dropdown-btn");
   container.classList.add("text-btn");
 
-  let displayText = createElement("span", "", "сat");
+  let displayText = createElement("span", "button-text-span", "сat");
   container.append(displayText);
 
   let dropContainer = createElement("ul", "dropdown-content");
 
-  Object.keys(easyPictures).forEach((key) => {
+  Object.keys(matrixs).forEach((key) => {
     let dropItem = createElement("li", "dropdown-item", key);
     dropContainer.append(dropItem);
 
@@ -174,33 +379,9 @@ function createGamePictures() {
       gamePicture = findPicture(currentLevel, nameGamePicture);
 
       updateHints();
+      resetGame();
     });
   });
-
-  function updateHints() {
-    let horHints = document.querySelectorAll(".horisontal-hint");
-    let vertHints = document.querySelectorAll(".vertical-hint");
-
-    const horisontal = countHorisontalHints();
-    const vertical = countVerticalHints();
-
-    for (let i = 0; i < horHints.length; i++) {
-      let hintText = horisontal[i].join(" ");
-      horHints[i].textContent = hintText;
-    }
-
-    for (let i = 0; i < vertHints.length; i++) {
-      let verticalHintText = vertical[i];
-      let hintContainer = vertHints[i];
-      let hintColumns = hintContainer.querySelectorAll(".vertical-hint-text");
-
-      for (let j = 0; j < hintColumns.length; j++) {
-        if (verticalHintText[j] !== undefined) {
-          hintColumns[j].textContent = verticalHintText[j];
-        }
-      }
-    }
-  }
 
   container.append(dropContainer);
 
@@ -209,6 +390,45 @@ function createGamePictures() {
   });
 
   return container;
+}
+
+function updateGamePictures(matrixs) {
+  let btnText = document.querySelector(".button-text-span");
+  let items = document.querySelectorAll(".dropdown-item");
+
+  items.forEach((item, index) => {
+    if (index < Object.keys(matrixs).length) {
+      item.textContent = Object.keys(matrixs)[index];
+    }
+  });
+  btnText.textContent = Object.keys(matrixs)[0];
+}
+
+function updateHints() {
+  let horHints = document.querySelectorAll(".horisontal-hint");
+  let vertHints = document.querySelectorAll(".vertical-hint");
+  horHints.textContent = "";
+  vertHints.textContent = "";
+
+  const horisontal = countHorisontalHints();
+  const vertical = countVerticalHints();
+
+  for (let i = 0; i < horHints.length; i++) {
+    let hintText = horisontal[i].join(" ");
+    horHints[i].textContent = hintText;
+  }
+
+  for (let i = 0; i < vertHints.length; i++) {
+    let verticalHintText = vertical[i];
+    let hintContainer = vertHints[i];
+    let hintColumns = hintContainer.querySelectorAll(".vertical-hint-text");
+
+    for (let j = 0; j < hintColumns.length; j++) {
+      if (verticalHintText[j] !== undefined) {
+        hintColumns[j].textContent = verticalHintText[j];
+      }
+    }
+  }
 }
 
 function createLevelField() {
@@ -232,12 +452,12 @@ function createLevelField() {
 
 function createGameCells() {
   let cells = createElement("div", "game-grid-cells");
-  for (let i = 0; i < 5 * 5; i++) {
+  for (let i = 0; i < gameSize * gameSize; i++) {
     let cell = createElement("div", "game-grid-cell");
     cell.addEventListener("click", () => {
       startTimer();
-      let row = Math.floor(i / 5);
-      let col = i % 5;
+      let row = Math.floor(i / gameSize);
+      let col = i % gameSize;
       userClicks[row][col] = userClicks[row][col] === 1 ? 0 : 1;
       console.log(userClicks);
       cell.classList.toggle("clicked");
@@ -307,10 +527,26 @@ function createGameField() {
   return container;
 }
 
+function updateGameField() {
+  let content = document.querySelector(".game-container");
+  if (content) {
+    content.innerHTML = "";
+  }
+  let gridContainer = createElement("div", "game-grid-container");
+  let horisHints = createHints("horisontal-hint");
+  let verticHints = createHints("vertical-hint");
+  let cells = createGameCells();
+  gridContainer.append(horisHints);
+  gridContainer.append(cells);
+  gridContainer.append(verticHints);
+  content.append(gridContainer);
+}
+
 function createSettingGameInFooter() {
   let container = createElement("div", "footer-game-setting-container");
   let settingIcon = createElement("button", "setting-btn");
   settingIcon.classList.add("icon-btn");
+
   let solutionBtn = createElement("button", "solution-btn", "Solution");
   solutionBtn.classList.add("text-btn");
 
@@ -319,7 +555,9 @@ function createSettingGameInFooter() {
   let hiddenBtnContainer = createElement("div", "hidden-btn-container");
   let resetBtn = createElement("button", "reset-btn", "Reset game");
   resetBtn.classList.add("text-btn");
-
+  settingIcon.addEventListener("click", () => {
+    hiddenBtnContainer.classList.toggle("hidden");
+  });
   resetBtn.addEventListener("click", () => {
     resetGame();
   });
@@ -370,23 +608,18 @@ function createStartWindow() {
 createStartWindow();
 
 function showPicture() {
-  let oldcells = document.querySelector(".game-grid-cells");
-  oldcells.innerHTML = "";
-  let cells = createElement("div", "game-grid-cells");
+  let cells = document.querySelectorAll(".game-grid-cell");
 
   for (let i = 0; i < gamePicture.length; i++) {
     for (let j = 0; j < gamePicture[i].length; j++) {
-      let cell = createElement("div", "game-grid-cell");
-
+      let cell = cells[i * gameSize + j];
       if (gamePicture[i][j] === 1) {
         cell.classList.add("clicked");
+      } else {
+        cell.classList.remove("clicked");
       }
-      cells.appendChild(cell);
     }
   }
-
-  let gridContainer = document.querySelector(".game-grid-container");
-  gridContainer.append(cells);
 }
 
 function countHorisontalHints() {
@@ -529,9 +762,9 @@ function resetGame() {
   resetTimer();
   let cell = document.querySelectorAll(".game-grid-cell");
   cell.forEach((element) => element.classList.remove("clicked"));
-  userClicks = Array(5)
+  userClicks = Array(gameSize)
     .fill()
-    .map(() => Array(5).fill(0));
+    .map(() => Array(gameSize).fill(0));
 }
 
 function findPicture(level, name) {
@@ -541,4 +774,42 @@ function findPicture(level, name) {
     Hard: hardPictures,
   };
   return levels[level][name];
+}
+
+function updateGameStyles() {
+  getGameSize();
+  let window = document.querySelector(".game-window");
+  let gameContainer = document.querySelector(".game-container");
+
+  let cells = document.querySelector(".game-grid-cells");
+  let verHints = document.querySelector(".vertical-hints");
+  let horHints = document.querySelector(".horisontal-hints");
+
+  cells.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
+  cells.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
+
+  verHints.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
+
+  horHints.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
+
+  if (currentLevel === "Medium") {
+    window.style.height = `840px`;
+    window.style.width = `800px`;
+    gameContainer.style.height = `67%`;
+    verHints.style.height = `120px`;
+  }
+
+  if (currentLevel === "Hard") {
+    window.style.height = `840px`;
+    window.style.width = `800px`;
+    gameContainer.style.height = `67%`;
+    verHints.style.height = `140px`;
+
+    cells.style.gridTemplateColumns = `repeat(${gameSize}, 20px)`;
+    cells.style.gridTemplateRows = `repeat(${gameSize}, 20px)`;
+
+    verHints.style.gridTemplateColumns = `repeat(${gameSize}, 20px)`;
+
+    horHints.style.gridTemplateRows = `repeat(${gameSize}, 20px)`;
+  }
 }

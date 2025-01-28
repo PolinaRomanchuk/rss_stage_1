@@ -307,6 +307,7 @@ function createRadioOption(id, name, value, labelText, isChecked) {
     updateGamePictures(matrixs);
     updateGameField();
     updateGameStyles();
+    resetGame();
   });
 
   return levelOption;
@@ -407,7 +408,6 @@ function updateGamePictures(matrixs) {
 function updateHints() {
   let horHints = document.querySelectorAll(".horisontal-hint");
   let vertHints = document.querySelectorAll(".vertical-hint");
- 
 
   const horisontal = countHorisontalHints();
   const vertical = countVerticalHints();
@@ -461,15 +461,28 @@ function createGameCells() {
       let row = Math.floor(i / gameSize);
       let col = i % gameSize;
       userClicks[row][col] = userClicks[row][col] === 1 ? 0 : 1;
+      if (cell.classList.contains("right-clicked")) {
+        cell.classList.remove("right-clicked");
+        cell.classList.remove("clicked");
+        userClicks[row][col] = userClicks[row][col] = 0;
+      } else {
+        cell.classList.toggle("clicked");
+      }
       console.log(userClicks);
-      cell.classList.toggle("clicked");
+
       let sound = new Audio("./assets/audio/click.mp3");
       sound.play();
       checkResult();
     });
     cell.addEventListener("contextmenu", (event) => {
+      let row = Math.floor(i / gameSize);
+      let col = i % gameSize;
+      userClicks[row][col] = userClicks[row][col] = 0;
+      console.log(userClicks);
+
       event.preventDefault();
       cell.classList.toggle("right-clicked");
+      cell.classList.remove("clicked");
       let sound = new Audio("./assets/audio/click.mp3");
       sound.play();
     });
@@ -764,6 +777,8 @@ function resetGame() {
   resetTimer();
   let cell = document.querySelectorAll(".game-grid-cell");
   cell.forEach((element) => element.classList.remove("clicked"));
+  cell.forEach((element) => element.classList.remove("right-clicked"));
+
   userClicks = Array(gameSize)
     .fill()
     .map(() => Array(gameSize).fill(0));
@@ -806,6 +821,7 @@ function updateGameStyles() {
     window.style.width = `800px`;
     gameContainer.style.height = `67%`;
     verHints.style.height = `140px`;
+    horHints.style.width = `90px`;
 
     cells.style.gridTemplateColumns = `repeat(${gameSize}, 20px)`;
     cells.style.gridTemplateRows = `repeat(${gameSize}, 20px)`;

@@ -257,6 +257,12 @@ input[type="radio"]:checked + .level-label {
 .horisontal-hint {
   justify-content: end;
 }
+.vertical-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
 
 .setting-container {
   display: flex;

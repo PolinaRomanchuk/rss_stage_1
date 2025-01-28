@@ -407,8 +407,7 @@ function updateGamePictures(matrixs) {
 function updateHints() {
   let horHints = document.querySelectorAll(".horisontal-hint");
   let vertHints = document.querySelectorAll(".vertical-hint");
-  horHints.textContent = "";
-  vertHints.textContent = "";
+ 
 
   const horisontal = countHorisontalHints();
   const vertical = countVerticalHints();
@@ -419,14 +418,17 @@ function updateHints() {
   }
 
   for (let i = 0; i < vertHints.length; i++) {
-    let verticalHintText = vertical[i];
     let hintContainer = vertHints[i];
     let hintColumns = hintContainer.querySelectorAll(".vertical-hint-text");
+    hintColumns.forEach((text) => text.remove());
 
-    for (let j = 0; j < hintColumns.length; j++) {
-      if (verticalHintText[j] !== undefined) {
-        hintColumns[j].textContent = verticalHintText[j];
-      }
+    for (let j = 0; j < vertical[i].length; j++) {
+      let hintColumn = createElement(
+        "div",
+        "vertical-hint-text",
+        `${vertical[i][j]}`
+      );
+      vertHints[i].appendChild(hintColumn);
     }
   }
 }

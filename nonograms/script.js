@@ -314,6 +314,19 @@ function createRadioOption(id, name, value, labelText, isChecked) {
   return levelOption;
 }
 
+function updateGameSize(namekey) {
+  if (currentLevel === "Easy") {
+    gameSize = 5;
+    matrixs = easyPictures;
+  } else if (currentLevel === "Medium") {
+    gameSize = 10;
+    matrixs = mediumPictures;
+  } else if (currentLevel === "Hard") {
+    gameSize = 15;
+    matrixs = hardPictures;
+  }
+}
+
 function getGameSize() {
   if (currentLevel === "Easy") {
     gameSize = 5;
@@ -394,7 +407,7 @@ function createGamePictures() {
   return container;
 }
 
-function updateGamePictures(matrixs) {
+function updateGamePictures(matrixs, btnName) {
   let btnText = document.querySelector(".button-text-span");
   let items = document.querySelectorAll(".dropdown-item");
 
@@ -403,7 +416,8 @@ function updateGamePictures(matrixs) {
       item.textContent = Object.keys(matrixs)[index];
     }
   });
-  btnText.textContent = Object.keys(matrixs)[0];
+  let defaultName = Object.keys(matrixs)[0];
+  btnText.textContent = btnName ? btnName : defaultName;
 }
 
 function updateHints() {
@@ -434,6 +448,11 @@ function updateHints() {
   }
 }
 
+function getRandomElement(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return randomIndex;
+}
+
 function createLevelField() {
   let container = createElement("div", "level-container");
   let levelBlock = createLevelBox();
@@ -442,6 +461,43 @@ function createLevelField() {
   let dropPicture = createGamePictures();
   let randomGameBtn = createElement("button", "random-game-btn", "Random game");
   randomGameBtn.classList.add("text-btn");
+
+  randomGameBtn.addEventListener("click", () => {
+    let textBtn = document.querySelector(".button-text-span");
+    textBtn.textContent = "";
+    const levels = [easyPictures, mediumPictures, hardPictures];
+    const randomLevelIndex = getRandomElement(levels);
+
+    const levelsMap = {
+      Easy: easyPictures,
+      Medium: mediumPictures,
+      Hard: hardPictures,
+    };
+    let currentLevelString;
+    for (let level in levelsMap) {
+      if (levelsMap[level] === levels[randomLevelIndex]) {
+        currentLevelString = level;
+        break;
+      }
+    }
+
+    currentLevel = currentLevelString;
+
+    const pictures = Object.entries(levels[randomLevelIndex]);
+    const randomPictureIndex = getRandomElement(pictures);
+    const [pictureKey, newPicture] = pictures[randomPictureIndex];
+
+    gamePicture = newPicture;
+    textBtn.textContent = pictureKey;
+
+    updateGameSize();
+    updateGameField();
+    updateGameStyles();
+    resetGame();
+    updateGamePictures(matrixs, pictureKey);
+    getLevelBtnAndShowIt(currentLevel);
+  });
+
   container.append(levelBlock);
 
   btnContainer.append(dropPicture);
@@ -451,6 +507,15 @@ function createLevelField() {
   container.append(btnContainer);
 
   return container;
+}
+
+function getLevelBtnAndShowIt(level) {
+  const radioButtons = document.querySelectorAll('input[name="difficulty"]');
+  radioButtons.forEach((radioButton) => {
+    if (radioButton.value === level) {
+      radioButton.checked = true;
+    }
+  });
 }
 
 function createGameCells() {
@@ -799,7 +864,13 @@ function findPicture(level, name) {
 }
 
 function updateGameStyles() {
-  getGameSize();
+  if (currentLevel === "Easy") {
+    gameSize = 5;
+  } else if (currentLevel === "Medium") {
+    gameSize = 10;
+  } else if (currentLevel === "Hard") {
+    gameSize = 15;
+  }
   let window = document.querySelector(".game-window");
   let gameContainer = document.querySelector(".game-container");
 

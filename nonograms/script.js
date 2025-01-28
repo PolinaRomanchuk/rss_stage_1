@@ -1,4 +1,5 @@
 let body = document.body;
+let gameOver = false;
 let currentLevel = "Easy";
 let nameGamePicture = "cat";
 let gameSize = 5;
@@ -457,6 +458,7 @@ function createGameCells() {
   for (let i = 0; i < gameSize * gameSize; i++) {
     let cell = createElement("div", "game-grid-cell");
     cell.addEventListener("click", () => {
+      if (gameOver) return;
       startTimer();
       let row = Math.floor(i / gameSize);
       let col = i % gameSize;
@@ -475,6 +477,7 @@ function createGameCells() {
       checkResult();
     });
     cell.addEventListener("contextmenu", (event) => {
+      if (gameOver) return;
       let row = Math.floor(i / gameSize);
       let col = i % gameSize;
       userClicks[row][col] = userClicks[row][col] = 0;
@@ -706,6 +709,7 @@ function checkResult() {
 }
 
 function win() {
+  gameOver = true;
   stopTimer();
   const minutesElement = document.querySelector(".minutes");
   const secondsElement = document.querySelector(".seconds");
@@ -774,6 +778,7 @@ function resetTimer() {
 }
 
 function resetGame() {
+  gameOver = false;
   resetTimer();
   let cell = document.querySelectorAll(".game-grid-cell");
   cell.forEach((element) => element.classList.remove("clicked"));

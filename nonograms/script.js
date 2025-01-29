@@ -1,4 +1,6 @@
 let body = document.body;
+let systemStyle = "light";
+
 let gameOver = false;
 let currentLevel = "Easy";
 let nameGamePicture = "cat";
@@ -257,7 +259,6 @@ function createElement(tagName, className, context) {
 
 function createBackground() {
   let backgraund = createElement("video", "video-background");
-  backgraund.src = "./assets/img/light-back.mp4";
   backgraund.autoplay = true;
   backgraund.loop = true;
   backgraund.muted = true;
@@ -276,6 +277,11 @@ function createManageHeader() {
   let light = createElement("button", "light-btn");
   light.classList.add("icon-btn");
   light.classList.add("on");
+
+  light.addEventListener("click", () => {
+    systemStyle === "light" ? setSystemStyle("dark") : setSystemStyle("light");
+  });
+
   let statistic = createElement("button", "statistic-btn");
   statistic.classList.add("icon-btn");
   iconsContainer.append(light);
@@ -296,7 +302,6 @@ function createRadioOption(id, name, value, labelText, isChecked) {
     radioInput.checked = true;
   }
   let label = createElement("label", "level-label", labelText);
-  label.classList.add("text-btn");
   label.htmlFor = id;
   levelOption.append(radioInput);
   levelOption.append(label);
@@ -304,7 +309,6 @@ function createRadioOption(id, name, value, labelText, isChecked) {
   radioInput.addEventListener("change", (event) => {
     currentLevel = event.target.value;
     getGameSize();
-
     updateGamePictures(matrixs);
     updateGameField();
     updateGameStyles();
@@ -619,6 +623,7 @@ function updateGameField() {
   let horisHints = createHints("horisontal-hint");
   let verticHints = createHints("vertical-hint");
   let cells = createGameCells();
+
   gridContainer.append(horisHints);
   gridContainer.append(cells);
   gridContainer.append(verticHints);
@@ -906,4 +911,96 @@ function updateGameStyles() {
 
     horHints.style.gridTemplateRows = `repeat(${gameSize}, 20px)`;
   }
+  setGameColors(systemStyle);
+}
+
+function setSystemStyle(style) {
+  let background = document.querySelector(".video-background");
+  let window = document.querySelector(".game-window");
+
+  let textBtns = document.querySelectorAll(".text-btn");
+  let iconBtns = document.querySelectorAll(".icon-btn");
+  let levels = document.querySelectorAll(".level-label ");
+
+  let styleBtn = document.querySelector(".light-btn");
+  let settingBtn = document.querySelector(".setting-btn");
+  let statisticsBtn = document.querySelector(".statistic-btn");
+
+  let horisontalHints = document.querySelectorAll(".horisontal-hint");
+  let verticalHints = document.querySelectorAll(".vertical-hint");
+  let cells = document.querySelectorAll(".game-grid-cell");
+
+  let dropItems = document.querySelectorAll(".dropdown-item");
+  let cross = document.querySelector(".right-clicked");
+
+  if (style === "light") {
+    systemStyle = "light";
+  }
+
+  if (style === "dark") {
+    systemStyle = "dark";
+  }
+
+  background.src = `./assets/img/${systemStyle}/background.mp4`;
+  styleBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/styleIcon.png)`;
+
+  statisticsBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/statisticsIcon.png)`;
+  settingBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/settingsIcon.png)`;
+  textBtns.forEach((btn) => {
+    btn.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
+  });
+  levels.forEach((btn) => {
+    btn.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
+  });
+
+  window.style.backgroundColor = `var(--color-background-game-window-${systemStyle})`;
+  document.documentElement.style.setProperty(
+    "color",
+    `var(--color-font-main-${systemStyle})`
+  );
+
+  horisontalHints.forEach((hint) => {
+    hint.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
+    hint.style.borderColor = `var(--color-game-border-${systemStyle})`;
+  });
+
+  verticalHints.forEach((hint) => {
+    hint.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
+    hint.style.borderColor = `var(--color-game-border-${systemStyle})`;
+  });
+
+  cells.forEach((cell) => {
+    cell.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
+    cell.style.borderColor = `var(--color-game-border-${systemStyle})`;
+  });
+
+  dropItems.forEach((item) => {
+    item.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
+  });
+
+  let close = document.querySelector(".close-btn");
+  //  close.style.backgroundImage = `./assets/img/${systemStyle}/cross.png`;
+}
+
+setSystemStyle(systemStyle);
+
+function setGameColors(style) {
+  let horisontalHints = document.querySelectorAll(".horisontal-hint");
+  let verticalHints = document.querySelectorAll(".vertical-hint");
+  let cells = document.querySelectorAll(".game-grid-cell");
+
+  horisontalHints.forEach((hint) => {
+    hint.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
+    hint.style.borderColor = `var(--color-game-border-${systemStyle})`;
+  });
+
+  verticalHints.forEach((hint) => {
+    hint.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
+    hint.style.borderColor = `var(--color-game-border-${systemStyle})`;
+  });
+
+  cells.forEach((cell) => {
+    cell.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
+    cell.style.borderColor = `var(--color-game-border-${systemStyle})`;
+  });
 }

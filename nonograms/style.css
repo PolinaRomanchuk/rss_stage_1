@@ -3,15 +3,29 @@
 }
 
 html {
-  --color-font-main: #141429;
-  --color-background-light: #ff84cd9c;
+  --color-font-main-light: #141429;
+  --color-background-game-window-light: #ff84cd9c;
 
   --color-btn-background-inactive-light: white;
   --color-btn-background-hover-light: rgb(241 77 133 / 55%);
-  --color-accent: rgb(241 77 133);
+  --color-accent-light: rgb(241 77 133);
+
+  --color-game-clicked-light: gray;
+  --color-game-notclicked-light: white;
+  --color-game-border-light: darkgray;
+
+  --color-game-clicked-dark: white;
+  --color-game-notclicked-dark: gray;
+  --color-game-border-dark: darkgray;
+
+  --color-font-main-dark: #ffffff;
+  --color-background-game-window-dark: #fdfafc96;
+  --color-btn-background-inactive-dark: #3c3737;
+  --color-btn-background-hover-dark: rgb(241 77 133 / 55%);
+  --color-accent-dark: rgb(241 77 133);
 
   font-family: "Nunito", serif;
-  color: var(--color-font-main);
+  color: var(--color-font-main-light);
 }
 
 button {
@@ -29,34 +43,17 @@ button {
   padding: 10px;
   border: 0px solid;
   cursor: pointer;
-}
-
-.light-btn {
-  &.on {
-    background: url("./assets/img/light.png");
-    background-size: cover;
-  }
-
-  &.off {
-    background: url("./assets/img/dark.png");
-    background-size: cover;
-  }
-}
-
-.statistic-btn {
-  background: url("./assets/img/static.png");
   background-size: cover;
+  background-color: unset;
 }
 
 .setting-btn {
-  background: url(./assets/img/setting.png);
-  background-size: cover;
   bottom: 25px;
   left: 25px;
 }
 
 .close-btn {
-  background: url("./assets/img/crose.png");
+  background: url("./assets/img/light/cross.png");
   background-size: cover;
 }
 
@@ -70,7 +67,6 @@ button {
   border: 0px solid;
   cursor: pointer;
   margin-left: 10px;
-  background-color: var(--color-btn-background-inactive-light);
 }
 
 body {
@@ -97,7 +93,6 @@ body {
   height: 600px;
   display: flex;
   flex-direction: column;
-  background: var(--color-background-light);
   padding: 20px;
   border-radius: 5px;
 }
@@ -135,10 +130,20 @@ input[type="radio"] {
   margin: 0px;
 }
 input[type="radio"]:checked + .level-label {
-  background-color: var(--color-accent);
+  background-color: var(--color-accent-light) !important;
 }
 
 .level-label {
+  height: 40px;
+  width: 90px;
+  padding: 5px;
+  align-items: center;
+  text-align: center;
+  display: inline-block;
+  border: 0px solid;
+  cursor: pointer;
+  margin-left: 10px;
+
   display: flex;
   justify-content: center;
   border-radius: 5px;
@@ -167,7 +172,6 @@ input[type="radio"]:checked + .level-label {
 .dropdown-item {
   height: 40px;
   width: 80px;
-  background-color: var(--color-btn-background-inactive-light);
   text-align: center;
   display: flex;
   align-items: center;
@@ -210,16 +214,15 @@ input[type="radio"]:checked + .level-label {
   width: 100%;
   height: 100%;
   cursor: pointer;
-  background-color: white;
   border: solid 1px rgba(128, 128, 128, 0.742);
 }
 
 .game-grid-cell.clicked {
-  background-color: lightgray;
+  background-color: lightgray !important;
 }
 
 .game-grid-cell.right-clicked {
-  background: url(./assets/img/crose.png), white;
+  background: url(./assets/img/light/cross.png), white;
   background-size: cover;
 }
 
@@ -250,7 +253,6 @@ input[type="radio"]:checked + .level-label {
   cursor: pointer;
   width: 100%;
   height: 100%;
-  background-color: white;
   border: solid 1px rgba(128, 128, 128, 0.742);
 }
 
@@ -287,7 +289,7 @@ input[type="radio"]:checked + .level-label {
   height: 250px;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-accent);
+  background-color: var(--color-accent-light);
   margin: auto 0;
   position: fixed;
   border-radius: 5px;

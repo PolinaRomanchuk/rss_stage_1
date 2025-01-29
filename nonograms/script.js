@@ -691,6 +691,7 @@ function createStartWindow() {
   let gameWindow = createGameWindow();
   body.append(backgraund);
   body.append(gameWindow);
+  setSystemStyle(systemStyle);
 }
 
 createStartWindow();
@@ -915,6 +916,8 @@ function updateGameStyles() {
 }
 
 function setSystemStyle(style) {
+  systemStyle = style;
+
   let background = document.querySelector(".video-background");
   let window = document.querySelector(".game-window");
 
@@ -933,19 +936,11 @@ function setSystemStyle(style) {
   let dropItems = document.querySelectorAll(".dropdown-item");
   let cross = document.querySelector(".right-clicked");
 
-  if (style === "light") {
-    systemStyle = "light";
-  }
-
-  if (style === "dark") {
-    systemStyle = "dark";
-  }
-
   background.src = `./assets/img/${systemStyle}/background.mp4`;
   styleBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/styleIcon.png)`;
-
   statisticsBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/statisticsIcon.png)`;
   settingBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/settingsIcon.png)`;
+
   textBtns.forEach((btn) => {
     btn.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
   });
@@ -959,48 +954,27 @@ function setSystemStyle(style) {
     `var(--color-font-main-${systemStyle})`
   );
 
-  horisontalHints.forEach((hint) => {
-    hint.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
-    hint.style.borderColor = `var(--color-game-border-${systemStyle})`;
-  });
-
-  verticalHints.forEach((hint) => {
-    hint.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
-    hint.style.borderColor = `var(--color-game-border-${systemStyle})`;
-  });
-
-  cells.forEach((cell) => {
-    cell.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
-    cell.style.borderColor = `var(--color-game-border-${systemStyle})`;
-  });
+  setGameColors(style);
 
   dropItems.forEach((item) => {
     item.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
   });
 
   let close = document.querySelector(".close-btn");
-  //  close.style.backgroundImage = `./assets/img/${systemStyle}/cross.png`;
+  if (close) {
+    close.style.backgroundImage = `url(./assets/img/${systemStyle}/cross.png)`;
+  }
 }
-
-setSystemStyle(systemStyle);
 
 function setGameColors(style) {
   let horisontalHints = document.querySelectorAll(".horisontal-hint");
   let verticalHints = document.querySelectorAll(".vertical-hint");
   let cells = document.querySelectorAll(".game-grid-cell");
 
-  horisontalHints.forEach((hint) => {
-    hint.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
-    hint.style.borderColor = `var(--color-game-border-${systemStyle})`;
-  });
-
-  verticalHints.forEach((hint) => {
-    hint.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
-    hint.style.borderColor = `var(--color-game-border-${systemStyle})`;
-  });
-
-  cells.forEach((cell) => {
-    cell.style.backgroundColor = `var(--color-game-notclicked-${systemStyle})`;
-    cell.style.borderColor = `var(--color-game-border-${systemStyle})`;
+  [horisontalHints, verticalHints, cells].forEach((elements) => {
+    elements.forEach((element) => {
+      element.style.backgroundColor = `var(--color-game-notclicked-${style})`;
+      element.style.borderColor = `var(--color-game-border-${style})`;
+    });
   });
 }

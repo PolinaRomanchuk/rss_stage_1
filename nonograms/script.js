@@ -422,6 +422,7 @@ function updateGamePictures(matrixs, btnName) {
   });
   let defaultName = Object.keys(matrixs)[0];
   btnText.textContent = btnName ? btnName : defaultName;
+  nameGamePicture = defaultName;
 }
 
 function updateHints() {
@@ -531,6 +532,10 @@ function createGameCells() {
       startTimer();
       let row = Math.floor(i / gameSize);
       let col = i % gameSize;
+      if (userClicks[row][col] === 1) {
+        cell.classList.add("clicked");
+      }
+
       userClicks[row][col] = userClicks[row][col] === 1 ? 0 : 1;
       if (cell.classList.contains("right-clicked")) {
         cell.classList.remove("right-clicked");
@@ -657,6 +662,14 @@ function createSettingGameInFooter() {
     "continue-btn",
     "Continue last game"
   );
+
+  saveBtn.addEventListener("click", () => {
+    saveGame();
+  });
+
+  continueBtn.addEventListener("click", () => {
+    loadGame();
+  });
 
   continueBtn.classList.add("text-btn");
   let settingContainer = createElement("div", "setting-container", "");
@@ -978,3 +991,61 @@ function setGameColors(style) {
     });
   });
 }
+
+function saveGame() {
+  if (gameOver) return;
+  const gameState = {
+    userClicks: userClicks,
+    minutes: minutes,
+    seconds: seconds,
+    currentLevel: currentLevel,
+    nameGamePicture: nameGamePicture,
+    gamePicture: gamePicture,
+    systemStyle: systemStyle,
+    gameSize: gameSize,
+  };
+
+  localStorage.setItem("gameState", JSON.stringify(gameState));
+}
+
+function loadGame() {
+  gameOver = false;
+  const gameState = JSON.parse(localStorage.getItem("gameState"));
+
+  if (gameState) {
+    userClicks = gameState.userClicks;
+    minutes = gameState.minutes;
+    seconds = gameState.seconds;
+    currentLevel = gameState.currentLevel;
+    nameGamePicture = gameState.nameGamePicture;
+    gamePicture = gameState.gamePicture;
+    systemStyle = gameState.systemStyle;
+    gameSize = gameState.gameSize;
+
+    setSystemStyle(systemStyle);
+    updateGameSize(currentLevel);
+    updateGameField();
+    updateGameStyles();
+    getLevelBtnAndShowIt(currentLevel);
+
+    let btnText = document.querySelector(".button-text-span");
+    btnText.textContent = nameGamePicture;
+
+    const minutesElement = document.querySelector(".minutes");
+    const secondsElement = document.querySelector(".seconds");
+    minutesElement.textContent = minutes < 10 ? `0${minutes}:` : `${minutes}:`;
+    secondsElement.textContent = seconds < 10 ? `0${seconds}` : `${seconds}`;
+
+    let cells = document.querySelectorAll(".game-grid-cell");
+    for (let i = 0; i < gameSize * gameSize; i++) {
+      let row = Math.floor(i / gameSize);
+      let col = i % gameSize;
+      if (userClicks[row][col] === 1) {
+        cells[i].classList.add("clicked");
+      } else {
+        cells[i].classList.remove("clicked");
+      }
+    }
+  }
+}
+

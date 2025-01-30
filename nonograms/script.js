@@ -903,33 +903,34 @@ function updateGameStyles() {
   let verHints = document.querySelector(".vertical-hints");
   let horHints = document.querySelector(".horisontal-hints");
 
-  cells.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
-  cells.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
+  if (currentLevel === "Easy") {
+    cells.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
+    cells.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
 
-  verHints.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
+    verHints.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
 
-  horHints.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
-
+    horHints.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
+  }
   if (currentLevel === "Medium") {
-    window.style.height = `840px`;
-    window.style.width = `800px`;
-    gameContainer.style.height = `67%`;
-    verHints.style.height = `120px`;
+    verHints.style.height = `90px`;
+    cells.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
+    cells.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
+
+    verHints.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
+
+    horHints.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
   }
 
   if (currentLevel === "Hard") {
-    window.style.height = `840px`;
-    window.style.width = `800px`;
-    gameContainer.style.height = `67%`;
-    verHints.style.height = `140px`;
+    verHints.style.height = `135px`;
     horHints.style.width = `90px`;
 
-    cells.style.gridTemplateColumns = `repeat(${gameSize}, 20px)`;
-    cells.style.gridTemplateRows = `repeat(${gameSize}, 20px)`;
+    cells.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
+    cells.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
 
-    verHints.style.gridTemplateColumns = `repeat(${gameSize}, 20px)`;
+    verHints.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
 
-    horHints.style.gridTemplateRows = `repeat(${gameSize}, 20px)`;
+    horHints.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
   }
   setGameColors(systemStyle);
 }
@@ -1093,6 +1094,20 @@ function displayWinGames() {
     } else {
       resultsContainer.innerHTML = "";
     }
+    let closeContainer = createElement("div", "close-btn-container");
+
+    let close = createElement("button", "close-btn");
+    close.classList.add("icon-btn");
+    close.classList.add("results");
+    closeContainer.appendChild(close);
+
+    resultsContainer.appendChild(closeContainer);
+
+    close.addEventListener("click", () => {
+      resultsContainer.remove();
+
+      isResultsVisible = false;
+    });
 
     let header = createElement("div", "results-header", "Top 5 Results:");
     resultsContainer.appendChild(header);

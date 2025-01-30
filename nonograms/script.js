@@ -2,6 +2,7 @@ let body = document.body;
 let systemStyle = "light";
 
 let gameOver = false;
+let isResultsVisible = false;
 let currentLevel = "Easy";
 let nameGamePicture = "cat";
 let gameSize = 5;
@@ -284,6 +285,10 @@ function createManageHeader() {
 
   let statistic = createElement("button", "statistic-btn");
   statistic.classList.add("icon-btn");
+  statistic.addEventListener("click", () => {
+    displayWinGames();
+  });
+
   iconsContainer.append(light);
   iconsContainer.append(statistic);
   container.append(timer);
@@ -826,6 +831,7 @@ function win() {
   body.append(winWindow);
   let sound = new Audio("./assets/audio/win.mp3");
   sound.play();
+  saveWinGames();
 }
 
 function startTimer() {
@@ -1049,3 +1055,79 @@ function loadGame() {
   }
 }
 
+function saveWinGames() {
+  let allResults = JSON.parse(localStorage.getItem("nonoGramsResults")) || [];
+
+  const newResult = {
+    currentLevel: currentLevel,
+    nameGamePicture: nameGamePicture,
+    minutes: minutes,
+    seconds: seconds,
+    totalSeconds: minutes * 60 + seconds,
+  };
+  allResults.push(newResult);
+
+  allResults.sort((a, b) => a.totalSeconds - b.totalSeconds);
+
+  if (allResults.length > 5) {
+    allResults = allResults.slice(0, 5);
+  }
+
+  localStorage.setItem("nonoGramsResults", JSON.stringify(allResults));
+}
+
+function displayWinGames() {
+  let allResults = JSON.parse(localStorage.getItem("nonoGramsResults")) || [];
+
+  if (isResultsVisible) {
+    let resultsContainer = document.querySelector(".results-container");
+    if (resultsContainer) {
+      resultsContainer.remove();
+    }
+    isResultsVisible = false;
+  } else {
+    let resultsContainer = document.querySelector(".results-container");
+    if (!resultsContainer) {
+      resultsContainer = createElement("div", "results-container");
+      document.body.appendChild(resultsContainer);
+    } else {
+      resultsContainer.innerHTML = "";
+    }
+
+    let header = createElement("div", "results-header", "Top 5 Results:");
+    resultsContainer.appendChild(header);
+
+    let table = createElement("table", "results-table");
+    let thead = createElement("thead");
+    let tbody = createElement("tbody");
+
+    let headers = ["Level", "Picture", "Time"];
+    let headRow = createElement("tr");
+    headers.forEach((headerText) => {
+      let th = createElement("th", null, headerText);
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+
+    allResults.forEach((result) => {
+      let row = createElement("tr");
+      let levelCell = createElement("td", null, result.currentLevel);
+      let pictureCell = createElement("td", null, result.nameGamePicture);
+      let timeCell = createElement(
+        "td",
+        null,
+        `${result.minutes}:${result.seconds < 10 ? "0" : ""}${result.seconds}`
+      );
+
+      row.appendChild(levelCell);
+      row.appendChild(pictureCell);
+      row.appendChild(timeCell);
+      tbody.appendChild(row);
+    });
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    resultsContainer.appendChild(table);
+    isResultsVisible = true;
+  }
+}

@@ -936,33 +936,100 @@ function updateGameStyles() {
   if (currentLevel === "Easy") {
     cells.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
     cells.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
-
     verHints.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
-
     horHints.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
   }
   if (currentLevel === "Medium") {
     verHints.style.height = `90px`;
     cells.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
     cells.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
-
     verHints.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
-
     horHints.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
   }
 
   if (currentLevel === "Hard") {
     verHints.style.height = `135px`;
     horHints.style.width = `90px`;
-
     cells.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
     cells.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
-
     verHints.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
-
     horHints.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
   }
+  checkWindowHeight();
   setGameColors(systemStyle);
+}
+
+function checkWindowHeight() {
+  let cells = document.querySelector(".game-grid-cells");
+  let verHints = document.querySelector(".vertical-hints");
+  let horHints = document.querySelector(".horisontal-hints");
+
+  if (window.innerHeight <= 750) {
+    horHints.style.setProperty(
+      "grid-template-rows",
+      `repeat(${gameSize}, 20px)`,
+      "important"
+    );
+    cells.style.setProperty(
+      "grid-template-columns",
+      `repeat(${gameSize}, 20px)`,
+      "important"
+    );
+    cells.style.setProperty(
+      "grid-template-rows",
+      `repeat(${gameSize}, 20px)`,
+      "important"
+    );
+    verHints.style.setProperty(
+      "grid-template-columns",
+      `repeat(${gameSize}, 20px)`,
+      "important"
+    );
+    if (currentLevel === "Hard") {
+      horHints.style.setProperty(
+        "grid-template-rows",
+        `repeat(${gameSize}, 15px)`,
+        "important"
+      );
+      cells.style.setProperty(
+        "grid-template-columns",
+        `repeat(${gameSize}, 15px)`,
+        "important"
+      );
+      cells.style.setProperty(
+        "grid-template-rows",
+        `repeat(${gameSize}, 15px)`,
+        "important"
+      );
+      verHints.style.setProperty(
+        "grid-template-columns",
+        `repeat(${gameSize}, 15px)`,
+        "important"
+      );
+    }
+  } else {
+    if (currentLevel === "Easy") {
+      cells.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
+      cells.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
+      verHints.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
+      horHints.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
+    }
+    if (currentLevel === "Medium") {
+      verHints.style.height = `90px`;
+      cells.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
+      cells.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
+      verHints.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
+      horHints.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
+    }
+    if (currentLevel === "Hard") {
+      verHints.style.height = `135px`;
+      horHints.style.width = `90px`;
+      cells.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
+      cells.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
+      verHints.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
+      horHints.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
+    }
+  }
 }
 
 function setSystemStyle(style) {
@@ -1183,3 +1250,5 @@ function displayWinGames() {
     isResultsVisible = true;
   }
 }
+
+window.addEventListener("resize", checkWindowHeight);

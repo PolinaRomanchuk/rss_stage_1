@@ -734,6 +734,7 @@ function createStartWindow() {
   let gameWindow = createGameWindow();
   body.append(backgraund);
   body.append(gameWindow);
+  checkWindowHeight();
   setSystemStyle(systemStyle);
 }
 

@@ -672,7 +672,10 @@ function createSettingGameInFooter() {
   let solutionBtn = createElement("button", "solution-btn", "Solution");
   solutionBtn.classList.add("text-btn");
 
-  solutionBtn.addEventListener("click", () => showPicture());
+  solutionBtn.addEventListener("click", () => {
+    resetTimer();
+    showPicture();
+  });
 
   let hiddenBtnContainer = createElement("div", "hidden-btn-container");
   let resetBtn = createElement("button", "reset-btn", "Reset game");

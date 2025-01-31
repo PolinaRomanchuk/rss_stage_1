@@ -557,6 +557,7 @@ function createGameCells() {
     });
     cell.addEventListener("contextmenu", (event) => {
       if (gameOver) return;
+      startTimer();
       let row = Math.floor(i / gameSize);
       let col = i % gameSize;
       userClicks[row][col] = userClicks[row][col] = 0;
@@ -565,7 +566,7 @@ function createGameCells() {
       event.preventDefault();
       cell.classList.toggle("right-clicked");
       cell.classList.remove("clicked");
-      let sound = new Audio("./assets/audio/click.mp3");
+      let sound = new Audio("./assets/audio/right-click.mp3");
       sound.play();
     });
 
@@ -657,7 +658,8 @@ function createSettingGameInFooter() {
     hiddenBtnContainer.classList.toggle("hidden");
   });
   resetBtn.addEventListener("click", () => {
-    resetGame();
+    let isplaying = true;
+    resetGame(isplaying);
   });
 
   let saveBtn = createElement("button", "save-btn", "Save game");
@@ -867,9 +869,11 @@ function resetTimer() {
   secondsElement.textContent = "00";
 }
 
-function resetGame() {
+function resetGame(isplaying) {
   gameOver = false;
-  resetTimer();
+  if (!isplaying) {
+    resetTimer();
+  }
   let cell = document.querySelectorAll(".game-grid-cell");
   cell.forEach((element) => element.classList.remove("clicked"));
   cell.forEach((element) => element.classList.remove("right-clicked"));

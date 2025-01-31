@@ -3,6 +3,7 @@ let systemStyle = "light";
 
 let gameOver = false;
 let isResultsVisible = false;
+let isSounding = true;
 let currentLevel = "Easy";
 let nameGamePicture = "cat";
 let gameSize = 5;
@@ -266,6 +267,15 @@ function createBackground() {
   return backgraund;
 }
 
+function updateSoundIcon() {
+  let sound = document.querySelector(".sound-btn");
+  if (isSounding) {
+    sound.style.backgroundImage = `url(./assets/img/${systemStyle}/off-${systemStyle}.png)`;
+  } else {
+    sound.style.backgroundImage = `url(./assets/img/${systemStyle}/on-${systemStyle}.png)`;
+  }
+}
+
 function createManageHeader() {
   let container = createElement("div", "manage-header-container");
   let timer = createElement("div", "timer");
@@ -275,6 +285,14 @@ function createManageHeader() {
   timer.append(minutes);
   timer.append(seconds);
   let iconsContainer = createElement("div", "icons-container");
+  let sound = createElement("button", "sound-btn");
+  sound.classList.add("icon-btn");
+  sound.classList.add("on");
+  sound.addEventListener("click", () => {
+    isSounding ? (isSounding = false) : (isSounding = true);
+    updateSoundIcon();
+  });
+
   let light = createElement("button", "light-btn");
   light.classList.add("icon-btn");
   light.classList.add("on");
@@ -289,6 +307,7 @@ function createManageHeader() {
     displayWinGames();
   });
 
+  iconsContainer.append(sound);
   iconsContainer.append(light);
   iconsContainer.append(statistic);
   container.append(timer);
@@ -550,9 +569,11 @@ function createGameCells() {
         cell.classList.toggle("clicked");
       }
       console.log(userClicks);
+      if (isSounding) {
+        let sound = new Audio("./assets/audio/click.mp3");
+        sound.play();
+      }
 
-      let sound = new Audio("./assets/audio/click.mp3");
-      sound.play();
       checkResult();
     });
     cell.addEventListener("contextmenu", (event) => {
@@ -566,8 +587,10 @@ function createGameCells() {
       event.preventDefault();
       cell.classList.toggle("right-clicked");
       cell.classList.remove("clicked");
-      let sound = new Audio("./assets/audio/right-click.mp3");
-      sound.play();
+      if (isSounding) {
+        let sound = new Audio("./assets/audio/right-click.mp3");
+        sound.play();
+      }
     });
 
     cells.appendChild(cell);
@@ -831,8 +854,11 @@ function win() {
   });
 
   body.append(winWindow);
-  let sound = new Audio("./assets/audio/win.mp3");
-  sound.play();
+  if (isSounding) {
+    let sound = new Audio("./assets/audio/win.mp3");
+    sound.play();
+  }
+
   saveWinGames();
 }
 
@@ -952,6 +978,7 @@ function setSystemStyle(style) {
   let styleBtn = document.querySelector(".light-btn");
   let settingBtn = document.querySelector(".setting-btn");
   let statisticsBtn = document.querySelector(".statistic-btn");
+  let sound = document.querySelector(".sound-btn");
 
   let horisontalHints = document.querySelectorAll(".horisontal-hint");
   let verticalHints = document.querySelectorAll(".vertical-hint");
@@ -964,6 +991,12 @@ function setSystemStyle(style) {
   styleBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/styleIcon.png)`;
   statisticsBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/statisticsIcon.png)`;
   settingBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/settingsIcon.png)`;
+
+  if (isSounding) {
+    sound.style.backgroundImage = `url(./assets/img/${systemStyle}/off-${systemStyle}.png)`;
+  } else {
+    sound.style.backgroundImage = `url(./assets/img/${systemStyle}/on-${systemStyle}.png)`;
+  }
 
   textBtns.forEach((btn) => {
     btn.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;

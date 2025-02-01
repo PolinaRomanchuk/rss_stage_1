@@ -323,6 +323,19 @@ function createLevelOption(id, name, value, labelText, isChecked) {
   }
   let label = createElement("label", "level-label", labelText);
   label.htmlFor = id;
+
+  label.addEventListener("mouseenter", () => {
+    if (!radioInput.checked) {
+      label.style.backgroundColor = `var(--color-btn-background-hover-${systemStyle})`;
+    }
+  });
+
+  label.addEventListener("mouseleave", () => {
+    if (!radioInput.checked) {
+      label.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
+    }
+  });
+
   levelOption.append(radioInput);
   levelOption.append(label);
 
@@ -409,6 +422,13 @@ function createGamePicturesOptions() {
 
       updateHints();
       resetGame();
+    });
+
+    dropItem.addEventListener("mouseenter", () => {
+      dropItem.style.backgroundColor = `var(--color-btn-background-hover-${systemStyle})`;
+    });
+    dropItem.addEventListener("mouseleave", () => {
+      dropItem.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
     });
   });
 
@@ -933,6 +953,7 @@ function resetGame(isplaying) {
   let cell = document.querySelectorAll(".game-grid-cell");
   cell.forEach((element) => element.classList.remove("clicked"));
   cell.forEach((element) => element.classList.remove("right-clicked"));
+  cell.forEach((element) => (element.style.backgroundImage = ""));
 
   userClicks = Array(gameSize)
     .fill()
@@ -1178,6 +1199,7 @@ function setSystemStyle(style) {
   setCrossStyle();
   setResultStyle();
   getLevelBtnAndCheckedIt();
+  setHoverEffectForButtons();
 }
 
 function setGameFieldColors(style) {
@@ -1372,6 +1394,24 @@ function displayWinGames() {
   });
   setCrossStyle();
   setResultStyle();
+}
+
+function setHoverEffectForButtons() {
+  const buttons = document.querySelectorAll("button");
+
+  buttons.forEach((button) => {
+    button.addEventListener("mouseenter", () => {
+      button.style.backgroundColor = `var(--color-btn-background-hover-${systemStyle})`;
+    });
+
+    button.addEventListener("mouseleave", () => {
+      if (button.classList.contains("icon-btn")) {
+        button.style.backgroundColor = "";
+      } else {
+        button.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
+      }
+    });
+  });
 }
 
 createStartWindow();

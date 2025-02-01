@@ -27,7 +27,7 @@ html {
   --color-font-main-dark: #ffffff;
   --color-background-game-window-dark: #fdfafc96;
   --color-btn-background-inactive-dark: #3c3737;
-  --color-btn-background-hover-dark: rgb(241 77 133 / 55%);
+  --color-btn-background-hover-dark: rgb(131 121 124);
   --color-accent-dark: rgb(122 23 57);
 
   font-family: "Nunito", serif;
@@ -38,9 +38,6 @@ button {
   font-family: inherit;
   color: inherit;
   border-radius: 5px;
-  &:hover {
-    background-color: var(--color-btn-background-hover-light) !important;
-  }
 }
 
 .icon-btn {
@@ -154,10 +151,6 @@ input[type="radio"] {
   justify-content: center;
   border-radius: 5px;
   padding: 0px;
-
-  &:hover {
-    background-color: var(--color-btn-background-hover-light);
-  }
 }
 
 .dropdown-btn {

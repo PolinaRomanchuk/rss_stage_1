@@ -300,6 +300,7 @@ input[type="radio"]:checked + .level-label {
   margin: auto 0;
   position: fixed;
   border-radius: 5px;
+  z-index: 11;
 }
 
 .win-text {

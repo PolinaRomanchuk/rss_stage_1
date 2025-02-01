@@ -847,6 +847,7 @@ function win() {
 
   close.addEventListener("click", () => {
     winWindow.classList.toggle("hidden");
+    overlay.classList.remove("show");
   });
 
   body.append(winWindow);
@@ -856,6 +857,20 @@ function win() {
   }
 
   saveWinGames();
+  let overlay = document.querySelector(".overlay");
+
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    document.body.appendChild(overlay);
+  }
+  overlay.classList.add("show");
+  overlay.addEventListener("click", (event) => {
+    if (!winWindow.contains(event.target)) {
+      winWindow.classList.add("hidden");
+      overlay.classList.remove("show");
+    }
+  });
 }
 
 function startTimer() {

@@ -554,14 +554,26 @@ function createGameCells() {
         cell.classList.remove("right-clicked");
         cell.classList.remove("clicked");
         userClicks[row][col] = userClicks[row][col] = 0;
+        if (isSounding) {
+          let sound = new Audio("./assets/audio/delete-click.mp3");
+          sound.play();
+        }
       } else {
-        cell.classList.toggle("clicked");
+        if (cell.classList.contains("clicked")) {
+          cell.classList.remove("clicked");
+          if (isSounding) {
+            let sound = new Audio("./assets/audio/delete-click.mp3");
+            sound.play();
+          }
+        } else {
+          cell.classList.add("clicked");
+          if (isSounding) {
+            let sound = new Audio("./assets/audio/click.mp3");
+            sound.play();
+          }
+        }
       }
       // console.log(userClicks);
-      if (isSounding) {
-        let sound = new Audio("./assets/audio/click.mp3");
-        sound.play();
-      }
 
       checkResult();
     });
@@ -574,11 +586,20 @@ function createGameCells() {
       // console.log(userClicks);
 
       event.preventDefault();
-      cell.classList.toggle("right-clicked");
       cell.classList.remove("clicked");
-      if (isSounding) {
-        let sound = new Audio("./assets/audio/right-click.mp3");
-        sound.play();
+
+      if (cell.classList.contains("right-clicked")) {
+        cell.classList.remove("right-clicked");
+        if (isSounding) {
+          let sound = new Audio("./assets/audio/delete-click.mp3");
+          sound.play();
+        }
+      } else {
+        cell.classList.add("right-clicked");
+        if (isSounding) {
+          let sound = new Audio("./assets/audio/right-click.mp3");
+          sound.play();
+        }
       }
     });
 

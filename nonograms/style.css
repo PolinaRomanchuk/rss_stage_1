@@ -28,7 +28,7 @@ html {
   --color-background-game-window-dark: #fdfafc96;
   --color-btn-background-inactive-dark: #3c3737;
   --color-btn-background-hover-dark: rgb(241 77 133 / 55%);
-  --color-accent-dark: rgb(80 23 43);
+  --color-accent-dark: rgb(122 23 57);
 
   font-family: "Nunito", serif;
   color: var(--color-font-main-light);
@@ -137,9 +137,6 @@ body {
 input[type="radio"] {
   display: none;
   margin: 0px;
-}
-input[type="radio"]:checked + .level-label {
-  background-color: var(--color-accent-light) !important;
 }
 
 .level-label {

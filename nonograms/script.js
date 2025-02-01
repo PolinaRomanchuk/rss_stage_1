@@ -334,6 +334,7 @@ function createLevelOption(id, name, value, labelText, isChecked) {
     setGameField();
     setGameGridSizes();
     resetGame();
+    getLevelBtnAndCheckedIt();
   });
 
   return levelOption;
@@ -379,10 +380,10 @@ function createLevelBox() {
     "Hard",
     false
   );
-
   levelContainer.append(easyOption);
   levelContainer.append(mediumOption);
   levelContainer.append(hardOption);
+
   return levelContainer;
 }
 
@@ -527,11 +528,23 @@ function createLevelField() {
   return container;
 }
 
-function getLevelBtnAndCheckedIt(level) {
+function getLevelBtnAndCheckedIt() {
   const radioButtons = document.querySelectorAll('input[name="difficulty"]');
+
   radioButtons.forEach((radioButton) => {
-    if (radioButton.value === level) {
+    let label = document.querySelector(`label[for="${radioButton.id}"]`);
+    if (label) {
+      label.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle}`;
+    }
+  });
+
+  radioButtons.forEach((radioButton) => {
+    if (radioButton.value === currentLevel) {
       radioButton.checked = true;
+      let label = document.querySelector(`label[for="${radioButton.id}"]`);
+      if (label) {
+        label.style.backgroundColor = `var(--color-accent-${systemStyle})`;
+      }
     }
   });
 }
@@ -738,6 +751,7 @@ function createStartWindow() {
   body.append(gameWindow);
   checkWindowHeight();
   setSystemStyle(systemStyle);
+  getLevelBtnAndCheckedIt();
 }
 
 function showSolution() {
@@ -1163,6 +1177,7 @@ function setSystemStyle(style) {
   setGameFieldColors(style);
   setCrossStyle();
   setResultStyle();
+  getLevelBtnAndCheckedIt();
 }
 
 function setGameFieldColors(style) {

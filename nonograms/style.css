@@ -10,6 +10,12 @@ html {
   --color-btn-background-hover-light: rgb(241 77 133 / 55%);
   --color-accent-light: rgb(241 77 133);
 
+  --color-table-row-even-light: #df709e;
+  --color-table-row-odd-light: #efc8d4;
+
+  --color-table-row-even-dark: rgb(191 174 174);
+  --color-table-row-odd-dark: rgb(72 56 70);
+
   --color-game-clicked-light: gray;
   --color-game-notclicked-light: white;
   --color-game-border-light: darkgray;
@@ -22,7 +28,7 @@ html {
   --color-background-game-window-dark: #fdfafc96;
   --color-btn-background-inactive-dark: #3c3737;
   --color-btn-background-hover-dark: rgb(241 77 133 / 55%);
-  --color-accent-dark: rgb(241 77 133);
+  --color-accent-dark: rgb(80 23 43);
 
   font-family: "Nunito", serif;
   color: var(--color-font-main-light);
@@ -356,7 +362,6 @@ input[type="radio"]:checked + .level-label {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: var(--color-accent-light);
   padding: 20px;
   border-radius: 5px;
   opacity: 0;
@@ -376,14 +381,6 @@ input[type="radio"]:checked + .level-label {
 th,
 td {
   padding: 5px;
-}
-
-.result-table-body-row:nth-child(odd) {
-  background-color: rgba(255, 255, 255, 1);
-}
-
-.result-table-body-row:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.05);
 }
 
 @media screen and (min-width: 1280px) {

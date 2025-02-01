@@ -553,6 +553,7 @@ function createGameCells() {
       if (cell.classList.contains("right-clicked")) {
         cell.classList.remove("right-clicked");
         cell.classList.remove("clicked");
+        cell.style.backgroundImage = "";
         userClicks[row][col] = userClicks[row][col] = 0;
         if (isSounding) {
           let sound = new Audio("./assets/audio/delete-click.mp3");
@@ -590,12 +591,14 @@ function createGameCells() {
 
       if (cell.classList.contains("right-clicked")) {
         cell.classList.remove("right-clicked");
+        cell.style.backgroundImage = "";
         if (isSounding) {
           let sound = new Audio("./assets/audio/delete-click.mp3");
           sound.play();
         }
       } else {
         cell.classList.add("right-clicked");
+        setCrossStyle();
         if (isSounding) {
           let sound = new Audio("./assets/audio/right-click.mp3");
           sound.play();
@@ -871,6 +874,8 @@ function win() {
       overlay.classList.remove("show");
     }
   });
+  setCrossStyle();
+  setWinWindowStyle();
 }
 
 function startTimer() {
@@ -1074,6 +1079,42 @@ function checkWindowHeight() {
   }
 }
 
+function setCrossStyle() {
+  let close = document.querySelector(".close-btn");
+  if (close) {
+    close.style.backgroundImage = `url(./assets/img/${systemStyle}/cross.png)`;
+  }
+  let crosses = document.querySelectorAll(".right-clicked");
+  let crossUrl = `url(./assets/img/${systemStyle}/cross.png)`;
+  if (crosses.length > 0) {
+    crosses.forEach((cross) => {
+      cross.style.backgroundImage = crossUrl;
+    });
+  }
+}
+
+function setResultStyle() {
+  let results = document.querySelector(".results-container");
+  if (results) {
+    results.style.backgroundColor = `var(--color-accent-${systemStyle})`;
+
+    let rows = document.querySelectorAll(".result-table-body-row");
+    rows.forEach((row, index) => {
+      if (index % 2 === 0) {
+        row.style.backgroundColor = `var(--color-table-row-odd-${systemStyle})`;
+      } else {
+        row.style.backgroundColor = `var(--color-table-row-even-${systemStyle})`;
+      }
+    });
+  }
+}
+function setWinWindowStyle() {
+  let window = document.querySelector(".win-window");
+  if (window) {
+    window.style.backgroundColor = `var(--color-accent-${systemStyle})`;
+  }
+}
+
 function setSystemStyle(style) {
   systemStyle = style;
 
@@ -1114,17 +1155,14 @@ function setSystemStyle(style) {
     item.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
   });
 
-  let close = document.querySelector(".close-btn");
-  if (close) {
-    close.style.backgroundImage = `url(./assets/img/${systemStyle}/cross.png)`;
-  }
-
   document.documentElement.style.setProperty(
     "color",
     `var(--color-font-main-${systemStyle})`
   );
 
   setGameFieldColors(style);
+  setCrossStyle();
+  setResultStyle();
 }
 
 function setGameFieldColors(style) {
@@ -1317,6 +1355,8 @@ function displayWinGames() {
       closeResults();
     }
   });
+  setCrossStyle();
+  setResultStyle();
 }
 
 createStartWindow();

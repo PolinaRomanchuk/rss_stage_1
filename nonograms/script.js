@@ -2,19 +2,19 @@ let body = document.body;
 let systemStyle = "light";
 
 let gameOver = false;
-let isResultsVisible = false;
+let isScoreVisible = false;
 let isSounding = true;
 let currentLevel = "Easy";
 let nameGamePicture = "cat";
 let gameSize = 5;
-let gamePicture = [
+let gamePictureMatrix = [
   [0, 0, 1, 0, 1],
   [0, 0, 1, 1, 1],
   [1, 1, 1, 1, 1],
   [1, 1, 1, 1, 0],
   [1, 1, 1, 1, 1],
 ];
-let matrixs = {
+let allMatrixsCurrentLevel = {
   cat: [
     [0, 0, 1, 0, 1],
     [0, 0, 1, 1, 1],
@@ -97,7 +97,6 @@ const easyPictures = {
     [0, 1, 1, 1, 0],
   ],
 };
-
 const mediumPictures = {
   rhinoceros: [
     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
@@ -259,15 +258,15 @@ function createElement(tagName, className, context) {
   return element;
 }
 
-function createBackground() {
-  let backgraund = createElement("video", "video-background");
-  backgraund.autoplay = true;
-  backgraund.loop = true;
-  backgraund.muted = true;
-  return backgraund;
+function createWindowBackground() {
+  let background = createElement("video", "video-background");
+  background.autoplay = true;
+  background.loop = true;
+  background.muted = true;
+  return background;
 }
 
-function updateSoundIcon() {
+function setSoundIcon() {
   let sound = document.querySelector(".sound-btn");
   if (isSounding) {
     sound.style.backgroundImage = `url(./assets/img/${systemStyle}/off-${systemStyle}.png)`;
@@ -281,41 +280,38 @@ function createManageHeader() {
   let timer = createElement("div", "timer");
   let minutes = createElement("div", "minutes", "00:");
   let seconds = createElement("div", "seconds", "00");
-
   timer.append(minutes);
   timer.append(seconds);
+
   let iconsContainer = createElement("div", "icons-container");
   let sound = createElement("button", "sound-btn");
   sound.classList.add("icon-btn");
-  sound.classList.add("on");
   sound.addEventListener("click", () => {
     isSounding ? (isSounding = false) : (isSounding = true);
-    updateSoundIcon();
+    setSoundIcon();
   });
 
-  let light = createElement("button", "light-btn");
-  light.classList.add("icon-btn");
-  light.classList.add("on");
-
-  light.addEventListener("click", () => {
+  let style = createElement("button", "light-btn");
+  style.classList.add("icon-btn");
+  style.addEventListener("click", () => {
     systemStyle === "light" ? setSystemStyle("dark") : setSystemStyle("light");
   });
 
-  let statistic = createElement("button", "statistic-btn");
-  statistic.classList.add("icon-btn");
-  statistic.addEventListener("click", () => {
+  let score = createElement("button", "statistic-btn");
+  score.classList.add("icon-btn");
+  score.addEventListener("click", () => {
     displayWinGames();
   });
 
   iconsContainer.append(sound);
-  iconsContainer.append(light);
-  iconsContainer.append(statistic);
+  iconsContainer.append(style);
+  iconsContainer.append(score);
   container.append(timer);
   container.append(iconsContainer);
   return container;
 }
 
-function createRadioOption(id, name, value, labelText, isChecked) {
+function createLevelOption(id, name, value, labelText, isChecked) {
   let levelOption = createElement("div", "level-option");
   let radioInput = document.createElement("input");
   radioInput.type = "radio";
@@ -332,62 +328,51 @@ function createRadioOption(id, name, value, labelText, isChecked) {
 
   radioInput.addEventListener("change", (event) => {
     currentLevel = event.target.value;
-    getGameSize();
-    updateGamePictures(matrixs);
-    updateGameField();
-    updateGameStyles();
+    let isInitial = true;
+    getGameSizeAndMatrixs(isInitial);
+    updateGamePicturesOptions(allMatrixsCurrentLevel);
+    setGameField();
+    setGameGridSizes();
     resetGame();
   });
 
   return levelOption;
 }
 
-function updateGameSize(namekey) {
+function getGameSizeAndMatrixs(isInitial) {
   if (currentLevel === "Easy") {
     gameSize = 5;
-    matrixs = easyPictures;
+    allMatrixsCurrentLevel = easyPictures;
   } else if (currentLevel === "Medium") {
     gameSize = 10;
-    matrixs = mediumPictures;
+    allMatrixsCurrentLevel = mediumPictures;
   } else if (currentLevel === "Hard") {
     gameSize = 15;
-    matrixs = hardPictures;
+    allMatrixsCurrentLevel = hardPictures;
   }
-}
-
-function getGameSize() {
-  if (currentLevel === "Easy") {
-    gameSize = 5;
-    matrixs = easyPictures;
-    gamePicture = easyPictures.cat;
-  } else if (currentLevel === "Medium") {
-    gameSize = 10;
-    matrixs = mediumPictures;
-    gamePicture = mediumPictures.rhinoceros;
-  } else if (currentLevel === "Hard") {
-    gameSize = 15;
-    matrixs = hardPictures;
-    gamePicture = hardPictures.snail;
+  if (isInitial) {
+    let firstKey = Object.keys(allMatrixsCurrentLevel)[0];
+    gamePictureMatrix = allMatrixsCurrentLevel[firstKey];
   }
 }
 
 function createLevelBox() {
   let levelContainer = createElement("div", "level-options-list");
-  let easyOption = createRadioOption(
+  let easyOption = createLevelOption(
     "easy",
     "difficulty",
     "Easy",
     "Easy",
     true
   );
-  let mediumOption = createRadioOption(
+  let mediumOption = createLevelOption(
     "medium",
     "difficulty",
     "Medium",
     "Medium",
     false
   );
-  let hardOption = createRadioOption(
+  let hardOption = createLevelOption(
     "hard",
     "difficulty",
     "Hard",
@@ -401,7 +386,7 @@ function createLevelBox() {
   return levelContainer;
 }
 
-function createGamePictures() {
+function createGamePicturesOptions() {
   let container = createElement("button", "dropdown-btn");
   container.classList.add("text-btn");
 
@@ -410,7 +395,7 @@ function createGamePictures() {
 
   let dropContainer = createElement("ul", "dropdown-content");
 
-  Object.keys(matrixs).forEach((key) => {
+  Object.keys(allMatrixsCurrentLevel).forEach((key) => {
     let dropItem = createElement("li", "dropdown-item", key);
     dropContainer.append(dropItem);
 
@@ -419,7 +404,7 @@ function createGamePictures() {
       displayText.textContent = dropItem.textContent;
       dropContainer.classList.remove("show");
       nameGamePicture = dropItem.textContent;
-      gamePicture = findPicture(currentLevel, nameGamePicture);
+      gamePictureMatrix = findPictureMatrix(currentLevel, nameGamePicture);
 
       updateHints();
       resetGame();
@@ -435,49 +420,51 @@ function createGamePictures() {
   return container;
 }
 
-function updateGamePictures(matrixs, btnName) {
+function updateGamePicturesOptions(matrixs, btnName) {
   let btnText = document.querySelector(".button-text-span");
-  let items = document.querySelectorAll(".dropdown-item");
+  let dropItems = document.querySelectorAll(".dropdown-item");
 
-  items.forEach((item, index) => {
+  dropItems.forEach((item, index) => {
     if (index < Object.keys(matrixs).length) {
       item.textContent = Object.keys(matrixs)[index];
     }
   });
   let defaultName = Object.keys(matrixs)[0];
   btnText.textContent = btnName ? btnName : defaultName;
-  nameGamePicture = defaultName;
+  nameGamePicture = btnName ? btnName : defaultName;
 }
 
 function updateHints() {
   let horHints = document.querySelectorAll(".horisontal-hint");
   let vertHints = document.querySelectorAll(".vertical-hint");
 
-  const horisontal = countHorisontalHints();
-  const vertical = countVerticalHints();
+  const horisontalNumbers = countHorisontalHints();
+  const verticalNumbers = countVerticalHints();
 
   for (let i = 0; i < horHints.length; i++) {
-    let hintText = horisontal[i].join(" ");
+    let hintText = horisontalNumbers[i].join(" ");
     horHints[i].textContent = hintText;
   }
 
   for (let i = 0; i < vertHints.length; i++) {
     let hintContainer = vertHints[i];
-    let hintColumns = hintContainer.querySelectorAll(".vertical-hint-text");
-    hintColumns.forEach((text) => text.remove());
+    let hintsVerticalTextContainer = hintContainer.querySelectorAll(
+      ".vertical-hint-text"
+    );
+    hintsVerticalTextContainer.forEach((text) => text.remove());
 
-    for (let j = 0; j < vertical[i].length; j++) {
-      let hintColumn = createElement(
+    for (let j = 0; j < verticalNumbers[i].length; j++) {
+      let hintVertTextContainer = createElement(
         "div",
         "vertical-hint-text",
-        `${vertical[i][j]}`
+        `${verticalNumbers[i][j]}`
       );
-      vertHints[i].appendChild(hintColumn);
+      vertHints[i].appendChild(hintVertTextContainer);
     }
   }
 }
 
-function getRandomElement(arr) {
+function getRandomIndex(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return randomIndex;
 }
@@ -487,7 +474,7 @@ function createLevelField() {
   let levelBlock = createLevelBox();
 
   let btnContainer = createElement("div", "btn-container");
-  let dropPicture = createGamePictures();
+  let dropPicturesOptions = createGamePicturesOptions();
   let randomGameBtn = createElement("button", "random-game-btn", "Random game");
   randomGameBtn.classList.add("text-btn");
 
@@ -495,14 +482,15 @@ function createLevelField() {
     let textBtn = document.querySelector(".button-text-span");
     textBtn.textContent = "";
     const levels = [easyPictures, mediumPictures, hardPictures];
-    const randomLevelIndex = getRandomElement(levels);
+    const randomLevelIndex = getRandomIndex(levels);
 
     const levelsMap = {
       Easy: easyPictures,
       Medium: mediumPictures,
       Hard: hardPictures,
     };
-    let currentLevelString;
+
+    let currentLevelString = "";
     for (let level in levelsMap) {
       if (levelsMap[level] === levels[randomLevelIndex]) {
         currentLevelString = level;
@@ -513,23 +501,24 @@ function createLevelField() {
     currentLevel = currentLevelString;
 
     const pictures = Object.entries(levels[randomLevelIndex]);
-    const randomPictureIndex = getRandomElement(pictures);
+    const randomPictureIndex = getRandomIndex(pictures);
     const [pictureKey, newPicture] = pictures[randomPictureIndex];
 
-    gamePicture = newPicture;
+    gamePictureMatrix = newPicture;
     textBtn.textContent = pictureKey;
+    nameGamePicture = pictureKey;
 
-    updateGameSize();
-    updateGameField();
-    updateGameStyles();
+    getGameSizeAndMatrixs();
+    setGameField();
+    setGameGridSizes();
     resetGame();
-    updateGamePictures(matrixs, pictureKey);
-    getLevelBtnAndShowIt(currentLevel);
+    updateGamePicturesOptions(allMatrixsCurrentLevel, pictureKey);
+    getLevelBtnAndCheckedIt(currentLevel);
   });
 
   container.append(levelBlock);
 
-  btnContainer.append(dropPicture);
+  btnContainer.append(dropPicturesOptions);
   btnContainer.append(randomGameBtn);
 
   container.append(levelBlock);
@@ -538,7 +527,7 @@ function createLevelField() {
   return container;
 }
 
-function getLevelBtnAndShowIt(level) {
+function getLevelBtnAndCheckedIt(level) {
   const radioButtons = document.querySelectorAll('input[name="difficulty"]');
   radioButtons.forEach((radioButton) => {
     if (radioButton.value === level) {
@@ -568,7 +557,7 @@ function createGameCells() {
       } else {
         cell.classList.toggle("clicked");
       }
-      console.log(userClicks);
+      // console.log(userClicks);
       if (isSounding) {
         let sound = new Audio("./assets/audio/click.mp3");
         sound.play();
@@ -582,7 +571,7 @@ function createGameCells() {
       let row = Math.floor(i / gameSize);
       let col = i % gameSize;
       userClicks[row][col] = userClicks[row][col] = 0;
-      console.log(userClicks);
+      // console.log(userClicks);
 
       event.preventDefault();
       cell.classList.toggle("right-clicked");
@@ -601,27 +590,26 @@ function createGameCells() {
 
 function createHints(className) {
   if (className == "horisontal-hint") {
-    const horisontal = countHorisontalHints();
+    const horisontalNumbers = countHorisontalHints();
     let hints = createElement("div", `${className}s`);
 
-    for (let i = 0; i < horisontal.length; i++) {
-      let hintText = horisontal[i].join(" ");
+    for (let i = 0; i < horisontalNumbers.length; i++) {
+      let hintText = horisontalNumbers[i].join(" ");
       let hint = createElement("div", `${className}`, `${hintText}`);
       hints.appendChild(hint);
     }
-
     return hints;
   } else {
-    const vertical = countVerticalHints();
+    const verticalNumbers = countVerticalHints();
     let hints = createElement("div", `${className}s`);
 
-    for (let i = 0; i < vertical.length; i++) {
+    for (let i = 0; i < verticalNumbers.length; i++) {
       let hint = createElement("div", `${className}`);
-      for (let j = 0; j < vertical[i].length; j++) {
+      for (let j = 0; j < verticalNumbers[i].length; j++) {
         let hintColumn = createElement(
           "div",
           `${className}-text`,
-          `${vertical[i][j]}`
+          `${verticalNumbers[i][j]}`
         );
         hint.appendChild(hintColumn);
       }
@@ -631,58 +619,46 @@ function createHints(className) {
   }
 }
 
-function createGameField() {
+function setGameField() {
   let content = document.querySelector(".game-container");
   if (content) {
     content.innerHTML = "";
-  }
-  let container = createElement("div", "game-container");
-  let gridContainer = createElement("div", "game-grid-container");
-  let horisHints = createHints("horisontal-hint");
-  let verticHints = createHints("vertical-hint");
-  let cells = createGameCells();
-  gridContainer.append(horisHints);
-  gridContainer.append(cells);
-  gridContainer.append(verticHints);
-  container.append(gridContainer);
-  return container;
-}
-
-function updateGameField() {
-  let content = document.querySelector(".game-container");
-  if (content) {
-    content.innerHTML = "";
+  } else {
+    content = createElement("div", "game-container");
   }
   let gridContainer = createElement("div", "game-grid-container");
   let horisHints = createHints("horisontal-hint");
   let verticHints = createHints("vertical-hint");
   let cells = createGameCells();
-
   gridContainer.append(horisHints);
   gridContainer.append(cells);
   gridContainer.append(verticHints);
   content.append(gridContainer);
+  return content;
 }
 
-function createSettingGameInFooter() {
+function createManageFooter() {
   let container = createElement("div", "footer-game-setting-container");
-  let settingIcon = createElement("button", "setting-btn");
-  settingIcon.classList.add("icon-btn");
 
   let solutionBtn = createElement("button", "solution-btn", "Solution");
   solutionBtn.classList.add("text-btn");
-
   solutionBtn.addEventListener("click", () => {
     resetTimer();
-    showPicture();
+    resetGame();
+    showSolution();
+  });
+
+  let settingContainer = createElement("div", "setting-container", "");
+
+  let settingIcon = createElement("button", "setting-btn");
+  settingIcon.classList.add("icon-btn");
+  settingIcon.addEventListener("click", () => {
+    hiddenBtnContainer.classList.toggle("hidden");
   });
 
   let hiddenBtnContainer = createElement("div", "hidden-btn-container");
   let resetBtn = createElement("button", "reset-btn", "Reset game");
   resetBtn.classList.add("text-btn");
-  settingIcon.addEventListener("click", () => {
-    hiddenBtnContainer.classList.toggle("hidden");
-  });
   resetBtn.addEventListener("click", () => {
     let isplaying = true;
     resetGame(isplaying);
@@ -690,29 +666,28 @@ function createSettingGameInFooter() {
 
   let saveBtn = createElement("button", "save-btn", "Save game");
   saveBtn.classList.add("text-btn");
+  saveBtn.addEventListener("click", () => {
+    saveGame();
+  });
+
   let continueBtn = createElement(
     "button",
     "continue-btn",
     "Continue last game"
   );
-
-  saveBtn.addEventListener("click", () => {
-    saveGame();
-  });
-
+  continueBtn.classList.add("text-btn");
   continueBtn.addEventListener("click", () => {
     loadGame();
   });
 
-  continueBtn.classList.add("text-btn");
-  let settingContainer = createElement("div", "setting-container", "");
   hiddenBtnContainer.append(resetBtn);
   hiddenBtnContainer.append(saveBtn);
   hiddenBtnContainer.append(continueBtn);
 
-  container.append(solutionBtn);
   settingContainer.append(settingIcon);
   settingContainer.append(hiddenBtnContainer);
+
+  container.append(solutionBtn);
   container.append(settingContainer);
   return container;
 }
@@ -721,8 +696,8 @@ function createGameWindow() {
   let gameWindow = createElement("div", "game-window");
   let header = createManageHeader();
   let level = createLevelField();
-  let game = createGameField();
-  let footer = createSettingGameInFooter();
+  let game = setGameField();
+  let footer = createManageFooter();
 
   gameWindow.append(header);
   gameWindow.append(level);
@@ -733,23 +708,21 @@ function createGameWindow() {
 }
 
 function createStartWindow() {
-  let backgraund = createBackground();
+  let background = createWindowBackground();
   let gameWindow = createGameWindow();
-  body.append(backgraund);
+  body.append(background);
   body.append(gameWindow);
   checkWindowHeight();
   setSystemStyle(systemStyle);
 }
 
-createStartWindow();
-
-function showPicture() {
+function showSolution() {
   let cells = document.querySelectorAll(".game-grid-cell");
 
-  for (let i = 0; i < gamePicture.length; i++) {
-    for (let j = 0; j < gamePicture[i].length; j++) {
+  for (let i = 0; i < gamePictureMatrix.length; i++) {
+    for (let j = 0; j < gamePictureMatrix[i].length; j++) {
       let cell = cells[i * gameSize + j];
-      if (gamePicture[i][j] === 1) {
+      if (gamePictureMatrix[i][j] === 1) {
         cell.classList.add("clicked");
       } else {
         cell.classList.remove("clicked");
@@ -760,11 +733,11 @@ function showPicture() {
 
 function countHorisontalHints() {
   let allHints = [];
-  for (let i = 0; i < gamePicture.length; i++) {
+  for (let i = 0; i < gamePictureMatrix.length; i++) {
     let count = 0;
     let hints = [];
-    for (let j = 0; j < gamePicture[i].length; j++) {
-      if (gamePicture[i][j] === 1) {
+    for (let j = 0; j < gamePictureMatrix[i].length; j++) {
+      if (gamePictureMatrix[i][j] === 1) {
         count += 1;
       } else if (count > 0) {
         hints.push(count);
@@ -785,11 +758,11 @@ function countHorisontalHints() {
 
 function countVerticalHints() {
   let allHints = [];
-  for (let col = 0; col < gamePicture[0].length; col++) {
+  for (let col = 0; col < gamePictureMatrix[0].length; col++) {
     let count = 0;
     let hints = [];
-    for (let row = 0; row < gamePicture.length; row++) {
-      if (gamePicture[row][col] === 1) {
+    for (let row = 0; row < gamePictureMatrix.length; row++) {
+      if (gamePictureMatrix[row][col] === 1) {
         count += 1;
       } else if (count > 0) {
         hints.push(count);
@@ -811,9 +784,9 @@ function countVerticalHints() {
 function checkResult() {
   let isCorrect = true;
 
-  for (let i = 0; i < gamePicture.length; i++) {
-    for (let j = 0; j < gamePicture[i].length; j++) {
-      if (userClicks[i][j] !== gamePicture[i][j]) {
+  for (let i = 0; i < gamePictureMatrix.length; i++) {
+    for (let j = 0; j < gamePictureMatrix[i].length; j++) {
+      if (userClicks[i][j] !== gamePictureMatrix[i][j]) {
         isCorrect = false;
         break;
       }
@@ -834,18 +807,16 @@ function win() {
 
   let winWindow = createElement("div", "win-window");
   let close = createElement("button", "close-btn");
+  close.classList.add("icon-btn");
   let closeContainer = createElement("div", "close-btn-container");
 
-  close.classList.add("icon-btn");
   let text = createElement(
     "div",
     "win-text",
     `Great! You have solved the nonogram  in ${minutesElement.textContent}${secondsElement.textContent} seconds!`
   );
   let gifContainer = createElement("div", "gif-win-container");
-
   let gif = createElement("div", "gif-win");
-
   gifContainer.append(gif);
 
   closeContainer.append(close);
@@ -913,7 +884,7 @@ function resetGame(isplaying) {
     .map(() => Array(gameSize).fill(0));
 }
 
-function findPicture(level, name) {
+function findPictureMatrix(level, name) {
   const levels = {
     Easy: easyPictures,
     Medium: mediumPictures,
@@ -922,50 +893,43 @@ function findPicture(level, name) {
   return levels[level][name];
 }
 
-function updateGameStyles() {
+function setGameGridSizes(checked) {
+  let pxSize = "";
   if (currentLevel === "Easy") {
     gameSize = 5;
+    pxSize = `70px`;
   } else if (currentLevel === "Medium") {
     gameSize = 10;
+    pxSize = `40px`;
   } else if (currentLevel === "Hard") {
     gameSize = 15;
+    pxSize = `23px`;
   }
-  let window = document.querySelector(".game-window");
-  let gameContainer = document.querySelector(".game-container");
 
   let cells = document.querySelector(".game-grid-cells");
   let verHints = document.querySelector(".vertical-hints");
   let horHints = document.querySelector(".horisontal-hints");
 
-  if (currentLevel === "Easy") {
-    cells.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
-    cells.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
-    verHints.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
-    horHints.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
-    let color = `var(--color-game-border-${systemStyle})`;
-    cells.style.borderTop = `3px solid ${color}`;
-    cells.style.borderLeft = `3px solid ${color}`;
-  }
+  cells.style.gridTemplateColumns = `repeat(${gameSize}, ${pxSize})`;
+  cells.style.gridTemplateRows = `repeat(${gameSize}, ${pxSize})`;
+  verHints.style.gridTemplateColumns = `repeat(${gameSize}, ${pxSize})`;
+  horHints.style.gridTemplateRows = `repeat(${gameSize}, ${pxSize})`;
+
   if (currentLevel === "Medium") {
     verHints.style.height = `90px`;
-    cells.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
-    cells.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
-    verHints.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
-    horHints.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
-    addGridLines(5);
   }
 
   if (currentLevel === "Hard") {
     verHints.style.height = `135px`;
     horHints.style.width = `90px`;
-    cells.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
-    cells.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
-    verHints.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
-    horHints.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
-    addGridLines(5);
   }
-  checkWindowHeight();
-  setGameColors(systemStyle);
+
+  addGridLines(5);
+  if (!checked) {
+    checkWindowHeight();
+  }
+
+  setGameFieldColors(systemStyle);
 }
 
 function addGridLines(cellCount) {
@@ -975,35 +939,37 @@ function addGridLines(cellCount) {
   cells.style.borderTop = `3px solid ${color}`;
   cells.style.borderLeft = `3px solid ${color}`;
 
-  let cellElements = cells.querySelectorAll(".game-grid-cell");
-  let verHints = document.querySelectorAll(".vertical-hint");
-  let horHints = document.querySelectorAll(".horisontal-hint");
+  if (currentLevel !== "Easy") {
+    let cellElements = cells.querySelectorAll(".game-grid-cell");
+    let verHints = document.querySelectorAll(".vertical-hint");
+    let horHints = document.querySelectorAll(".horisontal-hint");
 
-  for (let i = 0; i < cellElements.length; i++) {
-    let rowIndex = Math.floor(i / gameSize);
-    let colIndex = i % gameSize;
+    for (let i = 0; i < cellElements.length; i++) {
+      let rowIndex = Math.floor(i / gameSize);
+      let colIndex = i % gameSize;
 
-    if ((colIndex + 1) % cellCount === 0 && colIndex !== gameSize - 1) {
-      cellElements[i].style.borderRight = `3px solid ${color}`;
+      if ((colIndex + 1) % cellCount === 0 && colIndex !== gameSize - 1) {
+        cellElements[i].style.borderRight = `3px solid ${color}`;
+      }
+
+      if ((rowIndex + 1) % cellCount === 0 && rowIndex !== gameSize - 1) {
+        cellElements[i].style.borderBottom = `3px solid ${color}`;
+      }
     }
 
-    if ((rowIndex + 1) % cellCount === 0 && rowIndex !== gameSize - 1) {
-      cellElements[i].style.borderBottom = `3px solid ${color}`;
+    for (let i = 0; i < verHints.length; i++) {
+      let colIndex = i % gameSize;
+
+      if ((colIndex + 1) % cellCount === 0 && colIndex !== gameSize - 1) {
+        verHints[i].style.borderRight = `3px solid ${color}`;
+      }
     }
-  }
 
-  for (let i = 0; i < verHints.length; i++) {
-    let colIndex = i % gameSize;
-
-    if ((colIndex + 1) % cellCount === 0 && colIndex !== gameSize - 1) {
-      verHints[i].style.borderRight = `3px solid ${color}`;
-    }
-  }
-
-  for (let i = 0; i < horHints.length; i++) {
-    let colIndex = i % gameSize;
-    if ((colIndex + 1) % cellCount === 0 && colIndex !== gameSize - 1) {
-      horHints[i].style.borderBottom = `3px solid ${color}`;
+    for (let i = 0; i < horHints.length; i++) {
+      let colIndex = i % gameSize;
+      if ((colIndex + 1) % cellCount === 0 && colIndex !== gameSize - 1) {
+        horHints[i].style.borderBottom = `3px solid ${color}`;
+      }
     }
   }
 }
@@ -1067,27 +1033,8 @@ function checkWindowHeight() {
       );
     }
   } else {
-    if (currentLevel === "Easy") {
-      cells.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
-      cells.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
-      verHints.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
-      horHints.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
-    }
-    if (currentLevel === "Medium") {
-      verHints.style.height = `90px`;
-      cells.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
-      cells.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
-      verHints.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
-      horHints.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
-    }
-    if (currentLevel === "Hard") {
-      verHints.style.height = `135px`;
-      horHints.style.width = `90px`;
-      cells.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
-      cells.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
-      verHints.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
-      horHints.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
-    }
+    let checked = true;
+    setGameGridSizes(checked);
   }
 }
 
@@ -1095,53 +1042,38 @@ function setSystemStyle(style) {
   systemStyle = style;
 
   let background = document.querySelector(".video-background");
+  background.src = `./assets/img/${systemStyle}/background.mp4`;
+
   let window = document.querySelector(".game-window");
+  window.style.backgroundColor = `var(--color-background-game-window-${systemStyle})`;
 
   let textBtns = document.querySelectorAll(".text-btn");
-  let iconBtns = document.querySelectorAll(".icon-btn");
+  textBtns.forEach((btn) => {
+    btn.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
+  });
+
   let levels = document.querySelectorAll(".level-label ");
+  levels.forEach((btn) => {
+    btn.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
+  });
 
   let styleBtn = document.querySelector(".light-btn");
-  let settingBtn = document.querySelector(".setting-btn");
-  let statisticsBtn = document.querySelector(".statistic-btn");
-  let sound = document.querySelector(".sound-btn");
-
-  let horisontalHints = document.querySelectorAll(".horisontal-hint");
-  let verticalHints = document.querySelectorAll(".vertical-hint");
-  let cells = document.querySelector(".game-grid-cells");
-
-  let dropItems = document.querySelectorAll(".dropdown-item");
-  let cross = document.querySelector(".right-clicked");
-
-  background.src = `./assets/img/${systemStyle}/background.mp4`;
   styleBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/styleIcon.png)`;
-  statisticsBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/statisticsIcon.png)`;
-  settingBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/settingsIcon.png)`;
-  let color = `var(--color-game-border-${systemStyle})`;
-  cells.style.borderTop = `3px solid ${color}`;
-  cells.style.borderLeft = `3px solid ${color}`;
 
+  let settingBtn = document.querySelector(".setting-btn");
+  settingBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/settingsIcon.png)`;
+
+  let scoreBtn = document.querySelector(".statistic-btn");
+  scoreBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/statisticsIcon.png)`;
+
+  let sound = document.querySelector(".sound-btn");
   if (isSounding) {
     sound.style.backgroundImage = `url(./assets/img/${systemStyle}/off-${systemStyle}.png)`;
   } else {
     sound.style.backgroundImage = `url(./assets/img/${systemStyle}/on-${systemStyle}.png)`;
   }
 
-  textBtns.forEach((btn) => {
-    btn.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
-  });
-  levels.forEach((btn) => {
-    btn.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
-  });
-
-  window.style.backgroundColor = `var(--color-background-game-window-${systemStyle})`;
-  document.documentElement.style.setProperty(
-    "color",
-    `var(--color-font-main-${systemStyle})`
-  );
-
-  setGameColors(style);
-
+  let dropItems = document.querySelectorAll(".dropdown-item");
   dropItems.forEach((item) => {
     item.style.backgroundColor = `var(--color-btn-background-inactive-${systemStyle})`;
   });
@@ -1150,9 +1082,16 @@ function setSystemStyle(style) {
   if (close) {
     close.style.backgroundImage = `url(./assets/img/${systemStyle}/cross.png)`;
   }
+
+  document.documentElement.style.setProperty(
+    "color",
+    `var(--color-font-main-${systemStyle})`
+  );
+
+  setGameFieldColors(style);
 }
 
-function setGameColors(style) {
+function setGameFieldColors(style) {
   let horisontalHints = document.querySelectorAll(".horisontal-hint");
   let verticalHints = document.querySelectorAll(".vertical-hint");
   let cells = document.querySelectorAll(".game-grid-cell");
@@ -1173,7 +1112,7 @@ function saveGame() {
     seconds: seconds,
     currentLevel: currentLevel,
     nameGamePicture: nameGamePicture,
-    gamePicture: gamePicture,
+    gamePicture: gamePictureMatrix,
     systemStyle: systemStyle,
     gameSize: gameSize,
   };
@@ -1191,15 +1130,15 @@ function loadGame() {
     seconds = gameState.seconds;
     currentLevel = gameState.currentLevel;
     nameGamePicture = gameState.nameGamePicture;
-    gamePicture = gameState.gamePicture;
+    gamePictureMatrix = gameState.gamePicture;
     systemStyle = gameState.systemStyle;
     gameSize = gameState.gameSize;
 
     setSystemStyle(systemStyle);
-    updateGameSize(currentLevel);
-    updateGameField();
-    updateGameStyles();
-    getLevelBtnAndShowIt(currentLevel);
+    getGameSizeAndMatrixs(currentLevel);
+    setGameField();
+    setGameGridSizes();
+    getLevelBtnAndCheckedIt(currentLevel);
 
     let btnText = document.querySelector(".button-text-span");
     btnText.textContent = nameGamePicture;
@@ -1245,72 +1184,78 @@ function saveWinGames() {
 
 function displayWinGames() {
   let allResults = JSON.parse(localStorage.getItem("nonoGramsResults")) || [];
+  let resultsContainer = document.querySelector(".results-container");
 
-  if (isResultsVisible) {
-    let resultsContainer = document.querySelector(".results-container");
+  if (isScoreVisible) {
     if (resultsContainer) {
       resultsContainer.remove();
     }
-    isResultsVisible = false;
-  } else {
-    let resultsContainer = document.querySelector(".results-container");
-    if (!resultsContainer) {
-      resultsContainer = createElement("div", "results-container");
-      document.body.appendChild(resultsContainer);
-    } else {
-      resultsContainer.innerHTML = "";
-    }
-    let closeContainer = createElement("div", "close-btn-container");
-
-    let close = createElement("button", "close-btn");
-    close.classList.add("icon-btn");
-    close.classList.add("results");
-    closeContainer.appendChild(close);
-
-    resultsContainer.appendChild(closeContainer);
-
-    close.addEventListener("click", () => {
-      resultsContainer.remove();
-
-      isResultsVisible = false;
-    });
-
-    let header = createElement("div", "results-header", "Top 5 Results:");
-    resultsContainer.appendChild(header);
-
-    let table = createElement("table", "results-table");
-    let thead = createElement("thead");
-    let tbody = createElement("tbody");
-
-    let headers = ["Level", "Picture", "Time"];
-    let headRow = createElement("tr");
-    headers.forEach((headerText) => {
-      let th = createElement("th", null, headerText);
-      headRow.appendChild(th);
-    });
-    thead.appendChild(headRow);
-
-    allResults.forEach((result) => {
-      let row = createElement("tr");
-      let levelCell = createElement("td", null, result.currentLevel);
-      let pictureCell = createElement("td", null, result.nameGamePicture);
-      let timeCell = createElement(
-        "td",
-        null,
-        `${result.minutes}:${result.seconds < 10 ? "0" : ""}${result.seconds}`
-      );
-
-      row.appendChild(levelCell);
-      row.appendChild(pictureCell);
-      row.appendChild(timeCell);
-      tbody.appendChild(row);
-    });
-
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    resultsContainer.appendChild(table);
-    isResultsVisible = true;
+    isScoreVisible = false;
+    return;
   }
+
+  if (!resultsContainer) {
+    resultsContainer = createElement("div", "results-container");
+    document.body.appendChild(resultsContainer);
+  } else {
+    resultsContainer.innerHTML = "";
+  }
+
+  let closeContainer = createElement("div", "close-btn-container");
+  let close = createElement("button", "close-btn");
+  close.classList.add("icon-btn");
+  close.classList.add("results");
+  close.addEventListener("click", () => {
+    resultsContainer.remove();
+    isScoreVisible = false;
+  });
+  closeContainer.appendChild(close);
+  resultsContainer.appendChild(closeContainer);
+
+  let header = createElement("div", "results-header", "Top 5 Results:");
+  resultsContainer.appendChild(header);
+
+  let table = createElement("table", "results-table");
+  let thead = createElement("thead", "result-table-head");
+  let tbody = createElement("tbody");
+
+  let headers = ["Level", "Picture", "Time"];
+  let headRow = createElement("tr", "result-table-head-row");
+  headers.forEach((headerText) => {
+    let th = createElement("th", "result-table-head-col-name", headerText);
+    headRow.appendChild(th);
+  });
+  thead.appendChild(headRow);
+
+  allResults.forEach((result) => {
+    let row = createElement("tr", "result-table-body-row");
+    let levelCell = createElement(
+      "td",
+      "result-table-body-col",
+      result.currentLevel
+    );
+    let pictureCell = createElement(
+      "td",
+      "result-table-body-col",
+      result.nameGamePicture
+    );
+    let timeCell = createElement(
+      "td",
+      "result-table-body-col",
+      `${result.minutes}:${result.seconds < 10 ? "0" : ""}${result.seconds}`
+    );
+
+    row.appendChild(levelCell);
+    row.appendChild(pictureCell);
+    row.appendChild(timeCell);
+    tbody.appendChild(row);
+  });
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  resultsContainer.appendChild(table);
+  isScoreVisible = true;
 }
 
+createStartWindow();
 window.addEventListener("resize", checkWindowHeight);

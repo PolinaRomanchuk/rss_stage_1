@@ -674,7 +674,7 @@ function createManageFooter() {
   let settingIcon = createElement("button", "setting-btn");
   settingIcon.classList.add("icon-btn");
   settingIcon.addEventListener("click", () => {
-    hiddenBtnContainer.classList.toggle("hidden");
+    hiddenBtnContainer.classList.toggle("inactive");
   });
 
   let hiddenBtnContainer = createElement("div", "hidden-btn-container");

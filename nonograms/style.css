@@ -282,6 +282,15 @@ input[type="radio"]:checked + .level-label {
   display: flex;
   justify-content: center;
   margin-left: 10px;
+  transform: translateX(0%);
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+  opacity: 1;
+}
+
+.hidden-btn-container.inactive {
+  transform: translateX(-100%);
+  opacity: 0;
+  visibility: hidden;
 }
 
 .footer-game-setting-container {

@@ -349,6 +349,14 @@ input[type="radio"]:checked + .level-label {
   background-color: var(--color-accent-light);
   padding: 20px;
   border-radius: 5px;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+  z-index: 11;
+}
+.results-container.show {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 .results-header {
@@ -358,6 +366,14 @@ input[type="radio"]:checked + .level-label {
 th,
 td {
   padding: 5px;
+}
+
+.result-table-body-row:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.result-table-body-row:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 @media screen and (min-width: 1280px) {
@@ -386,4 +402,22 @@ td {
   .footer-game-setting-container {
     height: 13%;
   }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+  z-index: 10;
+}
+
+.overlay.show {
+  opacity: 1;
+  visibility: visible;
 }

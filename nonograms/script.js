@@ -1203,16 +1203,35 @@ function saveWinGames() {
   localStorage.setItem("nonoGramsResults", JSON.stringify(allResults));
 }
 
+function closeResults() {
+  let resultsContainer = document.querySelector(".results-container");
+  let overlay = document.querySelector(".overlay");
+
+  if (resultsContainer) resultsContainer.classList.remove("show");
+  if (overlay) overlay.classList.remove("show");
+
+  setTimeout(() => {
+    if (resultsContainer) resultsContainer.remove();
+    if (overlay) overlay.remove();
+  }, 500);
+
+  isScoreVisible = false;
+}
+
 function displayWinGames() {
   let allResults = JSON.parse(localStorage.getItem("nonoGramsResults")) || [];
   let resultsContainer = document.querySelector(".results-container");
+  let overlay = document.querySelector(".overlay");
 
   if (isScoreVisible) {
-    if (resultsContainer) {
-      resultsContainer.remove();
-    }
-    isScoreVisible = false;
+    closeResults();
     return;
+  }
+
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    document.body.appendChild(overlay);
   }
 
   if (!resultsContainer) {
@@ -1226,10 +1245,7 @@ function displayWinGames() {
   let close = createElement("button", "close-btn");
   close.classList.add("icon-btn");
   close.classList.add("results");
-  close.addEventListener("click", () => {
-    resultsContainer.remove();
-    isScoreVisible = false;
-  });
+  close.addEventListener("click", closeResults);
   closeContainer.appendChild(close);
   resultsContainer.appendChild(closeContainer);
 
@@ -1275,7 +1291,17 @@ function displayWinGames() {
   table.appendChild(thead);
   table.appendChild(tbody);
   resultsContainer.appendChild(table);
+  setTimeout(() => {
+    resultsContainer.classList.add("show");
+    overlay.classList.add("show");
+  }, 10);
   isScoreVisible = true;
+
+  overlay.addEventListener("click", (event) => {
+    if (!resultsContainer.contains(event.target)) {
+      closeResults();
+    }
+  });
 }
 
 createStartWindow();

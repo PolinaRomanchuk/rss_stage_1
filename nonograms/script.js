@@ -942,6 +942,9 @@ function updateGameStyles() {
     cells.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
     verHints.style.gridTemplateColumns = `repeat(${gameSize}, 70px)`;
     horHints.style.gridTemplateRows = `repeat(${gameSize}, 70px)`;
+    let color = `var(--color-game-border-${systemStyle})`;
+    cells.style.borderTop = `3px solid ${color}`;
+    cells.style.borderLeft = `3px solid ${color}`;
   }
   if (currentLevel === "Medium") {
     verHints.style.height = `90px`;
@@ -949,6 +952,7 @@ function updateGameStyles() {
     cells.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
     verHints.style.gridTemplateColumns = `repeat(${gameSize}, 40px)`;
     horHints.style.gridTemplateRows = `repeat(${gameSize}, 40px)`;
+    addGridLines(5);
   }
 
   if (currentLevel === "Hard") {
@@ -958,9 +962,60 @@ function updateGameStyles() {
     cells.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
     verHints.style.gridTemplateColumns = `repeat(${gameSize}, 23px)`;
     horHints.style.gridTemplateRows = `repeat(${gameSize}, 23px)`;
+    addGridLines(5);
   }
   checkWindowHeight();
   setGameColors(systemStyle);
+}
+
+function addGridLines(cellCount) {
+  let cells = document.querySelector(".game-grid-cells");
+  let color = `var(--color-game-border-${systemStyle})`;
+  cells.style.border = "none";
+  cells.style.borderTop = `3px solid ${color}`;
+  cells.style.borderLeft = `3px solid ${color}`;
+
+  let cellElements = cells.querySelectorAll(".game-grid-cell");
+  let verHints = document.querySelectorAll(".vertical-hint");
+  let horHints = document.querySelectorAll(".horisontal-hint");
+
+  for (let i = 0; i < cellElements.length; i++) {
+    let rowIndex = Math.floor(i / gameSize);
+    let colIndex = i % gameSize;
+
+    if ((colIndex + 1) % cellCount === 0 && colIndex !== gameSize - 1) {
+      cellElements[i].style.borderRight = `3px solid ${color}`;
+    }
+
+    if ((rowIndex + 1) % cellCount === 0 && rowIndex !== gameSize - 1) {
+      cellElements[i].style.borderBottom = `3px solid ${color}`;
+    }
+  }
+
+  for (let i = 0; i < verHints.length; i++) {
+    let colIndex = i % gameSize;
+
+    if ((colIndex + 1) % cellCount === 0 && colIndex !== gameSize - 1) {
+      verHints[i].style.borderRight = `3px solid ${color}`;
+    }
+  }
+
+  for (let i = 0; i < horHints.length; i++) {
+    let colIndex = i % gameSize;
+    if ((colIndex + 1) % cellCount === 0 && colIndex !== gameSize - 1) {
+      horHints[i].style.borderBottom = `3px solid ${color}`;
+    }
+  }
+}
+
+function removeGridLines() {
+  let cells = document.querySelector(".game-grid-cells");
+  let cellElements = cells.querySelectorAll(".game-grid-cell");
+
+  cellElements.forEach((cell) => {
+    cell.style.borderRight = "none";
+    cell.style.borderBottom = "none";
+  });
 }
 
 function checkWindowHeight() {
@@ -1053,7 +1108,7 @@ function setSystemStyle(style) {
 
   let horisontalHints = document.querySelectorAll(".horisontal-hint");
   let verticalHints = document.querySelectorAll(".vertical-hint");
-  let cells = document.querySelectorAll(".game-grid-cell");
+  let cells = document.querySelector(".game-grid-cells");
 
   let dropItems = document.querySelectorAll(".dropdown-item");
   let cross = document.querySelector(".right-clicked");
@@ -1062,6 +1117,9 @@ function setSystemStyle(style) {
   styleBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/styleIcon.png)`;
   statisticsBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/statisticsIcon.png)`;
   settingBtn.style.backgroundImage = `url(./assets/img/${systemStyle}/settingsIcon.png)`;
+  let color = `var(--color-game-border-${systemStyle})`;
+  cells.style.borderTop = `3px solid ${color}`;
+  cells.style.borderLeft = `3px solid ${color}`;
 
   if (isSounding) {
     sound.style.backgroundImage = `url(./assets/img/${systemStyle}/off-${systemStyle}.png)`;

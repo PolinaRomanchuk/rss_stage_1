@@ -201,9 +201,10 @@ input[type="radio"]:checked + .level-label {
 
 .game-grid-cells {
   display: grid;
-  justify-items: center;
   justify-content: space-around;
   align-content: space-between;
+  justify-items: end;
+  align-items: end;
   grid-template-columns: repeat(5, 70px);
   grid-template-rows: repeat(5, 70px);
   grid-column-start: 2;
@@ -233,6 +234,7 @@ input[type="radio"]:checked + .level-label {
   height: 70px;
   display: grid;
   justify-items: center;
+  justify-items: end;
   grid-template-columns: repeat(5, 70px);
   grid-column-start: 2;
   border: solid 3px rgba(128, 128, 128, 0.742);
@@ -242,6 +244,7 @@ input[type="radio"]:checked + .level-label {
   display: grid;
   width: 70px;
   justify-items: center;
+  align-items: end;
   grid-template-rows: repeat(5, 70px);
   grid-row-start: 2;
   border: solid 3px rgba(128, 128, 128, 0.742);

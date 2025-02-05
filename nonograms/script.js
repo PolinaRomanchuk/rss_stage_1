@@ -1288,13 +1288,7 @@ function saveWinGames() {
     totalSeconds: minutes * 60 + seconds,
   };
   allResults.push(newResult);
-
-  if (allResults.length > 5) {
-    allResults = allResults.slice(-5);
-  }
-
-  allResults.sort((a, b) => a.totalSeconds - b.totalSeconds);
-
+  allResults = allResults.slice(-5);
   localStorage.setItem("nonoGramsResults", JSON.stringify(allResults));
 }
 
@@ -1315,6 +1309,7 @@ function closeResults() {
 
 function displayWinGames() {
   let allResults = JSON.parse(localStorage.getItem("nonoGramsResults")) || [];
+  allResults.sort((a, b) => a.totalSeconds - b.totalSeconds);
   let resultsContainer = document.querySelector(".results-container");
   let overlay = document.querySelector(".overlay");
 

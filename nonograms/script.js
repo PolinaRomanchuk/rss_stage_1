@@ -949,7 +949,7 @@ function resetGame(isplaying) {
   if(gameOver){
     resetTimer();
   }
-  
+
   gameOver = false;
   if (!isplaying) {
     resetTimer();
@@ -980,7 +980,7 @@ function setGameGridSizes(checked) {
     pxSize = `70px`;
   } else if (currentLevel === "Medium") {
     gameSize = 10;
-    pxSize = `40px`;
+    pxSize = `35px`;
   } else if (currentLevel === "Hard") {
     gameSize = 15;
     pxSize = `23px`;

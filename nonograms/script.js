@@ -867,11 +867,12 @@ function win() {
   let close = createElement("button", "close-btn");
   close.classList.add("icon-btn");
   let closeContainer = createElement("div", "close-btn-container");
+  let totalSeconds = minutes * 60 + seconds;
 
   let text = createElement(
     "div",
     "win-text",
-    `Great! You have solved the nonogram  in ${minutesElement.textContent}${secondsElement.textContent} seconds!`
+    `Great! You have solved the nonogram  in ${totalSeconds} seconds!`
   );
   let gifContainer = createElement("div", "gif-win-container");
   let gif = createElement("div", "gif-win");

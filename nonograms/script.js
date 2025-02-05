@@ -946,6 +946,10 @@ function resetTimer() {
 }
 
 function resetGame(isplaying) {
+  if(gameOver){
+    resetTimer();
+  }
+  
   gameOver = false;
   if (!isplaying) {
     resetTimer();

@@ -1284,11 +1284,11 @@ function saveWinGames() {
   };
   allResults.push(newResult);
 
-  allResults.sort((a, b) => a.totalSeconds - b.totalSeconds);
-
   if (allResults.length > 5) {
-    allResults = allResults.slice(0, 5);
+    allResults = allResults.slice(-5);
   }
+
+  allResults.sort((a, b) => a.totalSeconds - b.totalSeconds);
 
   localStorage.setItem("nonoGramsResults", JSON.stringify(allResults));
 }
@@ -1339,7 +1339,7 @@ function displayWinGames() {
   closeContainer.appendChild(close);
   resultsContainer.appendChild(closeContainer);
 
-  let header = createElement("div", "results-header", "Top 5 Results:");
+  let header = createElement("div", "results-header", "Latest 5 Results:");
   resultsContainer.appendChild(header);
 
   let table = createElement("table", "results-table");

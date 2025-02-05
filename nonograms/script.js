@@ -867,11 +867,12 @@ function win() {
   let close = createElement("button", "close-btn");
   close.classList.add("icon-btn");
   let closeContainer = createElement("div", "close-btn-container");
+  let totalSeconds = minutes * 60 + seconds;
 
   let text = createElement(
     "div",
     "win-text",
-    `Great! You have solved the nonogram  in ${minutesElement.textContent}${secondsElement.textContent} seconds!`
+    `Great! You have solved the nonogram  in ${totalSeconds} seconds!`
   );
   let gifContainer = createElement("div", "gif-win-container");
   let gif = createElement("div", "gif-win");
@@ -946,6 +947,10 @@ function resetTimer() {
 }
 
 function resetGame(isplaying) {
+  if(gameOver){
+    resetTimer();
+  }
+
   gameOver = false;
   if (!isplaying) {
     resetTimer();
@@ -976,7 +981,7 @@ function setGameGridSizes(checked) {
     pxSize = `70px`;
   } else if (currentLevel === "Medium") {
     gameSize = 10;
-    pxSize = `40px`;
+    pxSize = `35px`;
   } else if (currentLevel === "Hard") {
     gameSize = 15;
     pxSize = `23px`;
@@ -1283,13 +1288,7 @@ function saveWinGames() {
     totalSeconds: minutes * 60 + seconds,
   };
   allResults.push(newResult);
-
-  allResults.sort((a, b) => a.totalSeconds - b.totalSeconds);
-
-  if (allResults.length > 5) {
-    allResults = allResults.slice(0, 5);
-  }
-
+  allResults = allResults.slice(-5);
   localStorage.setItem("nonoGramsResults", JSON.stringify(allResults));
 }
 
@@ -1310,6 +1309,7 @@ function closeResults() {
 
 function displayWinGames() {
   let allResults = JSON.parse(localStorage.getItem("nonoGramsResults")) || [];
+  allResults.sort((a, b) => a.totalSeconds - b.totalSeconds);
   let resultsContainer = document.querySelector(".results-container");
   let overlay = document.querySelector(".overlay");
 
@@ -1339,7 +1339,7 @@ function displayWinGames() {
   closeContainer.appendChild(close);
   resultsContainer.appendChild(closeContainer);
 
-  let header = createElement("div", "results-header", "Top 5 Results:");
+  let header = createElement("div", "results-header", "Latest 5 Results:");
   resultsContainer.appendChild(header);
 
   let table = createElement("table", "results-table");

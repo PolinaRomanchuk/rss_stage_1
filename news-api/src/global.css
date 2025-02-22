@@ -59,4 +59,8 @@ footer .copyright:before {
     & .logo-rsschool {
         width: 100px;
     }
+    & .link-rsschool{
+        background: url('./rs_school_js.svg');
+        width: 100px;
+    }
 }

@@ -4,8 +4,8 @@ import { NewsArticle } from '../../types/index';
 import { NewsSource } from '../../types/index';
 
 class App {
-    controller: AppController;
-    view: AppView;
+    private controller: AppController;
+    private view: AppView;
 
     constructor() {
         this.controller = new AppController();

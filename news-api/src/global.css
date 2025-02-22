@@ -48,7 +48,10 @@ footer .copyright:before {
 .shool_info {
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
+
     width: 100%;
+    background: #30c5ff70;
     & .year-project,
     & .link-github {
         font-size: 20px;
@@ -62,5 +65,7 @@ footer .copyright:before {
     & .link-rsschool{
         background: url('./rs_school_js.svg');
         width: 100px;
+        height: 37px;
+        background-size: cover;
     }
 }

@@ -1,0 +1,10 @@
+.options-list{
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-option{
+  height: 50px;
+  margin-bottom: 20px;
+}

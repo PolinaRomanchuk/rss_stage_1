@@ -1,0 +1,26 @@
+.option-container {
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.option-index {
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-title {
+  flex-grow: 1;
+  min-width: 100px;
+}
+.option-weight {
+  width: 80px;
+  text-align: center;
+}
+
+.option-delete {
+  width: 60px;
+  text-align: center;
+}

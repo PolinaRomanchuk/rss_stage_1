@@ -35,8 +35,9 @@ class Option extends BaseView {
     this.appendChildren([this.indexElement, this.titleInput, this.weightInput, this.deleteButton]);
   }
 
-  public getData(): { name: string; weight: number } {
+  public getData(): { id: number; name: string; weight: number } {
     return {
+      id: this.getIdNumber(),
       name: this.titleInput.value,
       weight: Number(this.weightInput.value) || 0,
     };
@@ -44,6 +45,9 @@ class Option extends BaseView {
   public updateIndex(index: number): void {
     this.indexElement.textContent = `#${index + 1}`;
   }
- 
+
+  private getIdNumber() {
+    return Number(this.indexElement.textContent?.slice(1));
+  }
 }
 export default Option;

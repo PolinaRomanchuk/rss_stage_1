@@ -1,6 +1,7 @@
 import BaseView from '../baseView';
+import ButtonsConfigurationList from '../buttonsConfiguration/buttonsConfigurationList';
 import Option from '../optionsList/option/option';
-import '../optionsList/optionList.css'
+import '../optionsList/optionList.css';
 
 class OptionsList extends BaseView {
   private options: Option[] = [];
@@ -8,7 +9,7 @@ class OptionsList extends BaseView {
 
   constructor() {
     super({ tag: 'div', classNames: ['options-list'] });
-
+    const buttonsContainer = new ButtonsConfigurationList(this);
     const addButton = new BaseView({
       tag: 'button',
       classNames: ['add-option'],
@@ -28,6 +29,16 @@ class OptionsList extends BaseView {
   private deleteOption(option: Option): void {
     this.options = this.options.filter((opt) => opt !== option);
     option.removeElement();
+    if (this.options.length === 0) {
+      this.optionIdCounter = 1;
+    }
+  }
+
+  public getOptions(): Option[] {
+    return this.options;
+  }
+
+  public resetIdCounter() {
     if (this.options.length === 0) {
       this.optionIdCounter = 1;
     }

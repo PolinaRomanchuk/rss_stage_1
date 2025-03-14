@@ -49,5 +49,14 @@ class Option extends BaseView {
   private getIdNumber() {
     return Number(this.indexElement.textContent?.slice(1));
   }
+
+  public setTitle(title: string): void {
+    this.titleInput.value = title;
+  }
+  
+  public setWeight(weight: number): void {
+    this.weightInput.value = weight.toString();
+  }
+  
 }
 export default Option;

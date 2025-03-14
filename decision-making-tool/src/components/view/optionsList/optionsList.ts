@@ -4,7 +4,7 @@ import Option from '../optionsList/option/option';
 import '../optionsList/optionList.css';
 
 class OptionsList extends BaseView {
-  private options: Option[] = [];
+  public options: Option[] = [];
   private optionIdCounter: number = 1;
 
   constructor() {
@@ -26,7 +26,7 @@ class OptionsList extends BaseView {
     this.append(newOption);
   }
 
-  private deleteOption(option: Option): void {
+  public deleteOption(option: Option): void {
     this.options = this.options.filter((opt) => opt !== option);
     option.removeElement();
     if (this.options.length === 0) {
@@ -42,6 +42,10 @@ class OptionsList extends BaseView {
     if (this.options.length === 0) {
       this.optionIdCounter = 1;
     }
+  }
+  public setIdCounterAndLength(length: number, idCounter: number) {
+    this.options.length = length;
+    this.optionIdCounter = idCounter;
   }
 }
 

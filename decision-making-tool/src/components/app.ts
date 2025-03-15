@@ -1,6 +1,7 @@
 import Header from '../components/view/header/header-view';
 import OptionsCreatorView from './view/optionCreater/optionsCreatorView';
 import router from '../components/utils/router';
+import DecisionPickerView from './view/decisionPicker/decisionPickerView';
 
 class App {
   private contentContainer: HTMLElement;
@@ -33,7 +34,12 @@ class App {
     document.body.append(this.contentContainer);
   }
 
-  private renderDecisionPicker(): void {}
+  private renderDecisionPicker(): void {
+    this.clearContent();
+    const decisionPicker = new DecisionPickerView();
+    this.contentContainer.append(decisionPicker.getBaseElement());
+    document.body.append(this.contentContainer);
+  }
 
   private clearContent(): void {
     this.contentContainer.replaceChildren();

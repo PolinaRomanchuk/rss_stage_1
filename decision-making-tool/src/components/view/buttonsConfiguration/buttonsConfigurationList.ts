@@ -4,6 +4,8 @@ import OptionsList from '../optionsList/optionsList';
 import SaveOptionsToJsonButton from './saveOptionsToJsonButton/saveOptionsToJsonButton';
 import LoadOptionsButton from './loadOptionsButton/loadOptionsButton';
 import PasteOptionsButton from './pasteOptionsButton/pasteOptionsButton';
+import StartButton from './startButton/startButton';
+
 
 class ButtonsConfigurationList extends BaseView {
   constructor(optionsList: OptionsList) {
@@ -15,7 +17,8 @@ class ButtonsConfigurationList extends BaseView {
     const saveButton = new SaveOptionsToJsonButton(optionsList);
     const loadButton = new LoadOptionsButton(optionsList);
     const pastButton = new PasteOptionsButton(optionsList);
-    this.appendChildren([clearOptionsButton, saveButton, loadButton, pastButton]);
+    const start = new StartButton(optionsList);
+    this.appendChildren([clearOptionsButton, saveButton, loadButton, pastButton, start]);
   }
 }
 export default ButtonsConfigurationList;

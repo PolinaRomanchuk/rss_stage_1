@@ -1,7 +1,9 @@
 .option-container {
   height: 35px;
+  width:  400px;
   display: flex;
   justify-content: space-between;
+  border: 0.3px solid black;
 }
 
 .option-index {

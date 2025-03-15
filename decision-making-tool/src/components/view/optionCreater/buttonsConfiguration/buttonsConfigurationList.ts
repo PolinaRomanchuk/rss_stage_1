@@ -5,6 +5,7 @@ import SaveOptionsToJsonButton from './saveOptionsToJsonButton/saveOptionsToJson
 import LoadOptionsButton from './loadOptionsButton/loadOptionsButton';
 import PasteOptionsButton from './pasteOptionsButton/pasteOptionsButton';
 import StartButton from './startButton/startButton';
+import '../buttonsConfiguration/buttonsConfigurationList.css'
 
 
 class ButtonsConfigurationList extends BaseView {

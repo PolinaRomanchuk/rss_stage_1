@@ -1,6 +1,7 @@
 import ModalWindow from '../../../../utils/modalWindow/modalWindow';
 import BaseView from '../../../baseView';
 import OptionsList from '../../optionsList/optionsList';
+import router from '../../../../utils/router';
 
 class StartButton extends BaseView {
   private optionsList: OptionsList;
@@ -13,6 +14,7 @@ class StartButton extends BaseView {
     this.optionsList = optionsList;
     this.getBaseElement().addEventListener('click', () => {
       if (this.checkValid()) {
+        router.navigate('/decision-picker');
       }
     });
   }
@@ -21,9 +23,9 @@ class StartButton extends BaseView {
     const length = this.optionsList.getOptionsLength();
     if (length < 2) {
       this.openModal();
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
   private openModal(): void {

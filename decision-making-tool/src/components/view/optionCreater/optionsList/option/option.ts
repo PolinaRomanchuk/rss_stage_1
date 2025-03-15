@@ -1,4 +1,4 @@
-import BaseView from '../../baseView';
+import BaseView from '../../../baseView';
 import '../option/option.css';
 
 class Option extends BaseView {

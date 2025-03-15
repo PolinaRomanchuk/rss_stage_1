@@ -1,4 +1,4 @@
-import BaseView from '../../baseView';
+import BaseView from '../../../baseView';
 import OptionsList from '../../optionsList/optionsList';
 import Option from '../../optionsList/option/option';
 

@@ -1,16 +1,14 @@
 import Header from '../components/view/header/header-view';
-import ButtonsConfigurationList from './view/buttonsConfiguration/buttonsConfigurationList';
-import OptionsList from './view/optionsList/optionsList';
+import OptionsCreatorView from './view/optionCreater/optionsCreatorView';
 
 class App {
   constructor() {}
 
   renderApp(): void {
     const header = new Header();
-    const optionsList = new OptionsList();
-    const buttons = new ButtonsConfigurationList(optionsList);
+    const optionsCreator = new OptionsCreatorView();
 
-    document.body.append(header.getBaseElement(), optionsList.getBaseElement(), buttons.getBaseElement());
+    document.body.append(header.getBaseElement(), optionsCreator.getBaseElement());
   }
 }
 

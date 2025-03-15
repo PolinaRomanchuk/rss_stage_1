@@ -1,6 +1,6 @@
-import BaseView from '../baseView';
+import BaseView from '../../baseView';
 import ButtonsConfigurationList from '../buttonsConfiguration/buttonsConfigurationList';
-import Option from '../optionsList/option/option';
+import Option from './option/option';
 import '../optionsList/optionList.css';
 
 class OptionsList extends BaseView {

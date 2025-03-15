@@ -1,4 +1,4 @@
-import BaseView from '../baseView';
+import BaseView from '../../baseView';
 import ClearOptionsListButton from './clearOptionsListButton/clearOptinsListButton';
 import OptionsList from '../optionsList/optionsList';
 import SaveOptionsToJsonButton from './saveOptionsToJsonButton/saveOptionsToJsonButton';

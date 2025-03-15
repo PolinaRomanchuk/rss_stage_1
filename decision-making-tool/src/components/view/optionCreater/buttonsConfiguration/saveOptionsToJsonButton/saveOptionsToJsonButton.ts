@@ -1,4 +1,4 @@
-import BaseView from '../../baseView';
+import BaseView from '../../../baseView';
 import OptionsList from '../../optionsList/optionsList';
 
 class SaveOptionsToJsonButton extends BaseView {

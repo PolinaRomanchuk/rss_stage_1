@@ -1,5 +1,5 @@
-import ModalWindow from '../../../utils/modalWindow/modalWindow';
-import BaseView from '../../baseView';
+import ModalWindow from '../../../../utils/modalWindow/modalWindow';
+import BaseView from '../../../baseView';
 import OptionsList from '../../optionsList/optionsList';
 
 class StartButton extends BaseView {

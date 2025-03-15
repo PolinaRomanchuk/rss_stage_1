@@ -1,7 +1,7 @@
-import ModalWindow from '../../../utils/modalWindow/modalWindow';
-import BaseView from '../../baseView';
+import ModalWindow from '../../../../utils/modalWindow/modalWindow';
+import BaseView from '../../../baseView';
 import OptionsList from '../../optionsList/optionsList';
-import '../pasteOptionsButton/paste.css';
+import './paste.css';
 import Option from '../../optionsList/option/option';
 
 class PasteOptionsButton extends BaseView {

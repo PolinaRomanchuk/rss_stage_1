@@ -4,6 +4,7 @@ import PickerCinfiguration from './pickerConfiguration/pickerConfiguration';
 import PickOption from './pickerConfiguration/pickOption/pickOption';
 import SoundButton from './pickerConfiguration/soundButton/soundButton';
 import StartPicker from './pickerConfiguration/startButton/startPicker';
+import Wheel from './wheel/wheel';
 
 class DecisionPickerView extends BaseView {
   constructor() {
@@ -16,7 +17,8 @@ class DecisionPickerView extends BaseView {
     const time = new DurationButton();
     const start = new StartPicker();
     const pickOption = new PickOption();
-    this.appendChildren([pickerConfig, soundButton, time, start, pickOption]);
+    const wheel = new Wheel();
+    this.appendChildren([pickerConfig, soundButton, time, start, pickOption, wheel]);
   }
 }
 

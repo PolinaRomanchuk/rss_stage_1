@@ -1,5 +1,6 @@
 import BaseView from '../baseView';
 import PickerCinfiguration from './pickerConfiguration/pickerConfiguration';
+import SoundButton from './pickerConfiguration/soundButton/soundButton';
 
 class DecisionPickerView extends BaseView {
   constructor() {
@@ -8,7 +9,8 @@ class DecisionPickerView extends BaseView {
       classNames: ['decision-picker-container'],
     });
     const pickerConfig = new PickerCinfiguration();
-    this.appendChildren([pickerConfig]);
+    const soundButton = new SoundButton();
+    this.appendChildren([pickerConfig, soundButton]);
   }
 }
 

@@ -1,5 +1,9 @@
 import BaseView from '../../baseView';
+import DurationButton from './durationButton/durationButton';
+import PickOption from './pickOption/pickOption';
 import PrevButton from './prevButton/prevButton';
+import SoundButton from './soundButton/soundButton';
+import StartPicker from './startButton/startPicker';
 
 class PickerCinfiguration extends BaseView {
   constructor() {
@@ -8,8 +12,11 @@ class PickerCinfiguration extends BaseView {
       classNames: ['picker-configuration-container'],
     });
     const prevButton = new PrevButton();
-
-    this.appendChildren([prevButton]);
+    const soundButton = new SoundButton();
+    const time = new DurationButton();
+    const start = new StartPicker();
+    const pickOption = new PickOption();
+    this.appendChildren([prevButton, soundButton, time, start, pickOption]);
   }
 }
 export default PickerCinfiguration;

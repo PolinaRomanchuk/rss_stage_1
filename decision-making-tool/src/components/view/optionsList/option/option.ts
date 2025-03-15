@@ -46,7 +46,7 @@ class Option extends BaseView {
     this.indexElement.textContent = `#${index + 1}`;
   }
 
-  private getIdNumber() {
+  public getIdNumber() {
     return Number(this.indexElement.textContent?.slice(1));
   }
 

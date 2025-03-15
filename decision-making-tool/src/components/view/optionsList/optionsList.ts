@@ -47,6 +47,10 @@ class OptionsList extends BaseView {
     this.options.length = length;
     this.optionIdCounter = idCounter;
   }
+
+  public getOptionsLength(): number {
+    return this.options.length;
+  }
 }
 
 export default OptionsList;

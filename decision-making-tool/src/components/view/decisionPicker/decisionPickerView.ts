@@ -1,4 +1,5 @@
 import BaseView from '../baseView';
+import DurationButton from './pickerConfiguration/durationButton/durationButton';
 import PickerCinfiguration from './pickerConfiguration/pickerConfiguration';
 import SoundButton from './pickerConfiguration/soundButton/soundButton';
 
@@ -10,7 +11,8 @@ class DecisionPickerView extends BaseView {
     });
     const pickerConfig = new PickerCinfiguration();
     const soundButton = new SoundButton();
-    this.appendChildren([pickerConfig, soundButton]);
+    const time = new DurationButton();
+    this.appendChildren([pickerConfig, soundButton, time]);
   }
 }
 

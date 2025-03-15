@@ -3,6 +3,7 @@ import ClearOptionsListButton from './clearOptionsListButton/clearOptinsListButt
 import OptionsList from '../optionsList/optionsList';
 import SaveOptionsToJsonButton from './saveOptionsToJsonButton/saveOptionsToJsonButton';
 import LoadOptionsButton from './loadOptionsButton/loadOptionsButton';
+import PasteOptionsButton from './pasteOptionsButton/pasteOptionsButton';
 
 class ButtonsConfigurationList extends BaseView {
   constructor(optionsList: OptionsList) {
@@ -13,7 +14,8 @@ class ButtonsConfigurationList extends BaseView {
     const clearOptionsButton = new ClearOptionsListButton(optionsList);
     const saveButton = new SaveOptionsToJsonButton(optionsList);
     const loadButton = new LoadOptionsButton(optionsList);
-    this.appendChildren([clearOptionsButton, saveButton, loadButton]);
+    const pastButton = new PasteOptionsButton(optionsList);
+    this.appendChildren([clearOptionsButton, saveButton, loadButton, pastButton]);
   }
 }
 export default ButtonsConfigurationList;

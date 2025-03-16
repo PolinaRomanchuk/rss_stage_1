@@ -1,4 +1,4 @@
-import ErrorRouting from './errorRouting';
+import ErrorRouting from '../utils/ErrorRouting';
 
 class Router {
   private routes: Record<string, () => void> = {};

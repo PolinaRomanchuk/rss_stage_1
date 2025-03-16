@@ -8,10 +8,11 @@ class DecisionPickerView extends BaseView {
       tag: 'div',
       classNames: ['decision-picker-container'],
     });
-    const pickerConfig = new PickerCinfiguration();
     const options = this.loadOptions();
 
     const wheel = new Wheel(options);
+
+    const pickerConfig = new PickerCinfiguration(wheel);
 
     this.appendChildren([pickerConfig, wheel]);
   }

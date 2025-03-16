@@ -5,6 +5,8 @@ class Wheel extends BaseView {
   private options: { name: string; weight: number }[];
   private ctx: CanvasRenderingContext2D | null = null;
   private canvas: HTMLCanvasElement | null = null;
+  private rotationAngle = 0;
+  private isSpinning = false;
 
   constructor(options: { name: string; weight: number }[]) {
     super({
@@ -49,6 +51,7 @@ class Wheel extends BaseView {
     const centerX = this.canvas.width / 2;
     const centerY = this.canvas.height / 2;
     const radius = Math.min(centerX, centerY) - 25;
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.options.forEach((option) => {
       if (!this.ctx) return;
@@ -153,6 +156,32 @@ class Wheel extends BaseView {
   private getColor(): string {
     const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
     return randomColor;
+  }
+
+  public turn(time: number) {
+    if (this.isSpinning) return;
+    this.isSpinning = true;
+    let startTime: number | null = null;
+    const duration = time * 1000;
+    const maxSpeed = 10;
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+
+      const progress = elapsed / duration;
+      const easing = 1 - Math.pow(1 - progress, 3);
+
+      this.rotationAngle += maxSpeed * easing;
+      if (!this.canvas) return;
+      this.canvas.style.transform = `rotate(${this.rotationAngle}deg)`;
+      if (elapsed < duration) {
+        requestAnimationFrame(animate);
+      } else {
+        this.isSpinning = false;
+      }
+    };
+
+    requestAnimationFrame(animate);
   }
 }
 

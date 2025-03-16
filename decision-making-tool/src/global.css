@@ -1,6 +1,58 @@
+* {
+  transition: all 0.3s ease-out;
+}
+
+html {
+  --color-font-main: #343009;
+  --color-background: #fef590;
+
+  --color-btn-background-inactive: #fded2a;
+  --color-btn-background-focus: #fffcdc;
+  --color-btn-border: #c0b002;
+  --color-accent: #fb9902;
+
+  font-family: 'Nunito';
+  font-size: large;
+  color: var(--color-font-main);
+}
+
+body {
+  width: 95vw;
+  height: 95vh;
+  margin: 0;
+  background-color: var(--color-background);
+}
+
 .content {
-  width: 97vw;
-  height: 97vh;
+  width: 100%;
   display: flex;
   justify-content: center;
+}
+
+button {
+  min-width: 100px;
+  min-height: 30px;
+  cursor: pointer;
+  background-color: var(--color-btn-background-inactive);
+  border-color: var(--color-btn-border);
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: inherit;
+
+  &:hover {
+    background-color: var(--color-btn-background-focus);
+  }
+}
+
+input {
+  background-color: var(--color-btn-background-focus);
+  border-color: var(--color-btn-border);
+  border-width: 1px;
+  border-style: solid;
+
+  &:focus-visible {
+    outline-color: var(--color-btn-border);
+  }
 }

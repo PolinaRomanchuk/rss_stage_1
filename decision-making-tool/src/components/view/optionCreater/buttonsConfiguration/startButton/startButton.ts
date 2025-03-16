@@ -2,6 +2,7 @@ import ModalWindow from '../../../../utils/modalWindow/modalWindow';
 import BaseView from '../../../baseView';
 import OptionsList from '../../optionsList/optionsList';
 import router from '../../../../utils/router';
+import '../startButton/start.css'
 
 class StartButton extends BaseView {
   private optionsList: OptionsList;
@@ -34,7 +35,7 @@ class StartButton extends BaseView {
     const modal = new ModalWindow();
     const info = new BaseView({
       tag: 'div',
-      classNames: ['info'],
+      classNames: ['valid-info'],
       textContent: 'Please add at least 2 valid options.',
     }).getBaseElement();
     const modalContent = new BaseView({ tag: 'div', classNames: ['modal-window-info-content'] });

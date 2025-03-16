@@ -1,5 +1,5 @@
 import BaseView from '../../../baseView';
-import '../option/option.css';
+import '../options.css'
 
 class Option extends BaseView {
   private indexElement: HTMLElement;
@@ -22,7 +22,7 @@ class Option extends BaseView {
 
     this.weightInput = document.createElement('input');
     this.weightInput.type = 'number';
-    this.weightInput.placeholder = 'enter weight';
+    this.weightInput.placeholder = 'weight';
     this.weightInput.classList.add('option-weight');
 
     this.deleteButton = new BaseView({

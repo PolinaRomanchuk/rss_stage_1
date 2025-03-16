@@ -1,0 +1,55 @@
+.options-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-option {
+  height: 50px;
+  width: 90%;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-container {
+  height: 35px;
+  width: 90%;
+  display: flex;
+  border: 0.3px solid;
+  border-radius: 5px;
+  border-color: var(--color-btn-border);
+  margin-bottom: 10px;
+
+  input{
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+  }
+}
+
+.option-index {
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-title {
+  padding: 10px;
+  flex-grow: 1;
+  min-width: 100px;
+}
+.option-weight {
+  width: 80px;
+  text-align: center;
+}
+
+.option-delete {
+  width: 60px;
+  text-align: center;
+  border:unset;
+  border-left: 1px solid var(--color-btn-border);
+}

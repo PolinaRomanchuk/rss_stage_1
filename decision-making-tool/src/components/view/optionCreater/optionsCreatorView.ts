@@ -1,7 +1,7 @@
 import BaseView from '../baseView';
 import ButtonsConfigurationList from './buttonsConfiguration/buttonsConfigurationList';
 import OptionsList from './optionsList/optionsList';
-import '../optionCreater/optionsCreator.css'
+import '../optionCreater/optionsCreatorView.css'
 
 class OptionsCreatorView extends BaseView {
   constructor() {

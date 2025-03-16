@@ -1,7 +1,7 @@
 import BaseView from '../../baseView';
 import ButtonsConfigurationList from '../buttonsConfiguration/buttonsConfigurationList';
 import Option from './option/option';
-import '../optionsList/optionList.css';
+import '../optionsList/options.css'
 
 class OptionsList extends BaseView {
   public options: Option[] = [];

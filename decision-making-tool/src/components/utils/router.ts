@@ -1,3 +1,5 @@
+import ErrorRouting from './errorRouting';
+
 class Router {
   private routes: Record<string, () => void> = {};
 
@@ -13,11 +15,18 @@ class Router {
   public handleRouteChange() {
     const path = window.location.pathname;
     const routeCallback = this.routes[path];
+
     if (routeCallback) {
       routeCallback();
     } else {
-      console.error('Not found');
+      this.renderErrorPage();
     }
+  }
+  
+  private renderErrorPage() {
+    const errorPage = new ErrorRouting();
+    document.body.innerHTML = '';
+    document.body.append(errorPage.getBaseElement());
   }
 }
 const router = new Router();

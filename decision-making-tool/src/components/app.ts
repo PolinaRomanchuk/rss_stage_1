@@ -17,6 +17,7 @@ class App {
 
     this.setupRoutes();
     router.handleRouteChange();
+    document.body.append(this.contentContainer);
   }
 
   private setupRoutes(): void {
@@ -31,14 +32,12 @@ class App {
     this.clearContent();
     const optionsCreator = new OptionsCreatorView();
     this.contentContainer.append(optionsCreator.getBaseElement());
-    document.body.append(this.contentContainer);
   }
 
   private renderDecisionPicker(): void {
     this.clearContent();
     const decisionPicker = new DecisionPickerView();
     this.contentContainer.append(decisionPicker.getBaseElement());
-    document.body.append(this.contentContainer);
   }
 
   private clearContent(): void {

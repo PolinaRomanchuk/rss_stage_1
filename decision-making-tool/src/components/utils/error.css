@@ -1,0 +1,7 @@
+.error-container{
+  display: flex;
+}
+
+.error-text{
+  font-size: larger;
+}

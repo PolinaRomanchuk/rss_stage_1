@@ -7,13 +7,48 @@
 }
 
 .picker-configuration-container {
-  height: 150px;
+  height: 220px;
+  width: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
 }
 
 .duration-container {
   display: flex;
+}
+
+.top-config-container {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+
+
+  button,
+  .icon-duration {
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-width: 40px !important;
+    height: 40px;
+  }
+}
+
+.time-input{
+  width: 70px;
+  padding: 10px;
+}
+
+.pick-option{
+  border: solid 1px;
+  border-color: var( --color-btn-border);
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.start-picker-button{
+  background-color: var( --color-accent);
+  width: 140px;
+  height: 40px;
 }

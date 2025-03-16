@@ -14,13 +14,19 @@ class PickerCinfiguration extends BaseView {
       tag: 'div',
       classNames: ['picker-configuration-container'],
     });
+
+    const configContainer = new BaseView({ tag: 'div', classNames: ['top-config-container'] });
+
     this.wheel = wheel;
     const prevButton = new PrevButton();
     const soundButton = new SoundButton();
     const time = new DurationButton();
+
+    configContainer.appendChildren([prevButton, soundButton, time]);
+
     const start = new StartPicker(wheel, time);
     const pickOption = new PickOption();
-    this.appendChildren([prevButton, soundButton, time, pickOption, start]);
+    this.appendChildren([configContainer, pickOption, start]);
   }
 }
 export default PickerCinfiguration;

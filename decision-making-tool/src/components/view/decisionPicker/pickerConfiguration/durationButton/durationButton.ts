@@ -1,4 +1,5 @@
 import BaseView from '../../../baseView';
+import timeIcon from '../../../../../assets/img/time.png'
 
 class DurationButton extends BaseView {
   private input: string | null = null;
@@ -8,7 +9,9 @@ class DurationButton extends BaseView {
       classNames: ['duration-container'],
     });
 
-    const icon = new BaseView({ tag: 'div', classNames: ['infoDuration'], textContent: 'Time:' });
+    const icon = new BaseView({ tag: 'div', classNames: ['icon-duration']});
+
+    icon.getBaseElement().style.backgroundImage =`url(${timeIcon})`;
     const inputTime = new BaseView({ tag: 'input', classNames: ['time-input'] });
 
     inputTime.getBaseElement().addEventListener('input', (event) => {

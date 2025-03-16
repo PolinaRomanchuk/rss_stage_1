@@ -3,17 +3,18 @@ import ErrorRouting from '../utils/ErrorRouting';
 class Router {
   private routes: Record<string, () => void> = {};
   private contentContainer: HTMLElement | null = null;
+  private basePath = '/polinaromanchuk-JSFE2024Q4/decision-making-tool';
 
   setContentContainer(container: HTMLElement) {
     this.contentContainer = container;
   }
 
   addRoute(path: string, callback: () => void) {
-    this.routes[path] = callback;
+    this.routes[`${this.basePath}${path}`] = callback;
   }
 
   navigate(path: string) {
-    window.history.pushState({}, '', path);
+    window.history.pushState({}, '', `${this.basePath}${path}`);
     this.handleRouteChange();
   }
 

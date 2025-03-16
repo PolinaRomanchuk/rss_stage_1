@@ -11,6 +11,10 @@ class ErrorRouting extends BaseView {
 
     const textError = new BaseView({ tag: 'span', classNames: ['error-text'], textContent: 'Page not found' });
     const backButton = new PrevButton();
+
+    backButton.getBaseElement().addEventListener('click', () => {
+      this.removeElement();
+    });
     this.appendChildren([textError, backButton]);
   }
 }

@@ -9,6 +9,7 @@ class App {
   constructor() {
     this.contentContainer = document.createElement('div');
     this.contentContainer.classList.add('content');
+    router.setContentContainer(this.contentContainer); 
   }
 
   renderApp(): void {

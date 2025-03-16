@@ -2,6 +2,11 @@ import ErrorRouting from '../utils/ErrorRouting';
 
 class Router {
   private routes: Record<string, () => void> = {};
+  private contentContainer: HTMLElement | null = null;
+
+  setContentContainer(container: HTMLElement) {
+    this.contentContainer = container;
+  }
 
   addRoute(path: string, callback: () => void) {
     this.routes[path] = callback;
@@ -22,11 +27,13 @@ class Router {
       this.renderErrorPage();
     }
   }
-  
+
   private renderErrorPage() {
-    const errorPage = new ErrorRouting();
-    document.body.innerHTML = '';
-    document.body.append(errorPage.getBaseElement());
+    if (this.contentContainer) {
+      const errorPage = new ErrorRouting();
+      this.contentContainer.replaceChildren();
+      document.body.append(errorPage.getBaseElement());
+    }
   }
 }
 const router = new Router();

@@ -2,59 +2,157 @@ import BaseView from '../../baseView';
 import '../wheel/wheel.css';
 
 class Wheel extends BaseView {
-  private circle: Path2D = new Path2D();
-  constructor() {
+  private options: { name: string; weight: number }[];
+  private ctx: CanvasRenderingContext2D | null = null;
+  private canvas: HTMLCanvasElement | null = null;
+
+  constructor(options: { name: string; weight: number }[]) {
     super({
       tag: 'canvas',
       classNames: ['canvas'],
     });
-    const canvas = this.getBaseElement();
-    if (canvas instanceof HTMLCanvasElement) {
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        this.circle = this.createCircle(canvas.width, canvas.height);
-        this.drawCircle(ctx);
-        this.createCursor(canvas.width, canvas.height, ctx);
+
+    this.options = this.loadOptions();
+    this.initializeCanvas();
+  }
+
+  private loadOptions(): { name: string; weight: number }[] {
+    try {
+      const data = sessionStorage.getItem('options');
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      console.error('Error loading options:', e);
+      return [];
+    }
+  }
+
+  private initializeCanvas(): void {
+    const baseElement = this.getBaseElement();
+    if (baseElement instanceof HTMLCanvasElement) {
+      this.canvas = baseElement;
+      this.canvas.width = 900;
+      this.canvas.height = 500;
+      this.ctx = this.canvas.getContext('2d');
+
+      if (this.ctx) {
+        this.drawWheel();
+        this.drawCursor();
       }
     }
   }
-  private createCircle(width: number, height: number): Path2D {
-    const circle = new Path2D();
-    const radius = 50;
-    const centerX = width / 2;
-    const centerY = height / 2;
 
-    circle.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+  private drawWheel(): void {
+    if (!this.ctx || !this.canvas || this.options.length === 0) return;
 
-    return circle;
+    const totalWeight = this.options.reduce((sum, opt) => sum + opt.weight, 0);
+    let startAngle = 0;
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2;
+    const radius = Math.min(centerX, centerY) - 25;
+
+    this.options.forEach((option) => {
+      if (!this.ctx) return;
+
+      const sectorAngle = (option.weight / totalWeight) * 2 * Math.PI;
+      const color = this.getColor();
+
+      this.drawSector(centerX, centerY, radius, startAngle, startAngle + sectorAngle, color);
+      this.drawText(centerX, centerY, radius, startAngle, sectorAngle, option.name);
+
+      startAngle += sectorAngle;
+    });
+    this.drawCenter(radius);
   }
-  private drawCircle(ctx: CanvasRenderingContext2D): void {
-    ctx.fillStyle = 'blue';
-    ctx.fill(this.circle);
+
+  private drawSector(
+    cx: number,
+    cy: number,
+    radius: number,
+    startAngle: number,
+    endAngle: number,
+    color: string
+  ): void {
+    if (!this.ctx) return;
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(cx, cy);
+    this.ctx.arc(cx, cy, radius, startAngle, endAngle);
+    this.ctx.closePath();
+
+    this.ctx.fillStyle = color;
+    this.ctx.fill();
+    this.ctx.strokeStyle = '#000';
+    this.ctx.stroke();
   }
 
-  private createCursor(width: number, height: number, ctx: CanvasRenderingContext2D) {
-    const radius = 50;
-    const centerX = width / 2;
-    const centerY = height / 2;
+  private drawText(
+    cx: number,
+    cy: number,
+    radius: number,
+    startAngle: number,
+    sectorAngle: number,
+    text: string
+  ): void {
+    if (!this.ctx) return;
+
+    const textAngle = startAngle + sectorAngle / 2;
+    const textX = cx + Math.cos(textAngle) * (radius / 2);
+    const textY = cy + Math.sin(textAngle) * (radius / 2);
+
+    this.ctx.font = '20px serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'middle';
+
+    this.ctx.lineWidth = 3;
+    this.ctx.strokeStyle = '#000';
+    this.ctx.strokeText(text, textX, textY);
+
+    this.ctx.fillStyle = '#fff';
+    this.ctx.fillText(text, textX, textY);
+  }
+
+  private drawCenter(radiusWheel: number): void {
+    if (!this.canvas || !this.ctx) return;
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2;
+    const radius = radiusWheel / 8;
+    this.ctx.beginPath();
+    this.ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    this.ctx.closePath();
+    this.ctx.fillStyle = this.getColor();
+    this.ctx.fill();
+    this.ctx.strokeStyle = '#000';
+    this.ctx.stroke();
+  }
+
+  private drawCursor() {
+    if (!this.ctx || !this.canvas) return;
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2;
+    const radius = Math.min(centerX, centerY) - 25;
 
     const topX = centerX;
     const topY = centerY - radius;
 
-    const bottomLeftX = centerX - 10;
-    const bottomLeftY = centerY - radius - 10;
+    const bottomLeftX = centerX - 20;
+    const bottomLeftY = centerY - radius - 20;
 
-    const bottomRightX = centerX + 10;
-    const bottomRightY = centerY - radius - 10;
+    const bottomRightX = centerX + 20;
+    const bottomRightY = centerY - radius - 20;
 
-    ctx.beginPath();
-    ctx.moveTo(topX, topY);
-    ctx.lineTo(bottomLeftX, bottomLeftY);
-    ctx.lineTo(bottomRightX, bottomRightY);
-    ctx.closePath();
+    this.ctx.beginPath();
+    this.ctx.moveTo(topX, topY);
+    this.ctx.lineTo(bottomLeftX, bottomLeftY);
+    this.ctx.lineTo(bottomRightX, bottomRightY);
+    this.ctx.closePath();
 
-    ctx.fillStyle = 'black';
-    ctx.fill();
+    this.ctx.fillStyle = 'black';
+    this.ctx.fill();
+  }
+
+  private getColor(): string {
+    const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    return randomColor;
   }
 }
 

@@ -9,10 +9,20 @@ class DecisionPickerView extends BaseView {
       classNames: ['decision-picker-container'],
     });
     const pickerConfig = new PickerCinfiguration();
-    const wheel = new Wheel();
+    const options = this.loadOptions();
 
+    const wheel = new Wheel(options);
 
     this.appendChildren([pickerConfig, wheel]);
+  }
+  private loadOptions(): { name: string; weight: number }[] {
+    const data = sessionStorage.getItem('options');
+    try {
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      console.error('Error', e);
+      return [];
+    }
   }
 }
 

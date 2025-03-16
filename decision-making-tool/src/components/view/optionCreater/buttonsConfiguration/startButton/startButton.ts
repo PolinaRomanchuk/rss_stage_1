@@ -14,6 +14,8 @@ class StartButton extends BaseView {
     this.optionsList = optionsList;
     this.getBaseElement().addEventListener('click', () => {
       if (this.checkValid()) {
+        const options = optionsList.getOptions().map(opt => opt.getData());
+        sessionStorage.setItem('options', JSON.stringify(options));
         router.navigate('/decision-picker');
       }
     });

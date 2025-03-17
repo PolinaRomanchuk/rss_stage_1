@@ -30,7 +30,7 @@ class DurationButton extends BaseView {
     return Number(this.inputTime.value);
   }
 
-  private validate(): void {
+  public validate(): void {
     this.checkValid() ? this.inputTime.classList.remove('invalid') : this.inputTime.classList.add('invalid');
   }
 

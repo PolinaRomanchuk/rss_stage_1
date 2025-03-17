@@ -1,4 +1,10 @@
-.canvas{
+.canvas {
   width: 900px;
   height: 500px;
+}
+
+@media screen and (max-width: 900px) {
+  .canvas {
+    width: 640px;
+  }
 }

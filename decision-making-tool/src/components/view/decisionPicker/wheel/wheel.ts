@@ -1,5 +1,6 @@
 import BaseView from '../../baseView';
 import '../wheel/wheel.css';
+import sound from '../../../utils/sound';
 
 class Wheel extends BaseView {
   private options: { name: string; weight: number }[];
@@ -192,6 +193,7 @@ class Wheel extends BaseView {
       if (elapsed < duration) {
         requestAnimationFrame(animate);
       } else {
+        sound.play();
         this.isSpinning = false;
       }
     };

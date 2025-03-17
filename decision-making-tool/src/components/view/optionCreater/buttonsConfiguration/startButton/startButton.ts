@@ -2,7 +2,7 @@ import ModalWindow from '../../../../utils/modalWindow/modalWindow';
 import BaseView from '../../../baseView';
 import OptionsList from '../../optionsList/optionsList';
 import router from '../../../../utils/router';
-import '../startButton/start.css'
+import '../startButton/start.css';
 
 class StartButton extends BaseView {
   private optionsList: OptionsList;
@@ -15,7 +15,7 @@ class StartButton extends BaseView {
     this.optionsList = optionsList;
     this.getBaseElement().addEventListener('click', () => {
       if (this.checkValid()) {
-        const options = optionsList.getOptions().map(opt => opt.getData());
+        const options = optionsList.getOptions().map((opt) => opt.getData());
         sessionStorage.setItem('options', JSON.stringify(options));
         router.navigate('/decision-picker');
       }
@@ -24,11 +24,21 @@ class StartButton extends BaseView {
 
   private checkValid(): boolean {
     const length = this.optionsList.getOptionsLength();
-    if (length < 2) {
-      this.openModal();
-      return false;
+    const options = this.optionsList.getOptions();
+    if (length) {
+      let counter = 0;
+      for (let i = 0; i < options.length; i++) {
+        const data = options[i].getData();
+        if (data.weight > 0 && data.name.length !== 0) {
+          counter++;
+        }
+      }
+      if (counter >= 2 && length >= 2) {
+        return true;
+      }
     }
-    return true;
+    this.openModal();
+    return false;
   }
 
   private openModal(): void {

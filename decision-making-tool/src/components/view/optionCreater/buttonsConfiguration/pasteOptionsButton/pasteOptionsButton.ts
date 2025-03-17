@@ -51,6 +51,7 @@ class PasteOptionsButton extends BaseView {
     if (data) {
       data.forEach((item) => this.addOptionToList(item));
       this.updateId();
+      this.optionsList.saveOptions();
     }
   }
 

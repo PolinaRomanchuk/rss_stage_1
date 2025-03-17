@@ -1,7 +1,7 @@
 import BaseView from '../../baseView';
 import ButtonsConfigurationList from '../buttonsConfiguration/buttonsConfigurationList';
 import Option from './option/option';
-import '../optionsList/options.css'
+import '../optionsList/options.css';
 
 class OptionsList extends BaseView {
   public options: Option[] = [];
@@ -9,6 +9,7 @@ class OptionsList extends BaseView {
 
   constructor() {
     super({ tag: 'div', classNames: ['options-list'] });
+
     const buttonsContainer = new ButtonsConfigurationList(this);
     const addButton = new BaseView({
       tag: 'button',
@@ -17,13 +18,25 @@ class OptionsList extends BaseView {
       callback: () => this.addOption(),
     }).getBaseElement();
     this.append(addButton);
-    this.addOption();
+    const savedOptions = localStorage.getItem('options');
+    if (savedOptions) {
+      const { options, idCounter } = JSON.parse(savedOptions);
+      this.optionIdCounter = idCounter;
+      if (options.length > 0) {
+        this.setOptions(options);
+      } else {
+        this.addOption();
+      }
+    } else {
+      this.addOption();
+    }
   }
 
   private addOption(): void {
     const newOption = new Option(this.optionIdCounter++, this.deleteOption.bind(this));
     this.options.push(newOption);
     this.append(newOption);
+    this.saveOptions();
   }
 
   public deleteOption(option: Option): void {
@@ -32,6 +45,23 @@ class OptionsList extends BaseView {
     if (this.options.length === 0) {
       this.optionIdCounter = 1;
     }
+    this.saveOptions();
+  }
+
+  public saveOptions() {
+    const optionsData = {
+      options: this.options.map((option) => option.getData()),
+      idCounter: this.optionIdCounter,
+    };
+    localStorage.setItem('options', JSON.stringify(optionsData));
+  }
+
+  private setOptions(optionsData: { id: number; name: string; weight: number }[]) {
+    optionsData.forEach((optionData) => {
+      const option = new Option(optionData.id, this.deleteOption.bind(this), optionData);
+      this.options.push(option);
+      this.append(option);
+    });
   }
 
   public getOptions(): Option[] {

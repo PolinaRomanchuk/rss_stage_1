@@ -54,11 +54,13 @@ class LoadOptionsButton extends BaseView {
 
   private loadOptions(data: { id: number; name: string; weight: number }[]): void {
     this.optionsList.removeAllChildren();
-
+    this.optionsList.options = [];
     const lastId = Math.max(...data.map((item) => item.id), 0);
-    this.optionsList.setIdCounterAndLength(data.length, lastId + 1);
 
     data.forEach((item) => this.addOptionToList(item));
+    this.optionsList.setIdCounterAndLength(data.length, lastId + 1);
+
+    this.optionsList.saveOptions();
   }
 
   private addOptionToList(item: { id: number; name: string; weight: number }): void {

@@ -10,6 +10,7 @@ class App {
     this.contentContainer = document.createElement('div');
     this.contentContainer.classList.add('content');
     router.setContentContainer(this.contentContainer); 
+    //localStorage.removeItem('options');
   }
 
   renderApp(): void {

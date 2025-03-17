@@ -177,7 +177,7 @@ class Wheel extends BaseView {
     let startTime: number | null = null;
     const duration = time * 1000;
     const totalRotations = 5;
-    const maxSpeed = Math.PI * 2 * totalRotations;
+    const maxSpeed = (Math.PI * 2 * totalRotations) / 200;
 
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
@@ -186,7 +186,7 @@ class Wheel extends BaseView {
       const progress = elapsed / duration;
       const easing = 1 - Math.pow(1 - progress, 3);
 
-      this.rotationAngle = maxSpeed * easing;
+      this.rotationAngle += maxSpeed * easing;
 
       this.drawWheel();
 

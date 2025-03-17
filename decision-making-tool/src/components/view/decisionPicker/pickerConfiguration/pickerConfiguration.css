@@ -44,6 +44,11 @@
 .time-input {
   width: 70px;
   padding: 10px;
+
+  &.invalid{
+    border-color: brown;
+    background-color: rgb(203 45 45 / 44%);
+  }
 }
 
 .pick-option {

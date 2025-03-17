@@ -12,8 +12,12 @@ class StartPicker extends BaseView {
     });
     this.wheel = wheel;
     this.getBaseElement().addEventListener('click', () => {
-      const timeValue = Number(time.getValue());
-      wheel.turn(timeValue);
+      const timeValue = time.getValue();
+
+      if (timeValue >= 5 && timeValue <= 30) {
+        wheel.turn(timeValue);
+      }
+      return;
     });
   }
 }

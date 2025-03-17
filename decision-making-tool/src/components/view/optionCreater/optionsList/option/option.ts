@@ -40,6 +40,25 @@ class Option extends BaseView {
     }).getBaseElement();
 
     this.appendChildren([this.indexElement, this.titleInput, this.weightInput, this.deleteButton]);
+    this.titleInput.addEventListener('input', () => this.saveToLocalStorage());
+    this.weightInput.addEventListener('input', () => this.saveToLocalStorage());
+  }
+
+  private saveToLocalStorage() {
+    let savedData = JSON.parse(localStorage.getItem('options') || '{"options": [], "idCounter": 1}');
+
+    const optionData = this.getData();
+
+    const index = savedData.options.findIndex(
+      (option: { id: number; name: string; weight: number }) => option.id === optionData.id
+    );
+    if (index !== -1) {
+      savedData.options[index] = optionData;
+    } else {
+      savedData.options.push(optionData);
+    }
+
+    localStorage.setItem('options', JSON.stringify(savedData));
   }
 
   public getData(): { id: number; name: string; weight: number } {

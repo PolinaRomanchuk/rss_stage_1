@@ -7,6 +7,8 @@ class Wheel extends BaseView {
   private canvas: HTMLCanvasElement | null = null;
   private rotationAngle = 0;
   private isSpinning = false;
+  private colors: string[];
+  private centerColor: string;
 
   constructor(options: { name: string; weight: number }[]) {
     super({
@@ -15,6 +17,8 @@ class Wheel extends BaseView {
     });
 
     this.options = this.loadOptions();
+    this.colors = this.options.map(() => this.getColor());
+    this.centerColor = this.getColor();
     this.initializeCanvas();
   }
 
@@ -47,17 +51,22 @@ class Wheel extends BaseView {
     if (!this.ctx || !this.canvas || this.options.length === 0) return;
 
     const totalWeight = this.options.reduce((sum, opt) => sum + opt.weight, 0);
-    let startAngle = 0;
     const centerX = this.canvas.width / 2;
     const centerY = this.canvas.height / 2;
     const radius = Math.min(centerX, centerY) - 25;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.save();
 
-    this.options.forEach((option) => {
+    this.ctx.translate(centerX, centerY);
+    this.ctx.rotate(this.rotationAngle);
+    this.ctx.translate(-centerX, -centerY);
+
+    let startAngle = 0;
+    this.options.forEach((option, index) => {
       if (!this.ctx) return;
 
       const sectorAngle = (option.weight / totalWeight) * 2 * Math.PI;
-      const color = this.getColor();
+      const color = this.colors[index];
 
       this.drawSector(centerX, centerY, radius, startAngle, startAngle + sectorAngle, color);
       this.drawText(centerX, centerY, radius, startAngle, sectorAngle, option.name);
@@ -65,6 +74,8 @@ class Wheel extends BaseView {
       startAngle += sectorAngle;
     });
     this.drawCenter(radius);
+    this.ctx.restore();
+    this.drawCursor();
   }
 
   private drawSector(
@@ -122,7 +133,7 @@ class Wheel extends BaseView {
     this.ctx.beginPath();
     this.ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
     this.ctx.closePath();
-    this.ctx.fillStyle = this.getColor();
+    this.ctx.fillStyle = this.centerColor;
     this.ctx.fill();
     this.ctx.strokeStyle = '#000';
     this.ctx.stroke();
@@ -161,9 +172,12 @@ class Wheel extends BaseView {
   public turn(time: number) {
     if (this.isSpinning) return;
     this.isSpinning = true;
+
     let startTime: number | null = null;
     const duration = time * 1000;
-    const maxSpeed = 10;
+    const totalRotations = 5;
+    const maxSpeed = Math.PI * 2 * totalRotations;
+
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
@@ -171,9 +185,10 @@ class Wheel extends BaseView {
       const progress = elapsed / duration;
       const easing = 1 - Math.pow(1 - progress, 3);
 
-      this.rotationAngle += maxSpeed * easing;
-      if (!this.canvas) return;
-      this.canvas.style.transform = `rotate(${this.rotationAngle}deg)`;
+      this.rotationAngle = maxSpeed * easing;
+
+      this.drawWheel();
+
       if (elapsed < duration) {
         requestAnimationFrame(animate);
       } else {

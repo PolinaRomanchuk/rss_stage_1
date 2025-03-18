@@ -18,9 +18,9 @@ class PickerCinfiguration extends BaseView {
     const configContainer = new BaseView({ tag: 'div', classNames: ['top-config-container'] });
 
     this.wheel = wheel;
-    const prevButton = new PrevButton();
-    const soundButton = new SoundButton();
-    const time = new DurationButton();
+    const prevButton = new PrevButton(wheel);
+    const soundButton = new SoundButton(wheel);
+    const time = new DurationButton(wheel);
 
     configContainer.appendChildren([prevButton, soundButton, time]);
 

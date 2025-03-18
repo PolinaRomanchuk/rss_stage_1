@@ -10,6 +10,7 @@ class Wheel extends BaseView {
   private isSpinning = false;
   private colors: string[];
   private centerColor: string;
+  private eventListeners: { [key: string]: Function[] } = {};
 
   constructor(options: { name: string; weight: number }[]) {
     super({
@@ -179,6 +180,7 @@ class Wheel extends BaseView {
     const totalRotations = 5;
     const maxSpeed = (Math.PI * 2 * totalRotations) / 200;
 
+    this.dispatchEvent('spinStart');
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
@@ -195,10 +197,28 @@ class Wheel extends BaseView {
       } else {
         sound.play();
         this.isSpinning = false;
+        this.dispatchEvent('spinEnd');
       }
     };
 
     requestAnimationFrame(animate);
+  }
+
+  public addEventListener(event: string, listener: Function) {
+    if (!this.eventListeners[event]) {
+      this.eventListeners[event] = [];
+    }
+    this.eventListeners[event].push(listener);
+  }
+
+  private dispatchEvent(event: string) {
+    if (this.eventListeners[event]) {
+      this.eventListeners[event].forEach((listener) => listener());
+    }
+  }
+  
+  public get spinning(): boolean {
+    return this.isSpinning;
   }
 }
 

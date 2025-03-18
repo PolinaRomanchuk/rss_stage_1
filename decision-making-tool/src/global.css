@@ -44,6 +44,11 @@ button {
   &:hover {
     background-color: var(--color-btn-background-focus);
   }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 input {

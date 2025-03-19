@@ -17,6 +17,7 @@ class DurationButton extends BaseView {
     this.inputTime = document.createElement('input');
     this.inputTime.type = 'number';
     this.inputTime.classList.add('time-input');
+    this.inputTime.value = '6';
 
     this.wheel.addEventListener('spinStart', this.onSpinStart.bind(this));
     this.wheel.addEventListener('spinEnd', this.onSpinEnd.bind(this));

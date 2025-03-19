@@ -46,6 +46,11 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
+      filename: 'index.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: '404.html',
     }),
   ],
   devServer: {

@@ -10,16 +10,15 @@ class Router {
   }
 
   addRoute(path: string, callback: () => void) {
-    this.routes[`${this.basePath}${path}`] = callback;
+    this.routes[path] = callback;
   }
 
   navigate(path: string) {
-    window.history.pushState({}, '', `${this.basePath}${path}`);
-    this.handleRouteChange();
+    window.location.hash = path;
   }
 
   public handleRouteChange() {
-    const path = window.location.pathname;
+    const path = window.location.hash.slice(1) || '/';
     const routeCallback = this.routes[path];
 
     if (routeCallback) {
@@ -33,9 +32,11 @@ class Router {
     if (this.contentContainer) {
       const errorPage = new ErrorRouting();
       this.contentContainer.replaceChildren();
-      document.body.append(errorPage.getBaseElement());
+      this.contentContainer.append(errorPage.getBaseElement());
     }
   }
 }
 const router = new Router();
+window.addEventListener('hashchange', () => router.handleRouteChange());
+
 export default router;

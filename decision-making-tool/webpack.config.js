@@ -52,6 +52,9 @@ module.exports = {
       template: './src/index.html',
       filename: '404.html',
     }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: '_redirects', to: '' }],
+    }),
   ],
   devServer: {
     static: {

@@ -1,3 +1,5 @@
+import GarageView from './views/garage/garageView';
+
 class App {
   private contentContainer: HTMLElement;
 
@@ -7,6 +9,9 @@ class App {
   }
 
   renderApp(): void {
+    const garageView = new GarageView();
+
+    this.contentContainer.append(garageView.getView());
     document.body.append(this.contentContainer);
   }
 }

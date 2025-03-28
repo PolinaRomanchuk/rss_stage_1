@@ -9,7 +9,7 @@ module.exports = {
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/polinaromanchuk-JSFE2024Q4/async-race/",
+    publicPath: "/",
   },
   resolve: {
     extensions: [".ts", ".js"],
@@ -36,6 +36,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       filename: "index.html",
+       publicPath: "/"
     }),
     new EslintPlugin({ extensions: ["ts"] }),
   ],

@@ -1,0 +1,10 @@
+.car-path-container {
+  width: 90vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.car-container {
+  border-bottom: dotted 3px black;
+}

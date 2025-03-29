@@ -1,5 +1,6 @@
 import BaseView from '../baseView';
 import CarsCounterView from './carsCounterView';
+import CarsListView from './carsList/carsListView';
 import ConfigsView from './configs/configsView';
 
 class GarageView extends BaseView {
@@ -15,8 +16,9 @@ class GarageView extends BaseView {
       textContent: 'Garage',
     });
     const carsCounter = new CarsCounterView();
+    const carsList = new CarsListView();
 
-    this.appendChildren([configs, nameView, carsCounter]);
+    this.appendChildren([configs, nameView, carsCounter, carsList]);
   }
 }
 

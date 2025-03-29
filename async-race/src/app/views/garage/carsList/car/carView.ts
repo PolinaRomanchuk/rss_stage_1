@@ -8,15 +8,35 @@ import FinishImg from '../../../../../assets/img/finish.png';
 import '../car/car.css';
 
 class CarView extends BaseView {
-  constructor() {
+  private carNameElement: BaseView | null = null;
+  private carSvgElement: CarSvg | null = null;
+
+  constructor(data?: { name: string; color: string; id: number }) {
     super({ tag: 'div', classNames: ['car-container'] });
+    this.renderCar(data);
+  }
+
+  public renderCar(data?: { name: string; color: string; id: number }) {
     const selectBtn = new SelectBtn();
     const deleteBtn = new DeleteBtn();
-    const carName = new BaseView({
-      tag: 'span',
-      classNames: ['car-name'],
-      textContent: 'Tesla',
-    });
+    if (data) {
+      this.initializeCar(data.name, data.color);
+    } else {
+      this.setCarName('Tesla');
+    }
+
+    const carControlContainer = this.createCarControlContainer();
+    const carPathContainer = this.createCarPathContainer();
+    this.appendChildren([
+      selectBtn,
+      deleteBtn,
+      this.carNameElement,
+      carControlContainer,
+      carPathContainer,
+    ]);
+  }
+
+  private createCarControlContainer(): BaseView {
     const carControlContainer = new BaseView({
       tag: 'div',
       classNames: ['car-control-container'],
@@ -24,28 +44,56 @@ class CarView extends BaseView {
     const startCar = new StartBtn();
     const restartCar = new RestartBtn();
     carControlContainer.appendChildren([startCar, restartCar]);
+    return carControlContainer;
+  }
+
+  private createCarPathContainer(): BaseView {
     const carPathContainer = new BaseView({
       tag: 'div',
       classNames: ['car-path-container'],
     });
+    const finish = this.createFinishImage();
 
-    const car = new CarSvg();
+    let car = this.carSvgElement;
+    if (!car) {
+      car = new CarSvg();
+    }
+    carPathContainer.appendChildren([car, finish]);
+    return carPathContainer;
+  }
+
+  private createFinishImage() {
     const finish = new BaseView({
       tag: 'img',
       classNames: ['finish-img'],
     }).getView();
-    if (finish instanceof Image) {
+    if (finish instanceof HTMLImageElement) {
       finish.src = FinishImg;
     }
+    return finish;
+  }
 
-    carPathContainer.appendChildren([car, finish]);
-    this.appendChildren([
-      selectBtn,
-      deleteBtn,
-      carName,
-      carControlContainer,
-      carPathContainer,
-    ]);
+  private initializeCar(name: string, color: string): void {
+    if (this.carSvgElement) {
+      this.carSvgElement.setCarColor(color);
+    } else {
+      const carImg = new CarSvg();
+      this.carSvgElement = carImg;
+      carImg.setCarColor(color);
+    }
+    this.setCarName(name);
+  }
+
+  public setCarName(name: string): void {
+    if (this.carNameElement) {
+      this.carNameElement.setTextContent(name);
+    } else {
+      this.carNameElement = new BaseView({
+        tag: 'span',
+        classNames: ['car-name'],
+        textContent: name,
+      });
+    }
   }
 }
 export default CarView;

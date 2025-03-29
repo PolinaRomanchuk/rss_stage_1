@@ -61,6 +61,10 @@ class BaseView {
   public removeView(): void {
     this.baseElement.remove();
   }
+
+  public setTextContent(value: string): void {
+    this.getView().textContent = value;
+  }
 }
 
 export default BaseView;

@@ -3,6 +3,7 @@ import CarsCounterView from './carsCounterView';
 import CarsListView from './carsList/carsListView';
 import ConfigsView from './configs/configsView';
 import Pagination from './pagination';
+import '../garage/garage.css';
 
 class GarageView extends BaseView {
   constructor() {

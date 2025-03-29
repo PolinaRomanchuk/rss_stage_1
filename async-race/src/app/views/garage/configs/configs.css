@@ -1,0 +1,22 @@
+.garage-configs-container {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0 50px 0;
+  height: 110px;
+  justify-content: space-between;
+}
+
+.create-car-container,
+.update-car-container {
+  display: flex;
+}
+
+.set-car-input{
+  display: flex;
+}
+.car-color-input{
+  height:  100%;
+}
+.car-name-input{
+  width: 160px;
+}

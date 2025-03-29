@@ -1,3 +1,89 @@
-body{
+* {
+  transition: all 0.3s ease-out;
+}
+
+html {
+  --color-font-main: #0e0c07;
+  --color-background: #543b27;
+  --color-btn-background-inactive: #b48b6a;
+  --color-btn-background-focus: #e3ca96;
+  --color-btn-border: #543b27;
+  --color-accent: #d5bb2a;
+
+  font-family: 'Itim';
+  font-size: larger;
+  color: var(--color-font-main);
+}
+
+body {
+  width: 95vw;
+  height: 92vh;
+  margin: 0;
+  background-color: var(--color-background);
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  min-width: 100px;
+  min-height: 30px;
+  cursor: pointer;
+  background-color: var(--color-btn-background-inactive);
+  border-color: var(--color-btn-border);
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: inherit;
+
+  &:hover {
+    background-color: var(--color-btn-background-focus);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+input {
+  background-color: var(--color-btn-background-focus);
+  border-color: var(--color-btn-border);
+  border-width: 1px;
+  border-style: solid;
+  padding: 0 10px 0 10px;
+
+  &:focus-visible {
+    outline-color: var(--color-btn-border);
+  }
+}
+
+.current-view-name {
+  font-size: 48px;
+  font-style: oblique;
+  color: var(--color-accent);
+}
+
+.pagination-container {
+  display: flex;
+  width: 200px;
+  margin-top: 50px;
+  align-items: center;
+  justify-content: space-evenly;
+
+  button {
+    min-width: 58px;
+  }
   
+  .current-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    background-color: var(--color-btn-background-focus);
+  }
 }

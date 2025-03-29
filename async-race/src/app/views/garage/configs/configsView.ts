@@ -4,6 +4,7 @@ import GenerateCarsBtn from './generateCarsBtn';
 import RaceBtn from './raceBtn';
 import ResetBtn from './resetBtn';
 import UpdateCarView from './updateBlock/updateCarView';
+import '../configs/configs.css'
 
 class ConfigsView extends BaseView {
   constructor() {

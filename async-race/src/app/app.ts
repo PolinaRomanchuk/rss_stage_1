@@ -1,6 +1,7 @@
 import GarageView from './views/garage/garageView';
 import router from './utils/router';
 import ErrorView from './views/errorView';
+import HeaderView from './views/header/headerView';
 
 class App {
   private contentContainer: HTMLElement;
@@ -12,6 +13,8 @@ class App {
   }
 
   renderApp(): void {
+    const header = new HeaderView();
+    document.body.append(header.getView());
     document.body.append(this.contentContainer);
 
     this.setupRoutes();

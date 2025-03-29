@@ -1,6 +1,6 @@
-import BaseView from '../../../baseView';
+import BaseView from '../../baseView';
 
-class CreateCarNameInput extends BaseView {
+class SetCarNameInput extends BaseView {
   private input: HTMLInputElement | null = null;
   constructor() {
     super({ tag: 'input', classNames: ['create-car-input'] });
@@ -12,4 +12,4 @@ class CreateCarNameInput extends BaseView {
     }
   }
 }
-export default CreateCarNameInput;
+export default SetCarNameInput;

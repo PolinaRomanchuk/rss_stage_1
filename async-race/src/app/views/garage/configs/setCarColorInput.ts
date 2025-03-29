@@ -1,6 +1,6 @@
-import BaseView from '../../../baseView';
+import BaseView from '../../baseView';
 
-class CreateCarColorInput extends BaseView {
+class SetCarColorInput extends BaseView {
   private input: HTMLInputElement | null = null;
   constructor() {
     super({ tag: 'input', classNames: ['create-car-color'] });
@@ -12,4 +12,4 @@ class CreateCarColorInput extends BaseView {
     }
   }
 }
-export default CreateCarColorInput;
+export default SetCarColorInput;

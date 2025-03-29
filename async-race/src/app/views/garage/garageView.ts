@@ -2,6 +2,7 @@ import BaseView from '../baseView';
 import CarsCounterView from './carsCounterView';
 import CarsListView from './carsList/carsListView';
 import ConfigsView from './configs/configsView';
+import Pagination from './pagination';
 
 class GarageView extends BaseView {
   constructor() {
@@ -17,8 +18,9 @@ class GarageView extends BaseView {
     });
     const carsCounter = new CarsCounterView();
     const carsList = new CarsListView();
+    const pagination = new Pagination();
 
-    this.appendChildren([configs, nameView, carsCounter, carsList]);
+    this.appendChildren([configs, nameView, carsCounter, carsList, pagination]);
   }
 }
 

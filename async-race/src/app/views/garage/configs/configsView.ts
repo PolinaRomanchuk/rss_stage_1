@@ -1,6 +1,7 @@
 import BaseView from '../../baseView';
 import CreateCarView from './createBlock/createCarView';
 import RaceBtn from './raceBtn';
+import ResetBtn from './resetBtn';
 import UpdateCarView from './updateBlock/updateCarView';
 
 class ConfigsView extends BaseView {
@@ -13,7 +14,8 @@ class ConfigsView extends BaseView {
       classNames: ['config-buttons=container'],
     });
     const race = new RaceBtn();
-    buttonContainer.appendChildren([race]);
+    const reset = new ResetBtn();
+    buttonContainer.appendChildren([race, reset]);
     this.appendChildren([inputBlock, updateBlock, buttonContainer]);
   }
 }

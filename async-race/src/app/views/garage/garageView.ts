@@ -1,4 +1,5 @@
 import BaseView from '../baseView';
+import ConfigsView from './configs/configsView';
 
 class GarageView extends BaseView {
   constructor() {
@@ -6,6 +7,8 @@ class GarageView extends BaseView {
       tag: 'div',
       classNames: ['garage-container'],
     });
+    const configs = new ConfigsView();
+    this.appendChildren([configs]);
   }
 }
 

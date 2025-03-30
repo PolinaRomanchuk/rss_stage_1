@@ -2,7 +2,6 @@ import BaseView from '../../baseView';
 import CarView from './car/carView';
 import { getCars, deleteCar, updateCar, getCar } from '../../../API/garage';
 import CarsCounterView from '../carsCounterView';
-import UpdateCarView from '../configs/updateBlock/updateCarView';
 
 class CarsListView extends BaseView {
   public cars: CarView[] = [];
@@ -12,7 +11,6 @@ class CarsListView extends BaseView {
 
   constructor() {
     super({ tag: 'div', classNames: ['cars-list-container'] });
-    this.getCars(1, 7);
   }
   public updateCarsCounter(totalCount: number): void {
     if (this.carsCounterElement) {
@@ -36,7 +34,7 @@ class CarsListView extends BaseView {
     }
   }
 
-  private drawCars(cars: { name: string; color: string; id: number }[]): void {
+  public drawCars(cars: { name: string; color: string; id: number }[]): void {
     this.removeAllChildren();
     this.createCarsCounter();
     cars.forEach((car) => {

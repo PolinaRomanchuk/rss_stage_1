@@ -2,6 +2,7 @@ import GarageView from './views/garage/garageView';
 import router from './utils/router';
 import ErrorView from './views/errorView';
 import HeaderView from './views/header/headerView';
+import WinnersView from './views/winners/winnersView';
 
 class App {
   private contentContainer: HTMLElement;
@@ -37,8 +38,8 @@ class App {
 
   private renderWinners(): void {
     this.clearContent();
-    const errorView = new ErrorView();
-    this.contentContainer.append(errorView.getView());
+    const winnersView = new WinnersView();
+    this.contentContainer.append(winnersView.getView());
   }
 
 

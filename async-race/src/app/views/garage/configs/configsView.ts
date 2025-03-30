@@ -18,7 +18,7 @@ class ConfigsView extends BaseView {
     });
     const race = new RaceBtn();
     const reset = new ResetBtn();
-    const generate = new GenerateCarsBtn();
+    const generate = new GenerateCarsBtn(carsList);
     buttonContainer.appendChildren([race, reset, generate]);
     this.appendChildren([inputBlock, updateBlock, buttonContainer]);
   }

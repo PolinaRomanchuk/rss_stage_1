@@ -1,6 +1,5 @@
 import BaseView from '../../../baseView';
 import CarsListView from '../../carsList/carsListView';
-import SetCarColorInput from '../setCarColorInput';
 import { createCar } from '../../../../API/garage';
 import InputView from '../../../../utils/inputView';
 

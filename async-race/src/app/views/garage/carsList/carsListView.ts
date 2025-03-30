@@ -26,7 +26,7 @@ class CarsListView extends BaseView {
     return carsCounter;
   }
 
-  private async getCars() {
+  public async getCars() {
     try {
       const { cars, totalCount } = await getCars();
       this.drawCars(cars);
@@ -37,11 +37,17 @@ class CarsListView extends BaseView {
   }
 
   private drawCars(cars: { name: string; color: string; id: number }[]): void {
+    this.removeAllChildren();
     cars.forEach((car) => {
       const newCar = new CarView(car);
       this.cars.push(newCar);
       this.append(newCar);
     });
+  }
+  public createCar(car: { name: string; color: string; id: number }): void {
+    const newCar = new CarView(car);
+    this.cars.push(newCar);
+    this.append(newCar);
   }
 
   private addCar(): void {

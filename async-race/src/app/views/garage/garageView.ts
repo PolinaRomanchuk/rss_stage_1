@@ -10,14 +10,15 @@ class GarageView extends BaseView {
       tag: 'div',
       classNames: ['garage-container'],
     });
-    const configs = new ConfigsView();
+    const carsList = new CarsListView();
+    const pagination = new Pagination();
+    const configs = new ConfigsView(carsList);
     const nameView = new BaseView({
       tag: 'div',
       classNames: ['current-view-name'],
       textContent: 'Garage',
     });
-    const carsList = new CarsListView();
-    const pagination = new Pagination();
+    
 
     this.appendChildren([configs, nameView, carsList, pagination]);
   }

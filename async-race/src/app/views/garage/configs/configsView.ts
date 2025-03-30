@@ -4,12 +4,13 @@ import GenerateCarsBtn from './generateCarsBtn';
 import RaceBtn from './raceBtn';
 import ResetBtn from './resetBtn';
 import UpdateCarView from './updateBlock/updateCarView';
-import '../configs/configs.css'
+import '../configs/configs.css';
+import CarsListView from '../carsList/carsListView';
 
 class ConfigsView extends BaseView {
-  constructor() {
+  constructor(carsList: CarsListView) {
     super({ tag: 'div', classNames: ['garage-configs-container'] });
-    const inputBlock = new CreateCarView();
+    const inputBlock = new CreateCarView(carsList);
     const updateBlock = new UpdateCarView();
     const buttonContainer = new BaseView({
       tag: 'div',

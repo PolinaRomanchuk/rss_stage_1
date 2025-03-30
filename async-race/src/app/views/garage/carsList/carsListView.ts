@@ -10,7 +10,7 @@ class CarsListView extends BaseView {
 
   constructor() {
     super({ tag: 'div', classNames: ['cars-list-container'] });
-    this.getCars();
+    this.getCars(1, 7);
   }
   public updateCarsCounter(totalCount: number): void {
     if (this.carsCounterElement) {
@@ -24,9 +24,9 @@ class CarsListView extends BaseView {
     this.append(carsCounter);
   }
 
-  public async getCars() {
+  public async getCars(currPage: number, limit: number) {
     try {
-      const { cars, totalCount } = await getCars();
+      const { cars, totalCount } = await getCars(currPage, limit);
       this.drawCars(cars);
       this.updateCarsCounter(totalCount);
     } catch (error) {
@@ -56,7 +56,7 @@ class CarsListView extends BaseView {
       this.cars = this.cars.filter((cr) => cr !== car);
       car.removeView();
 
-      await this.getCars();
+      await this.getCars(1, 7);
     } catch (error) {
       console.error('Error');
     }

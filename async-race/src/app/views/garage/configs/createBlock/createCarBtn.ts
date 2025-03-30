@@ -29,7 +29,7 @@ class CreateCarBtn extends BaseView {
     try {
       const newCar = await createCar({ name, color });
 
-      await carsList.getCars();
+      await carsList.getCars(1, 7);
     } catch (error) {
       console.error('Error');
     }

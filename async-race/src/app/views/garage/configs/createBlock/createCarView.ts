@@ -1,16 +1,31 @@
 import BaseView from '../../../baseView';
 import CreateCarBtn from './createCarBtn';
-import SetCarColorInput from '../setCarColorInput';
-import SetCarNameInput from '../setCarNameInput';
 import CarsListView from '../../carsList/carsListView';
+import InputView from '../../../../utils/inputView';
 
 class CreateCarView extends BaseView {
   constructor(carsList: CarsListView) {
     super({ tag: 'div', classNames: ['create-car-container'] });
-    const name = new SetCarNameInput();
-    const color = new SetCarColorInput();
+
+    const name = this.createNameInput();
+    const color = this.createColorInput();
     const button = new CreateCarBtn(carsList, name, color);
+
     this.appendChildren([name, color, button]);
+  }
+
+  private createNameInput(): InputView {
+    const name = new InputView();
+    name.setType('text');
+    name.addClass(['car-name-input']);
+    return name;
+  }
+
+  private createColorInput(): InputView {
+    const color = new InputView();
+    color.setType('color');
+    color.addClass(['car-color-input']);
+    return color;
   }
 }
 export default CreateCarView;

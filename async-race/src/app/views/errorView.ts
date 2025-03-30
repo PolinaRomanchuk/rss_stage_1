@@ -12,11 +12,7 @@ class ErrorView extends BaseView {
       classNames: ['error-text'],
       textContent: 'Page not found',
     });
-    // const backButton = new BackButton();
-
-    /*  backButton.getView().addEventListener('click', () => {
-      this.removeView();
-    }); */
+    
     this.append(textError);
   }
 }

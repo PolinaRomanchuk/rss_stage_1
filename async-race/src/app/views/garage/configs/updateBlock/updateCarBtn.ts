@@ -1,14 +1,13 @@
 import { updateCar } from '../../../../API/garage';
+import InputView from '../../../../utils/inputView';
 import BaseView from '../../../baseView';
 import CarsListView from '../../carsList/carsListView';
-import SetCarColorInput from '../setCarColorInput';
-import SetCarNameInput from '../setCarNameInput';
 
 class UpdateCarBtn extends BaseView {
   constructor(
     carsList: CarsListView,
-    nameInput: SetCarNameInput,
-    colorInput: SetCarColorInput,
+    nameInput: InputView,
+    colorInput: InputView,
   ) {
     super({
       tag: 'button',
@@ -19,8 +18,8 @@ class UpdateCarBtn extends BaseView {
   }
   public async updateCar(
     carsList: CarsListView,
-    nameInput: SetCarNameInput,
-    colorInput: SetCarColorInput,
+    nameInput: InputView,
+    colorInput: InputView,
   ) {
     const name = nameInput.getValue();
     const color = colorInput.getValue();

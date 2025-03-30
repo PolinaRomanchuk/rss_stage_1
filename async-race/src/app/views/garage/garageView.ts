@@ -18,7 +18,6 @@ class GarageView extends BaseView {
       classNames: ['current-view-name'],
       textContent: 'Garage',
     });
-    
 
     this.appendChildren([configs, nameView, carsList, pagination]);
   }

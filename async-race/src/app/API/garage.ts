@@ -23,3 +23,11 @@ export async function createCar(car: { name: string; color: string }) {
 
   return await response.json();
 }
+
+export async function deleteCar(id: number) {
+  const response = await fetch(`${BASE_URL}/garage/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) throw new Error('Error');
+}

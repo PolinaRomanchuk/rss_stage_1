@@ -1,6 +1,6 @@
 import BaseView from '../../baseView';
 import CarView from './car/carView';
-import { getCars } from '../../../API/garage';
+import { getCars, deleteCar } from '../../../API/garage';
 import CarsCounterView from '../carsCounterView';
 
 class CarsListView extends BaseView {
@@ -11,8 +11,6 @@ class CarsListView extends BaseView {
   constructor() {
     super({ tag: 'div', classNames: ['cars-list-container'] });
     this.getCars();
-    this.createCarsCounter();
-    this.append(this.createCarsCounter());
   }
   public updateCarsCounter(totalCount: number): void {
     if (this.carsCounterElement) {
@@ -20,10 +18,10 @@ class CarsListView extends BaseView {
     }
   }
 
-  private createCarsCounter(): CarsCounterView {
+  private createCarsCounter(): void {
     const carsCounter = new CarsCounterView();
     this.carsCounterElement = carsCounter.getView();
-    return carsCounter;
+    this.append(carsCounter);
   }
 
   public async getCars() {
@@ -38,22 +36,30 @@ class CarsListView extends BaseView {
 
   private drawCars(cars: { name: string; color: string; id: number }[]): void {
     this.removeAllChildren();
+    this.createCarsCounter();
     cars.forEach((car) => {
-      const newCar = new CarView(car);
+      const newCar = new CarView(car, this.deleteCar.bind(this));
       this.cars.push(newCar);
       this.append(newCar);
     });
   }
+
   public createCar(car: { name: string; color: string; id: number }): void {
-    const newCar = new CarView(car);
+    const newCar = new CarView(car, this.deleteCar.bind(this));
     this.cars.push(newCar);
     this.append(newCar);
   }
 
-  private addCar(): void {
-    const newCar = new CarView();
-    this.cars.push(newCar);
-    this.append(newCar);
+  public async deleteCar(car: CarView): Promise<void> {
+    try {
+      await deleteCar(car.id);
+      this.cars = this.cars.filter((cr) => cr !== car);
+      car.removeView();
+
+      await this.getCars();
+    } catch (error) {
+      console.error('Error');
+    }
   }
 }
 export default CarsListView;

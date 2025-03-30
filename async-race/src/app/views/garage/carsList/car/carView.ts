@@ -10,15 +10,23 @@ import '../car/car.css';
 class CarView extends BaseView {
   private carNameElement: BaseView | null = null;
   private carSvgElement: CarSvg | null = null;
+  public id: number;
 
-  constructor(data?: { name: string; color: string; id: number }) {
+  constructor(
+    data: { name: string; color: string; id: number },
+    onDelete: (car: CarView) => void,
+  ) {
     super({ tag: 'div', classNames: ['car-container'] });
-    this.renderCar(data);
+    this.id = data.id;
+    this.renderCar(data, onDelete);
   }
 
-  public renderCar(data?: { name: string; color: string; id: number }) {
+  public renderCar(
+    data: { name: string; color: string; id: number },
+    onDelete: (car: CarView) => void,
+  ) {
     const selectBtn = new SelectBtn();
-    const deleteBtn = new DeleteBtn();
+    const deleteBtn = new DeleteBtn(this, onDelete);
     if (data) {
       this.initializeCar(data.name, data.color);
     } else {

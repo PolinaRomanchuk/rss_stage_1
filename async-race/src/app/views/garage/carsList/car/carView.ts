@@ -15,17 +15,19 @@ class CarView extends BaseView {
   constructor(
     data: { name: string; color: string; id: number },
     onDelete: (car: CarView) => void,
+    onSelect: (car: CarView) => void,
   ) {
     super({ tag: 'div', classNames: ['car-container'] });
     this.id = data.id;
-    this.renderCar(data, onDelete);
+    this.renderCar(data, onDelete, onSelect);
   }
 
   public renderCar(
     data: { name: string; color: string; id: number },
     onDelete: (car: CarView) => void,
+    onSelect: (car: CarView) => void,
   ) {
-    const selectBtn = new SelectBtn();
+    const selectBtn = new SelectBtn(this, onSelect);
     const deleteBtn = new DeleteBtn(this, onDelete);
     if (data) {
       this.initializeCar(data.name, data.color);

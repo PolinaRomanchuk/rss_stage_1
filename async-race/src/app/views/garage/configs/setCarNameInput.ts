@@ -1,8 +1,9 @@
 import BaseView from '../../baseView';
+import CarsListView from '../carsList/carsListView';
 
 class SetCarNameInput extends BaseView {
   private input: HTMLInputElement | null = null;
-  constructor() {
+  constructor(carsListView?: CarsListView) {
     super({ tag: 'input', classNames: ['set-car-input', 'car-name-input'] });
     const currInput = this.getView();
 
@@ -22,6 +23,12 @@ class SetCarNameInput extends BaseView {
       return this.input.value;
     }
     return '';
+  }
+
+  public setValue(): void {
+    if (this.input) {
+      this.input.textContent = '1';
+    }
   }
 }
 export default SetCarNameInput;

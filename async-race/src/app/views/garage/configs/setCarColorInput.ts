@@ -1,8 +1,9 @@
 import BaseView from '../../baseView';
+import CarsListView from '../carsList/carsListView';
 
 class SetCarColorInput extends BaseView {
   private input: HTMLInputElement | null = null;
-  constructor() {
+  constructor(carsListView?: CarsListView) {
     super({ tag: 'input', classNames: ['set-car-input', 'car-color-input'] });
     const currInput = this.getView();
 

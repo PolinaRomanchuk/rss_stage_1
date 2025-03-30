@@ -1,12 +1,14 @@
 import BaseView from '../../baseView';
 import CarView from './car/carView';
-import { getCars, deleteCar } from '../../../API/garage';
+import { getCars, deleteCar, updateCar, getCar } from '../../../API/garage';
 import CarsCounterView from '../carsCounterView';
+import UpdateCarView from '../configs/updateBlock/updateCarView';
 
 class CarsListView extends BaseView {
   public cars: CarView[] = [];
   public carsCounter: number = 0;
   public carsCounterElement: HTMLElement | null = null;
+  public selectedCar: CarView | null = null;
 
   constructor() {
     super({ tag: 'div', classNames: ['cars-list-container'] });
@@ -38,14 +40,22 @@ class CarsListView extends BaseView {
     this.removeAllChildren();
     this.createCarsCounter();
     cars.forEach((car) => {
-      const newCar = new CarView(car, this.deleteCar.bind(this));
+      const newCar = new CarView(
+        car,
+        this.deleteCar.bind(this),
+        this.getCar.bind(this),
+      );
       this.cars.push(newCar);
       this.append(newCar);
     });
   }
 
   public createCar(car: { name: string; color: string; id: number }): void {
-    const newCar = new CarView(car, this.deleteCar.bind(this));
+    const newCar = new CarView(
+      car,
+      this.deleteCar.bind(this),
+      this.getCar.bind(this),
+    );
     this.cars.push(newCar);
     this.append(newCar);
   }
@@ -57,6 +67,27 @@ class CarsListView extends BaseView {
       car.removeView();
 
       await this.getCars(1, 7);
+    } catch (error) {
+      console.error('Error');
+    }
+  }
+
+  public async updateCar(car: CarView): Promise<void> {
+    try {
+      //  await updateCar(car.id, newname, newcolor);
+      this.cars = this.cars.filter((cr) => cr !== car);
+      //  car.removeView();
+
+      await this.getCars(1, 7);
+    } catch (error) {
+      console.error('Error');
+    }
+  }
+
+  public async getCar(car: CarView): Promise<void> {
+    try {
+      await getCar(car.id);
+      this.selectedCar = car;
     } catch (error) {
       console.error('Error');
     }

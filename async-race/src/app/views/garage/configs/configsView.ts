@@ -11,7 +11,7 @@ class ConfigsView extends BaseView {
   constructor(carsList: CarsListView) {
     super({ tag: 'div', classNames: ['garage-configs-container'] });
     const inputBlock = new CreateCarView(carsList);
-    const updateBlock = new UpdateCarView();
+    const updateBlock = new UpdateCarView(carsList);
     const buttonContainer = new BaseView({
       tag: 'div',
       classNames: ['config-buttons=container'],

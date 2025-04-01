@@ -1,0 +1,26 @@
+.winners-container {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.total-winners-count {
+  font-size: larger;
+  display: flex;
+  margin: 5px 0 10px 0;
+}
+
+.winners-table tbody tr:nth-child(even) {
+  background-color: #c4b08729;
+}
+
+.winners-table tbody tr:nth-child(odd) {
+  background-color: #110f0a29;
+}
+.winners-table {
+  width: 650px;
+}
+td {
+  text-align: center;
+}

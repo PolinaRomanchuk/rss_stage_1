@@ -165,7 +165,7 @@ async function updateTimeAndCountofWin(
   time: number,
 ) {
   const count = winner.wins + 1;
-  const seconds = Math.round((time / 1000) * 10) / 10;
+  const seconds = parseFloat((time / 1000).toFixed(2));
   const newTime = Math.min(winner.time, seconds);
   await updateWinner(winner.id, { wins: count, time: newTime });
 }

@@ -31,9 +31,9 @@ export async function stopCar(id: number): Promise<void> {
   }
 }
 
-export async function startCar(car: CarView) {
+export async function startCar(car: CarView, isRacing?: boolean) {
   const data = await loadData(car.id);
-  await startDriving(car, data);
+  await startDriving(car, data, isRacing);
 }
 
 export async function startDriving(
@@ -44,6 +44,7 @@ export async function startDriving(
         distance: number;
       }
     | undefined,
+  isRacing?: boolean,
 ) {
   if (car.carSvgElement && data) {
     const carElement = car.carSvgElement.getView();
@@ -66,7 +67,7 @@ export async function startDriving(
       function draw(progress: number) {
         carElement.style.transform = `translateX(${progress * maxDistance}px)`;
 
-        if (progress >= 1 && !iswinner) {
+        if (progress >= 1 && !iswinner && isRacing) {
           iswinner = true;
           showWinner(car);
           saveWinner(car, timeDuration);
@@ -113,12 +114,15 @@ export async function startRace(
 ) {
   const cars = await getAllCarsInPage(pagination.currentPageNumber);
   if (cars) {
+    const isRacing = true;
     const carsToStart = cars.map(
       (car: { name: string; color: string; id: number }) =>
         carsListView.cars.find((view) => view.id === car.id),
     );
 
-    await Promise.all(carsToStart.map((carView: CarView) => startCar(carView)));
+    await Promise.all(
+      carsToStart.map((carView: CarView) => startCar(carView, isRacing)),
+    );
   }
 }
 

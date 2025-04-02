@@ -8,7 +8,7 @@ import FinishImg from '../../../../../assets/img/finish.png';
 import '../car/car.css';
 
 class CarView extends BaseView {
-  private carNameElement: BaseView | null = null;
+  public carNameElement: BaseView | null = null;
   public carSvgElement: CarSvg | null = null;
   public id: number;
 

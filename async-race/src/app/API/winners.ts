@@ -21,12 +21,16 @@ export async function getWinners(
   return { winners: data, totalCount: Number(totalCount) };
 }
 
-export async function getWinner(id: number) {
+export async function getWinner(
+  id: number,
+): Promise<{ id: number; wins: number; time: number } | null> {
   const response = await fetch(`${BASE_URL}/winners/${id}`);
-  if (!response.ok) throw new Error('Error');
+  if (!response.ok) {
+    if (response.status === 404) return null;
+    throw new Error('Error');
+  }
 
-  const data = await response.json();
-  return { winner: data };
+  return await response.json();
 }
 
 export async function createWinner(winner: {

@@ -3,9 +3,12 @@ import { startOrStopEngine, switchDriveMode } from '../API/engine';
 import Pagination from '../utils/pagination';
 import { getCars } from '../API/garage';
 import CarsListView from '../views/garage/carsList/carsListView';
+import WinnerView from '../views/garage/winnerView';
+import { createWinner, getWinner, updateWinner } from '../API/winners';
 
 let activeAnimation: number | null = null;
 let cancelAnimation = false;
+let iswinner = false;
 
 export async function loadData(
   id: number,
@@ -62,6 +65,12 @@ export async function startDriving(
 
       function draw(progress: number) {
         carElement.style.transform = `translateX(${progress * maxDistance}px)`;
+
+        if (progress >= 1 && !iswinner) {
+          iswinner = true;
+          showWinner(car);
+          saveWinner(car, timeDuration);
+        }
       }
 
       if (timeFraction < 1) {
@@ -114,10 +123,49 @@ export async function startRace(
 }
 
 export async function resetRace(carsListView: CarsListView) {
+  iswinner = false;
   const carsToReset = carsListView.cars.filter(
     (carView) =>
       carView.carSvgElement?.getView().style.transform !== 'translateX(0px)',
   );
 
   await Promise.all(carsToReset.map((carView) => restartCar(carView)));
+}
+
+function showWinner(car: CarView) {
+  const name = car.carNameElement?.getView().textContent;
+  if (name) {
+    const winner = new WinnerView(name);
+    document.body.append(winner.getView());
+  }
+}
+
+async function saveWinner(car: CarView, timeDuration: number) {
+  await checkifWinnerisExist(car, timeDuration);
+}
+
+async function checkifWinnerisExist(car: CarView, time: number) {
+  const id = car.id;
+  const winner = await getWinner(id);
+
+  if (winner) {
+    updateTimeAndCountofWin(winner, time);
+  } else {
+    const wins = 1;
+    await createWinner({ id, wins, time });
+  }
+}
+
+async function updateTimeAndCountofWin(
+  winner: {
+    id: number;
+    wins: number;
+    time: number;
+  },
+  time: number,
+) {
+  const count = winner.wins + 1;
+  const seconds = Math.round((time / 1000) * 10) / 10;
+  const newTime = Math.min(winner.time, seconds);
+  await updateWinner(winner.id, { wins: count, time: newTime });
 }

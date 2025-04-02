@@ -1,5 +1,8 @@
 import CarView from '../views/garage/carsList/car/carView';
 import { startOrStopEngine, switchDriveMode } from '../API/engine';
+import Pagination from '../utils/pagination';
+import { getCars } from '../API/garage';
+import CarsListView from '../views/garage/carsList/carsListView';
 
 let activeAnimation: number | null = null;
 let cancelAnimation = false;
@@ -83,5 +86,29 @@ export async function restartCar(car: CarView) {
   if (car.carSvgElement) {
     const carElement = car.carSvgElement.getView();
     carElement.style.transform = `translateX(0px)`;
+  }
+}
+
+export async function getAllCarsInPage(page: number, limit: number = 7) {
+  try {
+    const { cars } = await getCars(page, limit);
+    return cars;
+  } catch (error) {
+    console.error('Error');
+  }
+}
+
+export async function startRace(
+  pagination: Pagination<void>,
+  carsListView: CarsListView,
+) {
+  const cars = await getAllCarsInPage(pagination.currentPageNumber);
+  if (cars) {
+    const carsToStart = cars.map(
+      (car: { name: string; color: string; id: number }) =>
+        carsListView.cars.find((view) => view.id === car.id),
+    );
+
+    await Promise.all(carsToStart.map((carView: CarView) => startCar(carView)));
   }
 }

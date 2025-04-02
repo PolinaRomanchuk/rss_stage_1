@@ -6,9 +6,10 @@ import ResetBtn from './resetBtn';
 import UpdateCarView from './updateBlock/updateCarView';
 import '../configs/configs.css';
 import CarsListView from '../carsList/carsListView';
+import Pagination from '../../../utils/pagination';
 
 class ConfigsView extends BaseView {
-  constructor(carsList: CarsListView) {
+  constructor(carsList: CarsListView, pagination: Pagination<void>) {
     super({ tag: 'div', classNames: ['garage-configs-container'] });
     const inputBlock = new CreateCarView(carsList);
     const updateBlock = new UpdateCarView(carsList);
@@ -16,7 +17,7 @@ class ConfigsView extends BaseView {
       tag: 'div',
       classNames: ['config-buttons=container'],
     });
-    const race = new RaceBtn();
+    const race = new RaceBtn(pagination, carsList);
     const reset = new ResetBtn();
     const generate = new GenerateCarsBtn(carsList);
     buttonContainer.appendChildren([race, reset, generate]);

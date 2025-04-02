@@ -16,7 +16,7 @@ class GarageView extends BaseView {
     const pagination = new Pagination(async (page, limit) => {
       await carsList.getCars(page, limit);
     }, this.LIMIT_PAGES);
-    const configs = new ConfigsView(carsList);
+    const configs = new ConfigsView(carsList, pagination);
     const nameView = new BaseView({
       tag: 'div',
       classNames: ['current-view-name'],

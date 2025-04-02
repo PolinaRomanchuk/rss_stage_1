@@ -18,7 +18,7 @@ class ConfigsView extends BaseView {
       classNames: ['config-buttons=container'],
     });
     const race = new RaceBtn(pagination, carsList);
-    const reset = new ResetBtn();
+    const reset = new ResetBtn(carsList);
     const generate = new GenerateCarsBtn(carsList);
     buttonContainer.appendChildren([race, reset, generate]);
     this.appendChildren([inputBlock, updateBlock, buttonContainer]);

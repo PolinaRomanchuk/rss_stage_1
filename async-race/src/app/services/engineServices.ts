@@ -112,3 +112,12 @@ export async function startRace(
     await Promise.all(carsToStart.map((carView: CarView) => startCar(carView)));
   }
 }
+
+export async function resetRace(carsListView: CarsListView) {
+  const carsToReset = carsListView.cars.filter(
+    (carView) =>
+      carView.carSvgElement?.getView().style.transform !== 'translateX(0px)',
+  );
+
+  await Promise.all(carsToReset.map((carView) => restartCar(carView)));
+}

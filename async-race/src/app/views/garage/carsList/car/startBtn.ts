@@ -1,6 +1,7 @@
 import BaseView from '../../../baseView';
 import CarView from './carView';
 import { startOrStopEngine } from '../../../../API/engine';
+import { switchDriveMode } from '../../../../API/engine';
 
 class StartBtn extends BaseView {
   constructor(car: CarView) {
@@ -30,7 +31,7 @@ class StartBtn extends BaseView {
     this.startDriving(car, data);
   }
 
-  private startDriving(
+  private async startDriving(
     car: CarView,
     data:
       | {
@@ -46,7 +47,10 @@ class StartBtn extends BaseView {
       const maxDistance = (81 * screenWidth) / 100;
       let start = performance.now();
 
+      let isCarBroken = false;
+
       requestAnimationFrame(function animate(time: number) {
+        if (isCarBroken) return; 
         let timeFraction = (time - start) / timeDuration;
         if (timeFraction > 1) timeFraction = 1;
 
@@ -60,6 +64,12 @@ class StartBtn extends BaseView {
           requestAnimationFrame(animate);
         }
       });
+
+      try {
+        await switchDriveMode(car.id, 'drive');
+      } catch (error) {
+        isCarBroken = true;
+      }
     }
   }
 }

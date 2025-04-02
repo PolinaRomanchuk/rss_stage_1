@@ -7,7 +7,7 @@
 }
 
 .car-path-container {
-  width: 90vw;
+  width: 80vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,4 +22,8 @@ svg,
 .finish-img {
   width: 50px;
   height: 50px;
+}
+
+.car-svg-container{
+  transform: translateX(3px);
 }

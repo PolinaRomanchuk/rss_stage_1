@@ -86,6 +86,7 @@ class CarsListView extends BaseView {
     try {
       await getCar(car.id);
       this.selectedCar = car;
+      console.log(car.id);
     } catch (error) {
       console.error('Error');
     }

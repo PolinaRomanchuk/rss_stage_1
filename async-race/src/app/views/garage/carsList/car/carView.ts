@@ -9,7 +9,7 @@ import '../car/car.css';
 
 class CarView extends BaseView {
   private carNameElement: BaseView | null = null;
-  private carSvgElement: CarSvg | null = null;
+  public carSvgElement: CarSvg | null = null;
   public id: number;
 
   constructor(
@@ -35,7 +35,7 @@ class CarView extends BaseView {
       this.setCarName('Tesla');
     }
 
-    const carControlContainer = this.createCarControlContainer();
+    const carControlContainer = this.createCarControlContainer(this);
     const carPathContainer = this.createCarPathContainer();
     this.appendChildren([
       selectBtn,
@@ -46,12 +46,12 @@ class CarView extends BaseView {
     ]);
   }
 
-  private createCarControlContainer(): BaseView {
+  private createCarControlContainer(car: CarView): BaseView {
     const carControlContainer = new BaseView({
       tag: 'div',
       classNames: ['car-control-container'],
     });
-    const startCar = new StartBtn();
+    const startCar = new StartBtn(car);
     const restartCar = new RestartBtn();
     carControlContainer.appendChildren([startCar, restartCar]);
     return carControlContainer;

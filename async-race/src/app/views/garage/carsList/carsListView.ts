@@ -2,6 +2,7 @@ import BaseView from '../../baseView';
 import CarView from './car/carView';
 import { getCars, deleteCar, updateCar, getCar } from '../../../API/garage';
 import CarsCounterView from '../carsCounterView';
+import { deleteWinner, getWinner } from '../../../API/winners';
 
 class CarsListView extends BaseView {
   public cars: CarView[] = [];
@@ -65,8 +66,16 @@ class CarsListView extends BaseView {
       car.removeView();
 
       await this.getCars(1, 7);
+      await this.checkWinner(car);
     } catch (error) {
       console.error('Error');
+    }
+  }
+
+  private async checkWinner(car: CarView) {
+    const winner = await getWinner(car.id);
+    if(winner){
+      await deleteWinner(car.id);
     }
   }
 

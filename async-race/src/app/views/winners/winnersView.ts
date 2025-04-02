@@ -11,6 +11,8 @@ class WinnersView extends BaseView {
   private totalCounter: number = 0;
   private totalCountView: BaseView;
   private tBodyElement: BaseView | null = null;
+  private sortBy: 'id' | 'wins' | 'time' = 'id';
+  private sortOrder: 'ASC' | 'DESC' = 'ASC';
 
   constructor() {
     super({
@@ -61,6 +63,17 @@ class WinnersView extends BaseView {
         tag: 'th',
         textContent: headerText,
       });
+
+      if (headerText === 'Best Time (seconds)') {
+        th.getView().addEventListener('click', async () => {
+          this.sortWinners('time');
+        });
+      }
+      if (headerText === 'Wins') {
+        th.getView().addEventListener('click', async () => {
+          this.sortWinners('wins');
+        });
+      }
       headerRow.append(th);
     });
 
@@ -70,7 +83,12 @@ class WinnersView extends BaseView {
 
   private async loadWinners(page: number, limit: number) {
     try {
-      const { winners, totalCount } = await getWinners(page, limit);
+      const { winners, totalCount } = await getWinners(
+        page,
+        limit,
+        this.sortBy,
+        this.sortOrder,
+      );
       this.totalCounter = totalCount;
       this.totalCountView.getView().textContent = `${this.totalCounter} winners`;
 
@@ -142,6 +160,12 @@ class WinnersView extends BaseView {
         this.tBodyElement.append(row);
       }
     });
+  }
+  private async sortWinners(sortBy: 'id' | 'wins' | 'time') {
+    this.sortOrder = this.sortOrder === 'ASC' ? 'DESC' : 'ASC';
+    this.sortBy = sortBy;
+
+    await this.loadWinners(1, this.LIMIT_PAGES);
   }
 }
 

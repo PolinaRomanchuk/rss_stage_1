@@ -9,9 +9,11 @@ interface Winner {
 export async function getWinners(
   page: number,
   limit: number,
+  sortBy: 'id' | 'wins' | 'time',
+  sortOrder: 'ASC' | 'DESC',
 ): Promise<{ winners: Winner[]; totalCount: number }> {
   const response = await fetch(
-    `${BASE_URL}/winners?_page=${page}&_limit=${limit}`,
+    `${BASE_URL}/winners?_page=${page}&_limit=${limit}&_sort=${sortBy}&_order=${sortOrder}`,
   );
   if (!response.ok) throw new Error('Error');
 

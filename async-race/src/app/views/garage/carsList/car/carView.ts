@@ -52,7 +52,7 @@ class CarView extends BaseView {
       classNames: ['car-control-container'],
     });
     const startCar = new StartBtn(car);
-    const restartCar = new RestartBtn();
+    const restartCar = new RestartBtn(car);
     carControlContainer.appendChildren([startCar, restartCar]);
     return carControlContainer;
   }

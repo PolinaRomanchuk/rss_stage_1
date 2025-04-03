@@ -3,11 +3,16 @@ import BaseView from '../views/baseView';
 class Pagination<T> extends BaseView {
   public currentPageNumber: number = 1;
   public currPage: HTMLElement | null = null;
-  private data: (page: number, limit: number) => Promise<T>;
+  private data: (page: number, limit: number) => Promise<{ items: T[]; totalCount: number }>;
   private limit: number;
 
+  private totalItems: number = 0;
+
+  private nextBtn: BaseView;
+  private prevBtn: BaseView;
+
   constructor(
-    data: (page: number, limit: number) => Promise<T>,
+    data: (page: number, limit: number) => Promise<{ items: T[]; totalCount: number }>,
     limit: number,
   ) {
     super({
@@ -31,6 +36,7 @@ class Pagination<T> extends BaseView {
       textContent: 'Next',
       callback: () => this.getNextPage(),
     });
+    this.nextBtn = nextBtn;
 
     const prevBtn = new BaseView({
       tag: 'button',
@@ -38,9 +44,19 @@ class Pagination<T> extends BaseView {
       textContent: 'Back',
       callback: () => this.getPrevPage(),
     });
+    this.prevBtn = prevBtn;
 
     this.appendChildren([prevBtn, currentPage, nextBtn]);
     this.loadPage();
+  }
+
+  public setTotalItems(totalCount: number): void {
+    this.totalItems = totalCount;
+    this.updatePaginationState();
+  }
+
+  public getMaxPages(): number {
+    return Math.ceil(this.totalItems / this.limit);
   }
 
   private async getNextPage() {
@@ -55,10 +71,15 @@ class Pagination<T> extends BaseView {
     }
   }
 
-  private async loadPage() {
+  public async loadPage() {
     try {
-      await this.data(this.currentPageNumber, this.limit);
+      const { items, totalCount } = await this.data(
+        this.currentPageNumber,
+        this.limit,
+      );
+      this.setTotalItems(totalCount);
       this.updateCurrentPage();
+      this.updatePaginationState();
     } catch (error) {
       console.error('Error');
     }
@@ -67,6 +88,20 @@ class Pagination<T> extends BaseView {
   private updateCurrentPage(): void {
     if (this.currPage) {
       this.currPage.textContent = this.currentPageNumber.toString();
+    }
+  }
+
+  public updatePaginationState(): void {
+    const maxPages = this.getMaxPages();
+    const prev = this.prevBtn.getView();
+    const next = this.nextBtn.getView();
+
+    if (prev instanceof HTMLButtonElement) {
+      prev.disabled = this.currentPageNumber === 1;
+    }
+
+    if (next instanceof HTMLButtonElement) {
+      next.disabled = this.currentPageNumber >= maxPages;
     }
   }
 }

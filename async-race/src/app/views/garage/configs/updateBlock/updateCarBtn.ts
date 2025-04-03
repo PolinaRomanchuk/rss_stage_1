@@ -9,7 +9,7 @@ class UpdateCarBtn extends BaseView {
     carsList: CarsListView,
     nameInput: InputView,
     colorInput: InputView,
-    pagination: Pagination<void>
+    pagination: Pagination<{ name: string; color: string; id: number; }>
   ) {
     super({
       tag: 'button',

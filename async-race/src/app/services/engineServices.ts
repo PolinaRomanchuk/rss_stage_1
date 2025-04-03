@@ -109,7 +109,7 @@ export async function getAllCarsInPage(page: number, limit: number = 7) {
 }
 
 export async function startRace(
-  pagination: Pagination<void>,
+  pagination: Pagination<{ name: string; color: string; id: number; }>,
   carsListView: CarsListView,
 ) {
   const cars = await getAllCarsInPage(pagination.currentPageNumber);

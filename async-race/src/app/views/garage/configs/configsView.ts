@@ -9,7 +9,7 @@ import CarsListView from '../carsList/carsListView';
 import Pagination from '../../../utils/pagination';
 
 class ConfigsView extends BaseView {
-  constructor(carsList: CarsListView, pagination: Pagination<void>) {
+  constructor(carsList: CarsListView, pagination: Pagination<{ name: string; color: string; id: number; }>) {
     super({ tag: 'div', classNames: ['garage-configs-container'] });
     const inputBlock = new CreateCarView(carsList, pagination);
     const updateBlock = new UpdateCarView(carsList, pagination);

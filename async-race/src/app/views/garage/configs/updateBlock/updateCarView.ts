@@ -5,7 +5,7 @@ import InputView from '../../../../utils/inputView';
 import Pagination from '../../../../utils/pagination';
 
 class UpdateCarView extends BaseView {
-  constructor(carsList: CarsListView, pagination: Pagination<void>) {
+  constructor(carsList: CarsListView, pagination: Pagination<{ name: string; color: string; id: number; }>) {
     super({
       tag: 'div',
       classNames: ['update-car-container'],

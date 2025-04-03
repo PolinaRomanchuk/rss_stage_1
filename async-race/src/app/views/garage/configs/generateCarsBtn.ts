@@ -4,7 +4,7 @@ import { generateCars } from '../../../services/garageServices';
 import Pagination from '../../../utils/pagination';
 
 class GenerateCarsBtn extends BaseView {
-  constructor(carsList: CarsListView, pagination: Pagination<void>) {
+  constructor(carsList: CarsListView, pagination: Pagination<{ name: string; color: string; id: number; }>) {
     super({
       tag: 'button',
       classNames: ['generate-cars-button'],

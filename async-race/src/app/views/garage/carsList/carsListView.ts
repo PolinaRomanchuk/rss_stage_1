@@ -11,7 +11,11 @@ class CarsListView extends BaseView {
   public cars: CarView[] = [];
   public selectedCar: CarView | null = null;
   private carsCounterElement: HTMLElement | null = null;
-  private pagination: Pagination<void> | null = null;
+  private pagination: Pagination<{
+    name: string;
+    color: string;
+    id: number;
+  }> | null = null;
 
   constructor() {
     super({ tag: 'div', classNames: ['cars-list-container'] });
@@ -20,13 +24,19 @@ class CarsListView extends BaseView {
   public async getCarsAndCounter(
     currPage: number,
     limit: number,
-  ): Promise<void> {
+  ): Promise<{
+    cars: { name: string; color: string; id: number }[];
+    totalCount: number;
+  }> {
     const { cars, totalCount } = await fetchCarsByApi(currPage, limit);
     this.drawCars(cars);
     this.updateCarsCounter(totalCount);
+    return { cars, totalCount };
   }
 
-  public setPagination(pagination: Pagination<void>) {
+  public setPagination(
+    pagination: Pagination<{ name: string; color: string; id: number }>,
+  ) {
     this.pagination = pagination;
   }
 

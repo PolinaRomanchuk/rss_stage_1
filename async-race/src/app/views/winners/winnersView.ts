@@ -21,7 +21,8 @@ class WinnersView extends BaseView {
     });
 
     const pagination = new Pagination(async (page, limit) => {
-      await this.loadWinners(page, limit);
+      const { winners, totalCount } = await this.loadWinners(page, limit);
+      return { items: winners, totalCount };
     }, this.LIMIT_PAGES);
 
     const nameView = new BaseView({
@@ -106,8 +107,10 @@ class WinnersView extends BaseView {
       );
 
       this.renderWinners(winnersData);
+      return { winners: winnersData, totalCount };
     } catch (error) {
       console.error('Error');
+      return { winners: [], totalCount: 0 };
     }
   }
 

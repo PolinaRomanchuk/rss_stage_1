@@ -41,7 +41,7 @@ export async function createCarByApi(
   carsList: CarsListView,
   nameInput: InputView,
   colorInput: InputView,
-  pagination: Pagination<void>,
+  pagination: Pagination<{ name: string; color: string; id: number }>,
 ) {
   const name = nameInput.getValue();
   const color = colorInput.getValue();
@@ -49,7 +49,7 @@ export async function createCarByApi(
   try {
     const newCar = await createCar({ name, color });
 
-    await carsList.getCarsAndCounter(getCurrPage(pagination), LIMIT_PAGES);
+    await pagination.loadPage();
   } catch (error) {
     console.error('Error');
   }
@@ -59,7 +59,7 @@ export async function updateCarByApi(
   carsList: CarsListView,
   nameInput: InputView,
   colorInput: InputView,
-  pagination: Pagination<void>,
+  pagination: Pagination<{ name: string; color: string; id: number }>,
 ): Promise<void> {
   const name = nameInput.getValue();
   const color = colorInput.getValue();
@@ -68,7 +68,7 @@ export async function updateCarByApi(
     const selCar = carsList.selectedCar;
     if (selCar) await updateCar(selCar.carId, { name, color });
 
-    await carsList.getCarsAndCounter(getCurrPage(pagination), LIMIT_PAGES);
+    await pagination.loadPage();
   } catch (error) {
     console.error('Error');
   }
@@ -77,12 +77,12 @@ export async function updateCarByApi(
 export async function deleteCarByApi(
   carsList: CarsListView,
   id: number,
-  pagination: Pagination<void>,
+  pagination: Pagination<{ name: string; color: string; id: number }>,
 ): Promise<void> {
   try {
     await deleteCar(id);
     await deleteWinnerIfExists(id);
-    await carsList.getCarsAndCounter(getCurrPage(pagination), LIMIT_PAGES);
+    await pagination.loadPage();
   } catch (error) {
     console.error('Error');
   }
@@ -101,7 +101,7 @@ export async function deleteWinnerIfExists(id: number): Promise<void> {
 
 export async function generateCars(
   carsList: CarsListView,
-  pagination: Pagination<void>,
+  pagination: Pagination<{ name: string; color: string; id: number }>,
 ) {
   try {
     const cars = Array.from({ length: GENERATE_COUNT }, () => ({
@@ -110,7 +110,7 @@ export async function generateCars(
     }));
 
     await Promise.all(cars.map((car) => createCar(car)));
-    await carsList.getCarsAndCounter(getCurrPage(pagination), LIMIT_PAGES);
+    await pagination.loadPage();
   } catch (error) {
     console.error('Error');
   }
@@ -120,9 +120,4 @@ export function getRandomColor() {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }
 
-export function getCurrPage(pagination: Pagination<void>): number {
-  if (pagination) {
-    return pagination.currentPageNumber;
-  }
-  return 1;
-}
+

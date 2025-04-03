@@ -9,7 +9,7 @@ module.exports = {
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
+    publicPath: "/polinaromanchuk-JSFE2024Q4/async-race/",
   },
   resolve: {
     extensions: [".ts", ".js"],
@@ -51,5 +51,6 @@ module.exports = {
     compress: true,
     port: 9000,
     hot: true,
+    historyApiFallback: true,
   },
 };

@@ -40,7 +40,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       filename: "index.html",
-       publicPath: "/"
+       publicPath: "/polinaromanchuk-JSFE2024Q4/async-race/"
     }),
     new EslintPlugin({ extensions: ["ts"] }),
   ],

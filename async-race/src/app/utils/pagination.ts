@@ -67,7 +67,7 @@ class Pagination<T> extends BaseView {
       this.buttons.push(next, prev);
     }
     if (this.buttons) {
-      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.buttons));
+      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.buttons, true));
     }
   }
 

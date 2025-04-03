@@ -7,13 +7,20 @@ import StartBtn from './startBtn';
 import FinishImg from '../../../../../assets/img/finish.png';
 import '../car/car.css';
 import RaceState from '../../../../states/raceState';
-import { manageDisabledInRace } from '../../../../states/buttonsState';
+import {
+  manageDisabledInRace,
+  updateRestartBtn,
+  updateStartBtn,
+} from '../../../../states/buttonsState';
 
 class CarView extends BaseView {
   public carNameElement: BaseView | null = null;
   public carSvgElement: CarSvg | null = null;
   public carId: number;
   public buttons: HTMLButtonElement[] = [];
+  private isCarRunning: boolean = false;
+  private startButton: HTMLButtonElement | null = null;
+  private restartButton: HTMLButtonElement | null = null;
 
   constructor(
     data: { name: string; color: string; id: number },
@@ -23,9 +30,11 @@ class CarView extends BaseView {
     super({ tag: 'div', classNames: ['car-container'] });
     this.carId = data.id;
     this.renderCarWithButtons(data, onDelete, onSelect);
-    
+
     if (this.buttons) {
-      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.buttons));
+      RaceState.getInstance().subscribe(() =>
+        manageDisabledInRace(this.buttons),
+      );
     }
   }
 
@@ -69,12 +78,22 @@ class CarView extends BaseView {
     carControlContainer.appendChildren([startCar, restartCar]);
 
     const start = startCar.getView();
+
     const restart = restartCar.getView();
     if (
       start instanceof HTMLButtonElement &&
       restart instanceof HTMLButtonElement
     ) {
-      this.buttons.push(start, restart);
+      this.startButton = start;
+      this.restartButton = restart;
+      
+      start.addEventListener('click', () => this.startCar());
+      restart.addEventListener('click', () => this.restartCar());
+
+      RaceState.getInstance().subscribe(() => updateRestartBtn(restart));
+      RaceState.getInstance().subscribe(() => updateStartBtn(start));
+
+      restart.disabled = true;
     }
 
     return carControlContainer;
@@ -130,6 +149,23 @@ class CarView extends BaseView {
         classNames: ['car-name'],
         textContent: name,
       });
+    }
+  }
+
+  private startCar() {
+    this.isCarRunning = true;
+    this.updateButtons();
+  }
+
+  private restartCar() {
+    this.isCarRunning = false;
+    this.updateButtons();
+  }
+
+  private updateButtons() {
+    if (this.startButton && this.restartButton) {
+      this.startButton.disabled = this.isCarRunning;
+      this.restartButton.disabled = !this.isCarRunning;
     }
   }
 }

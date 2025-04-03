@@ -2,9 +2,19 @@ import RaceState from './raceState';
 
 export function manageDisabledInRace(
   elements: (HTMLButtonElement | HTMLInputElement)[],
+  isMustBeDisabled?: boolean,
 ) {
   const raceState = RaceState.getInstance();
+
   elements.forEach((element) => {
+    const wasInitiallyDisabled = element.dataset.initiallyDisabled === 'true';
+    if (isMustBeDisabled && wasInitiallyDisabled) {
+      return;
+    }
+    if (!element.dataset.initiallyDisabled) {
+      element.dataset.initiallyDisabled = String(element.disabled);
+    }
+
     element.disabled = raceState.isRaceInProgress();
   });
 }
@@ -16,5 +26,15 @@ export function updateRaceBtn(element: HTMLButtonElement) {
 
 export function updateResetBtn(element: HTMLButtonElement) {
   const raceState = RaceState.getInstance();
-  element.disabled = !(raceState.isRaceInFinish());
+  element.disabled = !raceState.isRaceInFinish();
+}
+
+export function updateRestartBtn(element: HTMLButtonElement) {
+  const raceState = RaceState.getInstance();
+  element.disabled = !raceState.isRaceInFinish();
+}
+
+export function updateStartBtn(element: HTMLButtonElement) {
+  const raceState = RaceState.getInstance();
+  element.disabled = raceState.isRaceInProgress() || raceState.isRaceInFinish();
 }

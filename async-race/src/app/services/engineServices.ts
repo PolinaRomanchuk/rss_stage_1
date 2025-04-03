@@ -98,6 +98,7 @@ export async function restartCar(car: CarView) {
     const carElement = car.carSvgElement.getView();
     carElement.style.transform = `translateX(0px)`;
   }
+  
 }
 
 export async function getAllCarsInPage(page: number, limit: number = 7) {

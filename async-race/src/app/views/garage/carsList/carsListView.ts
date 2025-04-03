@@ -6,6 +6,7 @@ import {
   fetchCarsByApi,
 } from '../../../services/garageServices';
 import Pagination from '../../../utils/pagination';
+import UpdateCarView from '../configs/updateBlock/updateCarView';
 
 class CarsListView extends BaseView {
   public cars: CarView[] = [];
@@ -16,6 +17,8 @@ class CarsListView extends BaseView {
     color: string;
     id: number;
   }> | null = null;
+
+  private updateBlock: UpdateCarView | null = null;
 
   constructor() {
     super({ tag: 'div', classNames: ['cars-list-container'] });
@@ -38,6 +41,10 @@ class CarsListView extends BaseView {
     pagination: Pagination<{ name: string; color: string; id: number }>,
   ) {
     this.pagination = pagination;
+  }
+
+  public getUpdateBlock(updateBlock: UpdateCarView | null) {
+    this.updateBlock = updateBlock;
   }
 
   private drawCars(cars: { name: string; color: string; id: number }[]): void {
@@ -65,6 +72,10 @@ class CarsListView extends BaseView {
   private async selectCar(car: CarView): Promise<void> {
     await fetchCarByApi(car.carId);
     this.selectedCar = car;
+    if (this.updateBlock?.nameInput && this.updateBlock.colorInput) {
+      this.updateBlock.nameInput.value = car.carName;
+      this.updateBlock.colorInput.value = car.carColor;
+    }
   }
 
   private drawCarsCounter(): void {

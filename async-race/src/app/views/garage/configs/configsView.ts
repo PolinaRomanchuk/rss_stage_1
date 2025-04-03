@@ -16,6 +16,7 @@ import RaceState from '../../../states/raceState';
 
 class ConfigsView extends BaseView {
   private buttons: HTMLButtonElement[] = [];
+  public updateBlock: UpdateCarView | null = null;
 
   constructor(
     carsList: CarsListView,
@@ -24,6 +25,9 @@ class ConfigsView extends BaseView {
     super({ tag: 'div', classNames: ['garage-configs-container'] });
     const inputBlock = new CreateCarView(carsList, pagination);
     const updateBlock = new UpdateCarView(carsList, pagination);
+
+    this.updateBlock = updateBlock;
+
     const buttonContainer = new BaseView({
       tag: 'div',
       classNames: ['config-buttons=container'],

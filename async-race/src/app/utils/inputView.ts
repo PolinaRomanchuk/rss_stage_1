@@ -26,7 +26,7 @@ class InputView extends BaseView {
 
   public setValue(value: string): void {
     if (this.input) {
-      this.input.textContent = value;
+      this.input.value = value;
     }
   }
 

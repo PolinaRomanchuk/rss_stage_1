@@ -22,6 +22,9 @@ class CarView extends BaseView {
   private startButton: HTMLButtonElement | null = null;
   private restartButton: HTMLButtonElement | null = null;
 
+  public carName: string = '';
+  public carColor: string = '';
+
   constructor(
     data: { name: string; color: string; id: number },
     onDelete: (car: CarView) => void,
@@ -86,7 +89,7 @@ class CarView extends BaseView {
     ) {
       this.startButton = start;
       this.restartButton = restart;
-      
+
       start.addEventListener('click', () => this.startCar());
       restart.addEventListener('click', () => this.restartCar());
 
@@ -138,6 +141,7 @@ class CarView extends BaseView {
       this.carSvgElement = carImg;
       carImg.setCarColor(color);
     }
+    this.carColor = color;
   }
 
   private setCarName(name: string): void {
@@ -150,6 +154,7 @@ class CarView extends BaseView {
         textContent: name,
       });
     }
+    this.carName = name;
   }
 
   private startCar() {

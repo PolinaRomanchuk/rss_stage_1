@@ -22,6 +22,7 @@ class GarageView extends BaseView {
     }, this.LIMIT_PAGES);
     carsList.setPagination(pagination);
     const configs = new ConfigsView(carsList, pagination);
+    carsList.getUpdateBlock(configs.updateBlock);
     const nameView = new BaseView({
       tag: 'div',
       classNames: ['current-view-name'],

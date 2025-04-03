@@ -1,4 +1,4 @@
-import { updateUIElements } from '../states/buttonsState';
+import { manageDisabledInRace } from '../states/buttonsState';
 import RaceState from '../states/raceState';
 import BaseView from '../views/baseView';
 
@@ -67,7 +67,7 @@ class Pagination<T> extends BaseView {
       this.buttons.push(next, prev);
     }
     if (this.buttons) {
-      RaceState.getInstance().subscribe(() => updateUIElements(this.buttons));
+      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.buttons));
     }
   }
 

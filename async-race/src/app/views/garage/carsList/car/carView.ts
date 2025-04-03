@@ -7,7 +7,7 @@ import StartBtn from './startBtn';
 import FinishImg from '../../../../../assets/img/finish.png';
 import '../car/car.css';
 import RaceState from '../../../../states/raceState';
-import { updateUIElements } from '../../../../states/buttonsState';
+import { manageDisabledInRace } from '../../../../states/buttonsState';
 
 class CarView extends BaseView {
   public carNameElement: BaseView | null = null;
@@ -25,7 +25,7 @@ class CarView extends BaseView {
     this.renderCarWithButtons(data, onDelete, onSelect);
     
     if (this.buttons) {
-      RaceState.getInstance().subscribe(() => updateUIElements(this.buttons));
+      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.buttons));
     }
   }
 

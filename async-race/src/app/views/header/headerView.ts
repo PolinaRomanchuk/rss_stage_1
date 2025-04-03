@@ -3,7 +3,7 @@ import ToGarageBtn from './toGarageBtn';
 import ToWinnersBtn from './toWinnersBtn';
 import '../header/header.css';
 import RaceState from '../../states/raceState';
-import { updateUIElements } from '../../states/buttonsState';
+import { manageDisabledInRace } from '../../states/buttonsState';
 
 class HeaderView extends BaseView {
   private buttons: HTMLButtonElement[] = [];
@@ -24,7 +24,7 @@ class HeaderView extends BaseView {
     }
 
     if (this.buttons) {
-      RaceState.getInstance().subscribe(() => updateUIElements(this.buttons));
+      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.buttons));
     }
   }
 }

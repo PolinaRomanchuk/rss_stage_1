@@ -134,7 +134,7 @@ export async function startRace(
 export async function resetRace(carsListView: CarsListView) {
   const raceState = RaceState;
 
-  raceState.getInstance().endRace();
+  raceState.getInstance().refreshRace();
   iswinner = false;
   const carsToReset = carsListView.cars.filter(
     (carView) =>

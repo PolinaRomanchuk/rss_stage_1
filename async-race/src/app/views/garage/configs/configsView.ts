@@ -7,7 +7,11 @@ import UpdateCarView from './updateBlock/updateCarView';
 import '../configs/configs.css';
 import CarsListView from '../carsList/carsListView';
 import Pagination from '../../../utils/pagination';
-import { updateUIElements } from '../../../states/buttonsState';
+import {
+  updateRaceBtn,
+  manageDisabledInRace,
+  updateResetBtn,
+} from '../../../states/buttonsState';
 import RaceState from '../../../states/raceState';
 
 class ConfigsView extends BaseView {
@@ -32,15 +36,21 @@ class ConfigsView extends BaseView {
 
     const raceBtn = race.getView();
     const resetBtn = reset.getView();
+
     const generateBtn = generate.getView();
     if (
       raceBtn instanceof HTMLButtonElement &&
       resetBtn instanceof HTMLButtonElement &&
       generateBtn instanceof HTMLButtonElement
     ) {
-      this.buttons = [raceBtn, resetBtn, generateBtn];
+      resetBtn.disabled = true;
+      this.buttons = [generateBtn];
       if (this.buttons) {
-        RaceState.getInstance().subscribe(() => updateUIElements(this.buttons));
+        RaceState.getInstance().subscribe(() =>
+          manageDisabledInRace(this.buttons),
+        );
+        RaceState.getInstance().subscribe(() => updateRaceBtn(raceBtn));
+        RaceState.getInstance().subscribe(() => updateResetBtn(resetBtn));
       }
     }
   }

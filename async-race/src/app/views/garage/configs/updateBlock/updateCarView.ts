@@ -4,7 +4,7 @@ import CarsListView from '../../carsList/carsListView';
 import InputView from '../../../../utils/inputView';
 import Pagination from '../../../../utils/pagination';
 import RaceState from '../../../../states/raceState';
-import { updateUIElements } from '../../../../states/buttonsState';
+import { manageDisabledInRace } from '../../../../states/buttonsState';
 
 class UpdateCarView extends BaseView {
   private buttons: HTMLButtonElement[] = [];
@@ -39,8 +39,8 @@ class UpdateCarView extends BaseView {
     }
 
     if (this.buttons && this.inputs) {
-      RaceState.getInstance().subscribe(() => updateUIElements(this.buttons));
-      RaceState.getInstance().subscribe(() => updateUIElements(this.inputs));
+      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.buttons));
+      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.inputs));
     }
   }
 

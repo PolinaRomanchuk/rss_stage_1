@@ -28,7 +28,7 @@ class UpdateCarBtn extends BaseView {
       const selCar = carsList.selectedCar;
       if (selCar) await updateCar(selCar.id, { name, color });
 
-      await carsList.getCars(1, 7);
+      await carsList.getCarsAndCounterByApi(1, 7);
     } catch (error) {
       console.error('Error');
     }

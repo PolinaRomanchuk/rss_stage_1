@@ -1,6 +1,5 @@
 import GarageView from './views/garage/garageView';
 import router from './utils/router';
-import ErrorView from './views/errorView';
 import HeaderView from './views/header/headerView';
 import WinnersView from './views/winners/winnersView';
 

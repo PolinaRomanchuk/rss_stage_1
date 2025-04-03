@@ -22,7 +22,7 @@ class GenerateCarsBtn extends BaseView {
       }));
 
       await Promise.all(cars.map((car) => createCar(car)));
-      await carsList.getCars(1, 7);
+      await carsList.getCarsAndCounterByApi(1, 7);
     } catch (error) {
       console.error('Error');
     }

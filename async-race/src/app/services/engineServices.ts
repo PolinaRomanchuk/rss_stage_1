@@ -3,7 +3,7 @@ import { startOrStopEngine, switchDriveMode } from '../API/engine';
 import Pagination from '../utils/pagination';
 import { getCars } from '../API/garage';
 import CarsListView from '../views/garage/carsList/carsListView';
-import WinnerView from '../views/garage/winnerView';
+import WinnerView from '../views/garage/winnerCarView';
 import { createWinner, getWinner, updateWinner } from '../API/winners';
 
 let activeAnimation: number | null = null;
@@ -32,7 +32,7 @@ export async function stopCar(id: number): Promise<void> {
 }
 
 export async function startCar(car: CarView, isRacing?: boolean) {
-  const data = await loadData(car.id);
+  const data = await loadData(car.carId);
   await startDriving(car, data, isRacing);
 }
 
@@ -80,7 +80,7 @@ export async function startDriving(
     });
 
     try {
-      await switchDriveMode(car.id, 'drive');
+      await switchDriveMode(car.carId, 'drive');
     } catch (error) {
       isCarBroken = true;
     }
@@ -92,7 +92,7 @@ export async function restartCar(car: CarView) {
   if (activeAnimation !== null) {
     cancelAnimationFrame(activeAnimation);
   }
-  await stopCar(car.id);
+  await stopCar(car.carId);
   if (car.carSvgElement) {
     const carElement = car.carSvgElement.getView();
     carElement.style.transform = `translateX(0px)`;
@@ -117,7 +117,7 @@ export async function startRace(
     const isRacing = true;
     const carsToStart = cars.map(
       (car: { name: string; color: string; id: number }) =>
-        carsListView.cars.find((view) => view.id === car.id),
+        carsListView.cars.find((view) => view.carId === car.id),
     );
 
     await Promise.all(
@@ -149,7 +149,7 @@ async function saveWinner(car: CarView, timeDuration: number) {
 }
 
 async function checkifWinnerisExist(car: CarView, time: number) {
-  const id = car.id;
+  const id = car.carId;
   const winner = await getWinner(id);
 
   if (winner) {

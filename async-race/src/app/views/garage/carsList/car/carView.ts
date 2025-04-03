@@ -10,7 +10,7 @@ import '../car/car.css';
 class CarView extends BaseView {
   public carNameElement: BaseView | null = null;
   public carSvgElement: CarSvg | null = null;
-  public id: number;
+  public carId: number;
 
   constructor(
     data: { name: string; color: string; id: number },
@@ -18,21 +18,19 @@ class CarView extends BaseView {
     onSelect: (car: CarView) => void,
   ) {
     super({ tag: 'div', classNames: ['car-container'] });
-    this.id = data.id;
-    this.renderCar(data, onDelete, onSelect);
+    this.carId = data.id;
+    this.renderCarWithButtons(data, onDelete, onSelect);
   }
 
-  public renderCar(
+  private renderCarWithButtons(
     data: { name: string; color: string; id: number },
     onDelete: (car: CarView) => void,
     onSelect: (car: CarView) => void,
-  ) {
+  ): void {
     const selectBtn = new SelectBtn(this, onSelect);
     const deleteBtn = new DeleteBtn(this, onDelete);
     if (data) {
       this.initializeCar(data.name, data.color);
-    } else {
-      this.setCarName('Tesla');
     }
 
     const carControlContainer = this.createCarControlContainer(this);
@@ -72,7 +70,7 @@ class CarView extends BaseView {
     return carPathContainer;
   }
 
-  private createFinishImage() {
+  private createFinishImage(): HTMLElement {
     const finish = new BaseView({
       tag: 'img',
       classNames: ['finish-img'],
@@ -84,6 +82,11 @@ class CarView extends BaseView {
   }
 
   private initializeCar(name: string, color: string): void {
+    this.setCarColor(color);
+    this.setCarName(name);
+  }
+
+  private setCarColor(color: string): void {
     if (this.carSvgElement) {
       this.carSvgElement.setCarColor(color);
     } else {
@@ -91,10 +94,9 @@ class CarView extends BaseView {
       this.carSvgElement = carImg;
       carImg.setCarColor(color);
     }
-    this.setCarName(name);
   }
 
-  public setCarName(name: string): void {
+  private setCarName(name: string): void {
     if (this.carNameElement) {
       this.carNameElement.setTextContent(name);
     } else {

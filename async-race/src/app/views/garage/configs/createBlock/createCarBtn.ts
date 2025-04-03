@@ -1,37 +1,22 @@
 import BaseView from '../../../baseView';
 import CarsListView from '../../carsList/carsListView';
-import { createCar } from '../../../../API/garage';
 import InputView from '../../../../utils/inputView';
+import { createCarByApi } from '../../../../services/garageServices';
+import Pagination from '../../../../utils/pagination';
 
 class CreateCarBtn extends BaseView {
   constructor(
     carsList: CarsListView,
     nameInput: InputView,
     colorInput: InputView,
+    pagination: Pagination<void>
   ) {
     super({
       tag: 'button',
       classNames: ['create-car-button'],
       textContent: 'create',
-      callback: () => this.createCar(carsList, nameInput, colorInput),
+      callback: () => createCarByApi(carsList, nameInput, colorInput, pagination),
     });
-  }
-
-  public async createCar(
-    carsList: CarsListView,
-    nameInput: InputView,
-    colorInput: InputView,
-  ) {
-    const name = nameInput.getValue();
-    const color = colorInput.getValue();
-    const car = { name, color };
-    try {
-      const newCar = await createCar({ name, color });
-
-      await carsList.getCarsAndCounterByApi(1, 7);
-    } catch (error) {
-      console.error('Error');
-    }
   }
 }
 export default CreateCarBtn;

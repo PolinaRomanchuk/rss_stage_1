@@ -1,37 +1,22 @@
-import { updateCar } from '../../../../API/garage';
 import InputView from '../../../../utils/inputView';
 import BaseView from '../../../baseView';
 import CarsListView from '../../carsList/carsListView';
+import { updateCarByApi } from '../../../../services/garageServices';
+import Pagination from '../../../../utils/pagination';
 
 class UpdateCarBtn extends BaseView {
   constructor(
     carsList: CarsListView,
     nameInput: InputView,
     colorInput: InputView,
+    pagination: Pagination<void>
   ) {
     super({
       tag: 'button',
       classNames: ['update-car-button'],
       textContent: 'update',
-      callback: () => this.updateCar(carsList, nameInput, colorInput),
+      callback: () => updateCarByApi(carsList, nameInput, colorInput, pagination),
     });
-  }
-  public async updateCar(
-    carsList: CarsListView,
-    nameInput: InputView,
-    colorInput: InputView,
-  ) {
-    const name = nameInput.getValue();
-    const color = colorInput.getValue();
-
-    try {
-      const selCar = carsList.selectedCar;
-      if (selCar) await updateCar(selCar.id, { name, color });
-
-      await carsList.getCarsAndCounterByApi(1, 7);
-    } catch (error) {
-      console.error('Error');
-    }
   }
 }
 export default UpdateCarBtn;

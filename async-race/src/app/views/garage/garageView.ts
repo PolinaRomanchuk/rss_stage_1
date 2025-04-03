@@ -14,8 +14,9 @@ class GarageView extends BaseView {
     });
     const carsList = new CarsListView();
     const pagination = new Pagination(async (page, limit) => {
-      await carsList.getCarsAndCounterByApi(page, limit);
+      await carsList.getCarsAndCounter(page, limit);
     }, this.LIMIT_PAGES);
+    carsList.setPagination(pagination);
     const configs = new ConfigsView(carsList, pagination);
     const nameView = new BaseView({
       tag: 'div',

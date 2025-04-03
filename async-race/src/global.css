@@ -60,6 +60,10 @@ input {
   &:focus-visible {
     outline-color: var(--color-btn-border);
   }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .current-view-name {

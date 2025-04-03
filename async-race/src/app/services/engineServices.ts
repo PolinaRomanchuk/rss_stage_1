@@ -5,6 +5,7 @@ import { getCars } from '../API/garage';
 import CarsListView from '../views/garage/carsList/carsListView';
 import WinnerView from '../views/garage/winnerCarView';
 import { createWinner, getWinner, updateWinner } from '../API/winners';
+import RaceState from '../states/raceState';
 
 let activeAnimation: number | null = null;
 let cancelAnimation = false;
@@ -109,9 +110,13 @@ export async function getAllCarsInPage(page: number, limit: number = 7) {
 }
 
 export async function startRace(
-  pagination: Pagination<{ name: string; color: string; id: number; }>,
+  pagination: Pagination<{ name: string; color: string; id: number }>,
   carsListView: CarsListView,
 ) {
+  const raceState = RaceState;
+
+  raceState.getInstance().startRace();
+
   const cars = await getAllCarsInPage(pagination.currentPageNumber);
   if (cars) {
     const isRacing = true;
@@ -127,6 +132,9 @@ export async function startRace(
 }
 
 export async function resetRace(carsListView: CarsListView) {
+  const raceState = RaceState;
+
+  raceState.getInstance().endRace();
   iswinner = false;
   const carsToReset = carsListView.cars.filter(
     (carView) =>

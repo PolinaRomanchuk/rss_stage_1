@@ -6,11 +6,14 @@ import SelectBtn from './selectBtn';
 import StartBtn from './startBtn';
 import FinishImg from '../../../../../assets/img/finish.png';
 import '../car/car.css';
+import RaceState from '../../../../states/raceState';
+import { updateUIElements } from '../../../../states/buttonsState';
 
 class CarView extends BaseView {
   public carNameElement: BaseView | null = null;
   public carSvgElement: CarSvg | null = null;
   public carId: number;
+  public buttons: HTMLButtonElement[] = [];
 
   constructor(
     data: { name: string; color: string; id: number },
@@ -20,6 +23,10 @@ class CarView extends BaseView {
     super({ tag: 'div', classNames: ['car-container'] });
     this.carId = data.id;
     this.renderCarWithButtons(data, onDelete, onSelect);
+    
+    if (this.buttons) {
+      RaceState.getInstance().subscribe(() => updateUIElements(this.buttons));
+    }
   }
 
   private renderCarWithButtons(
@@ -32,7 +39,6 @@ class CarView extends BaseView {
     if (data) {
       this.initializeCar(data.name, data.color);
     }
-
     const carControlContainer = this.createCarControlContainer(this);
     const carPathContainer = this.createCarPathContainer();
     this.appendChildren([
@@ -42,6 +48,15 @@ class CarView extends BaseView {
       carControlContainer,
       carPathContainer,
     ]);
+
+    const select = selectBtn.getView();
+    const deleteb = deleteBtn.getView();
+    if (
+      select instanceof HTMLButtonElement &&
+      deleteb instanceof HTMLButtonElement
+    ) {
+      this.buttons.push(select, deleteb);
+    }
   }
 
   private createCarControlContainer(car: CarView): BaseView {
@@ -52,6 +67,16 @@ class CarView extends BaseView {
     const startCar = new StartBtn(car);
     const restartCar = new RestartBtn(car);
     carControlContainer.appendChildren([startCar, restartCar]);
+
+    const start = startCar.getView();
+    const restart = restartCar.getView();
+    if (
+      start instanceof HTMLButtonElement &&
+      restart instanceof HTMLButtonElement
+    ) {
+      this.buttons.push(start, restart);
+    }
+
     return carControlContainer;
   }
 

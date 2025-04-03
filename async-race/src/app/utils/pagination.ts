@@ -1,18 +1,27 @@
+import { updateUIElements } from '../states/buttonsState';
+import RaceState from '../states/raceState';
 import BaseView from '../views/baseView';
 
 class Pagination<T> extends BaseView {
   public currentPageNumber: number = 1;
   public currPage: HTMLElement | null = null;
-  private data: (page: number, limit: number) => Promise<{ items: T[]; totalCount: number }>;
+  private data: (
+    page: number,
+    limit: number,
+  ) => Promise<{ items: T[]; totalCount: number }>;
   private limit: number;
 
   private totalItems: number = 0;
 
   private nextBtn: BaseView;
   private prevBtn: BaseView;
+  private buttons: HTMLButtonElement[] = [];
 
   constructor(
-    data: (page: number, limit: number) => Promise<{ items: T[]; totalCount: number }>,
+    data: (
+      page: number,
+      limit: number,
+    ) => Promise<{ items: T[]; totalCount: number }>,
     limit: number,
   ) {
     super({
@@ -48,6 +57,18 @@ class Pagination<T> extends BaseView {
 
     this.appendChildren([prevBtn, currentPage, nextBtn]);
     this.loadPage();
+
+    const next = nextBtn.getView();
+    const prev = prevBtn.getView();
+    if (
+      next instanceof HTMLButtonElement &&
+      prev instanceof HTMLButtonElement
+    ) {
+      this.buttons.push(next, prev);
+    }
+    if (this.buttons) {
+      RaceState.getInstance().subscribe(() => updateUIElements(this.buttons));
+    }
   }
 
   public setTotalItems(totalCount: number): void {

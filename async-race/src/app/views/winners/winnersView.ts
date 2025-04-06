@@ -4,6 +4,7 @@ import { getWinners } from '../../API/winners';
 import CarSvg from '../garage/carsList/car/carSvg';
 import { getCar } from '../../API/garage';
 import '../winners/winners.css';
+import { getWinnersState, saveWinnersStateToStorage, setCurrentPage, setSortBy, setSortOrder } from '../../states/winnersState';
 
 class WinnersView extends BaseView {
   private LIMIT_PAGES: number = 10;
@@ -20,10 +21,18 @@ class WinnersView extends BaseView {
       classNames: ['winners-container'],
     });
 
+    const winnerState = getWinnersState();
+    this.sortBy = winnerState.sortBy;
+    this.sortOrder = winnerState.sortOrder;
+
     const pagination = new Pagination(async (page, limit) => {
       const { winners, totalCount } = await this.loadWinners(page, limit);
       return { items: winners, totalCount };
-    }, this.LIMIT_PAGES);
+    }, this.LIMIT_PAGES, (page: number) => {
+      setCurrentPage(page);
+      saveWinnersStateToStorage();
+    },
+      winnerState.currentPage);
 
     const nameView = new BaseView({
       tag: 'div',
@@ -164,9 +173,17 @@ class WinnersView extends BaseView {
       }
     });
   }
-  private async sortWinners(sortBy: 'id' | 'wins' | 'time') {
-    this.sortOrder = this.sortOrder === 'ASC' ? 'DESC' : 'ASC';
-    this.sortBy = sortBy;
+  private async sortWinners(newSortBy: 'id' | 'wins' | 'time') {
+    if (this.sortBy === newSortBy) {
+      this.sortOrder = this.sortOrder === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      this.sortBy = newSortBy;
+      this.sortOrder = 'ASC';
+    }
+
+    setSortBy(this.sortBy);
+    setSortOrder(this.sortOrder);
+    saveWinnersStateToStorage();
 
     await this.loadWinners(1, this.LIMIT_PAGES);
   }

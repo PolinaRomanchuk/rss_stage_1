@@ -3,24 +3,21 @@ import { startOrStopEngine, switchDriveMode } from '../API/engine';
 import Pagination from '../utils/pagination';
 import { getCars } from '../API/garage';
 import CarsListView from '../views/garage/carsList/carsListView';
-import WinnerView from '../views/garage/winnerCarView';
-import { createWinner, getWinner, updateWinner } from '../API/winners';
 import RaceState from '../states/raceState';
+import { handleWinner, showWinner } from './winnerServices';
 
 let activeAnimation: number | null = null;
 let cancelAnimation = false;
-let iswinner = false;
+let isWinner = false;
 
-export async function loadData(
-  id: number,
-): Promise<{ velocity: number; distance: number } | undefined> {
+export async function getVelocityAndDistanceByApi(id: number,): Promise<{ velocity: number; distance: number } | undefined> {
   try {
-    const { velocity, distance } = await startOrStopEngine(id, 'started');
-    console.log(velocity);
-    return { velocity, distance };
+    const response = await startOrStopEngine(id, 'started');
+    console.log('Received response:', response);
+    return { velocity: response.velocity, distance: response.distance };
   } catch (error) {
-    console.error('Error', error);
-    return undefined;
+    console.error('Error getting velocity and distance', error);
+    throw error;
   }
 }
 
@@ -28,28 +25,21 @@ export async function stopCar(id: number): Promise<void> {
   try {
     await startOrStopEngine(id, 'stopped');
   } catch (error) {
-    console.error('Error',error);
+    console.error('Car stop error', error);
   }
 }
 
-export async function startCar(car: CarView, isRacing?: boolean) {
-  const data = await loadData(car.carId);
-  await startDriving(car, data, isRacing);
+export async function startCar(car: CarView, isRacing?: boolean): Promise<void> {
+  const carDrivingData = await getVelocityAndDistanceByApi(car.carId);
+  if (carDrivingData) {
+    await startDriving(car, carDrivingData, isRacing);
+  }
 }
 
-export async function startDriving(
-  car: CarView,
-  data:
-    | {
-        velocity: number;
-        distance: number;
-      }
-    | undefined,
-  isRacing?: boolean,
-) {
-  if (car.carSvgElement && data) {
+export async function startDriving(car: CarView, carDrivingData: | { velocity: number; distance: number; } | undefined, isRacing?: boolean): Promise<void> {
+  if (car.carSvgElement && carDrivingData) {
     const carElement = car.carSvgElement.getView();
-    const timeDuration = data.distance / data.velocity;
+    const timeDuration = carDrivingData.distance / carDrivingData.velocity;
     const screenWidth = window.innerWidth;
     const maxDistance = (81 * screenWidth) / 100;
     const start = performance.now();
@@ -68,10 +58,10 @@ export async function startDriving(
       function draw(progress: number) {
         carElement.style.transform = `translateX(${progress * maxDistance}px)`;
 
-        if (progress >= 1 && !iswinner && isRacing) {
-          iswinner = true;
+        if (progress >= 1 && !isWinner && isRacing) {
+          isWinner = true;
           showWinner(car);
-          saveWinner(car, timeDuration);
+          handleWinner(car.carId, timeDuration);
         }
       }
 
@@ -84,12 +74,12 @@ export async function startDriving(
       await switchDriveMode(car.carId, 'drive');
     } catch (error) {
       isCarBroken = true;
-      console.error('Error', error);
+      console.error(`${car.carName} has been stopped suddenly, engine was broken down.`, error);
     }
   }
 }
 
-export async function restartCar(car: CarView) {
+export async function restartCar(car: CarView): Promise<void> {
   cancelAnimation = true;
   if (activeAnimation !== null) {
     cancelAnimationFrame(activeAnimation);
@@ -99,7 +89,6 @@ export async function restartCar(car: CarView) {
     const carElement = car.carSvgElement.getView();
     carElement.style.transform = `translateX(0px)`;
   }
-  
 }
 
 export async function getAllCarsInPage(page: number, limit: number = 7) {
@@ -107,24 +96,20 @@ export async function getAllCarsInPage(page: number, limit: number = 7) {
     const { cars } = await getCars(page, limit);
     return cars;
   } catch (error) {
-    console.error('Error', error);
+    console.error('Getting cars error', error);
   }
 }
 
-export async function startRace(
-  pagination: Pagination<{ name: string; color: string; id: number }>,
-  carsListView: CarsListView,
-) {
-  const raceState = RaceState;
-
-  raceState.getInstance().startRace();
+export async function startRace(pagination: Pagination<{ name: string; color: string; id: number }>, carElements: CarsListView): Promise<void> {
+  const raceState = RaceState.getInstance();
+  raceState.startRace();
 
   const cars = await getAllCarsInPage(pagination.currentPageNumber);
   if (cars) {
     const isRacing = true;
     const carsToStart = cars.map(
       (car: { name: string; color: string; id: number }) =>
-        carsListView.cars.find((view) => view.carId === car.id),
+        carElements.cars.find((view) => view.carId === car.id),
     );
 
     await Promise.all(
@@ -133,11 +118,11 @@ export async function startRace(
   }
 }
 
-export async function resetRace(carsListView: CarsListView) {
-  const raceState = RaceState;
+export async function resetRace(carsListView: CarsListView): Promise<void> {
+  const raceState = RaceState.getInstance();
+  raceState.refreshRace();
 
-  raceState.getInstance().refreshRace();
-  iswinner = false;
+  isWinner = false;
   const carsToReset = carsListView.cars.filter(
     (carView) =>
       carView.carSvgElement?.getView().style.transform !== 'translateX(0px)',
@@ -146,40 +131,4 @@ export async function resetRace(carsListView: CarsListView) {
   await Promise.all(carsToReset.map((carView) => restartCar(carView)));
 }
 
-function showWinner(car: CarView) {
-  const name = car.carNameElement?.getView().textContent;
-  if (name) {
-    const winner = new WinnerView(name);
-    document.body.append(winner.getView());
-  }
-}
 
-async function saveWinner(car: CarView, timeDuration: number) {
-  await checkifWinnerisExist(car, timeDuration);
-}
-
-async function checkifWinnerisExist(car: CarView, time: number) {
-  const id = car.carId;
-  const winner = await getWinner(id);
-
-  if (winner) {
-    updateTimeAndCountofWin(winner, time);
-  } else {
-    const wins = 1;
-    await createWinner({ id, wins, time });
-  }
-}
-
-async function updateTimeAndCountofWin(
-  winner: {
-    id: number;
-    wins: number;
-    time: number;
-  },
-  time: number,
-) {
-  const count = winner.wins + 1;
-  const seconds = parseFloat((time / 1000).toFixed(2));
-  const newTime = Math.min(winner.time, seconds);
-  await updateWinner(winner.id, { wins: count, time: newTime });
-}

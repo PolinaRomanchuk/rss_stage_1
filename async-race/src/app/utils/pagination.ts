@@ -94,7 +94,7 @@ class Pagination<T> extends BaseView {
 
   public async loadPage() {
     try {
-      const { items, totalCount } = await this.data(
+      const { totalCount } = await this.data(
         this.currentPageNumber,
         this.limit,
       );
@@ -102,7 +102,7 @@ class Pagination<T> extends BaseView {
       this.updateCurrentPage();
       this.updatePaginationState();
     } catch (error) {
-      console.error('Error');
+      console.error('Error', error);
     }
   }
 

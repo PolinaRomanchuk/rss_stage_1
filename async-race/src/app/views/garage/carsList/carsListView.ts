@@ -26,7 +26,7 @@ class CarsListView extends BaseView {
 
   public async getCarsAndCounter(
     currPage: number,
-    limit: number,
+    limit: number
   ): Promise<{
     cars: { name: string; color: string; id: number }[];
     totalCount: number;
@@ -38,7 +38,7 @@ class CarsListView extends BaseView {
   }
 
   public setPagination(
-    pagination: Pagination<{ name: string; color: string; id: number }>,
+    pagination: Pagination<{ name: string; color: string; id: number }>
   ) {
     this.pagination = pagination;
   }
@@ -55,7 +55,7 @@ class CarsListView extends BaseView {
       const newCar = new CarView(
         car,
         this.deleteCar.bind(this),
-        this.selectCar.bind(this),
+        this.selectCar.bind(this)
       );
 
       this.cars.push(newCar);

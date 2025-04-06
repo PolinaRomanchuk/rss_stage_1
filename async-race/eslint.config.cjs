@@ -1,8 +1,9 @@
-const eslintPluginUnicorn = require('eslint-plugin-unicorn');
-const eslintPluginTs = require('@typescript-eslint/eslint-plugin');
-const eslintParserTs = require('@typescript-eslint/parser');
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import eslintPluginTs from '@typescript-eslint/eslint-plugin';
+import eslintParserTs from '@typescript-eslint/parser';
+import eslintPluginPrettier from 'eslint-plugin-prettier';
 
-module.exports = [
+export default [
   {
     ignores: ['node_modules', 'dist'],
   },
@@ -14,8 +15,11 @@ module.exports = [
     plugins: {
       '@typescript-eslint': eslintPluginTs,
       unicorn: eslintPluginUnicorn,
+      prettier: eslintPluginPrettier,
     },
+
     rules: {
+      'prettier/prettier': ['error'],
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       'unicorn/no-array-callback-reference': 'off',
       'unicorn/no-array-for-each': 'off',

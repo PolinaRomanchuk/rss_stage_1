@@ -7,6 +7,7 @@ class ToWinnersBtn extends BaseView {
       tag: 'button',
       classNames: ['to-winners-btn'],
       textContent: 'To winners',
+
     });
     const button = this.getView();
     button.addEventListener('click', () => {

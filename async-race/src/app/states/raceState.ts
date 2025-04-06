@@ -4,7 +4,7 @@ class RaceState {
   private raceInFinish: boolean = false;
   private subscribers: (() => void)[] = [];
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): RaceState {
     if (!RaceState.instance) {
@@ -25,7 +25,7 @@ class RaceState {
     this.notifySubscribers();
   }
 
-  refreshRace(){
+  refreshRace() {
     this.raceInProgress = false;
     this.raceInFinish = false;
     this.notifySubscribers();
@@ -44,7 +44,7 @@ class RaceState {
   }
 
   private notifySubscribers() {
-    this.subscribers.forEach(callback => callback());
+    this.subscribers.forEach((callback) => callback());
   }
 }
 

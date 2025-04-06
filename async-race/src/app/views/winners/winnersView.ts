@@ -88,7 +88,7 @@ class WinnersView extends BaseView {
         page,
         limit,
         this.sortBy,
-        this.sortOrder,
+        this.sortOrder
       );
       this.totalCounter = totalCount;
       this.totalCountView.getView().textContent = `${this.totalCounter} winners`;
@@ -103,13 +103,13 @@ class WinnersView extends BaseView {
             wins: winner.wins,
             time: winner.time,
           };
-        }),
+        })
       );
 
       this.renderWinners(winnersData);
       return { winners: winnersData, totalCount };
     } catch (error) {
-      console.error('Error');
+      console.error('Error', error);
       return { winners: [], totalCount: 0 };
     }
   }
@@ -121,7 +121,7 @@ class WinnersView extends BaseView {
       color: string;
       wins: number;
       time: number;
-    }[],
+    }[]
   ) {
     if (this.tBodyElement) {
       this.tBodyElement.removeAllChildren();

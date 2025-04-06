@@ -12,7 +12,6 @@ import { getRandomCarName } from '../utils/carNames';
 import Pagination from '../utils/pagination';
 
 const GENERATE_COUNT: number = 100;
-const LIMIT_PAGES: number = 7;
 
 export async function fetchCarsByApi(
   currPage: number,
@@ -45,13 +44,12 @@ export async function createCarByApi(
 ) {
   const name = nameInput.getValue();
   const color = colorInput.getValue();
-  const car = { name, color };
   try {
-    const newCar = await createCar({ name, color });
+    await createCar({ name, color });
 
     await pagination.loadPage();
   } catch (error) {
-    console.error('Error');
+    console.error('Error', error);
   }
 }
 
@@ -70,7 +68,7 @@ export async function updateCarByApi(
 
     await pagination.loadPage();
   } catch (error) {
-    console.error('Error');
+    console.error('Error', error);
   }
 }
 
@@ -84,7 +82,7 @@ export async function deleteCarByApi(
     await deleteWinnerIfExists(id);
     await pagination.loadPage();
   } catch (error) {
-    console.error('Error');
+    console.error('Error', error);
   }
 }
 
@@ -112,7 +110,7 @@ export async function generateCars(
     await Promise.all(cars.map((car) => createCar(car)));
     await pagination.loadPage();
   } catch (error) {
-    console.error('Error');
+    console.error('Error', error);
   }
 }
 

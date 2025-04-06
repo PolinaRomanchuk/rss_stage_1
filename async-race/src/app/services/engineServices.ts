@@ -19,7 +19,7 @@ export async function loadData(
     console.log(velocity);
     return { velocity, distance };
   } catch (error) {
-    console.error('Error');
+    console.error('Error', error);
     return undefined;
   }
 }
@@ -28,7 +28,7 @@ export async function stopCar(id: number): Promise<void> {
   try {
     await startOrStopEngine(id, 'stopped');
   } catch (error) {
-    console.error('Error');
+    console.error('Error',error);
   }
 }
 
@@ -52,7 +52,7 @@ export async function startDriving(
     const timeDuration = data.distance / data.velocity;
     const screenWidth = window.innerWidth;
     const maxDistance = (81 * screenWidth) / 100;
-    let start = performance.now();
+    const start = performance.now();
 
     cancelAnimation = false;
     let isCarBroken = false;
@@ -84,6 +84,7 @@ export async function startDriving(
       await switchDriveMode(car.carId, 'drive');
     } catch (error) {
       isCarBroken = true;
+      console.error('Error', error);
     }
   }
 }
@@ -106,7 +107,7 @@ export async function getAllCarsInPage(page: number, limit: number = 7) {
     const { cars } = await getCars(page, limit);
     return cars;
   } catch (error) {
-    console.error('Error');
+    console.error('Error', error);
   }
 }
 

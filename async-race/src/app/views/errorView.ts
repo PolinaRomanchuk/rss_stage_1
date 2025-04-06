@@ -12,7 +12,7 @@ class ErrorView extends BaseView {
       classNames: ['error-text'],
       textContent: 'Page not found',
     });
-    
+
     this.append(textError);
   }
 }

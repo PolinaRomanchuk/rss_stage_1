@@ -43,6 +43,7 @@ export default{
       template: './src/index.html',
       filename: 'index.html',
       publicPath: '/polinaromanchuk-JSFE2024Q4/async-race/',
+      favicon: path.resolve(__dirname, 'src/assets/img/favicon.ico'),
     }),
     new EslintPlugin({ extensions: ['ts'] }),
   ],

@@ -8,6 +8,8 @@ import {
 import Pagination from '../../../utils/pagination';
 import UpdateCarView from '../configs/updateBlock/updateCarView';
 
+import { getGarageState, saveGarageStateToStorage, setUpdateInputs } from '../../../states/garageState';
+
 class CarsListView extends BaseView {
   public cars: CarView[] = [];
   public selectedCar: CarView | null = null;
@@ -22,6 +24,7 @@ class CarsListView extends BaseView {
 
   constructor() {
     super({ tag: 'div', classNames: ['cars-list-container'] });
+    
   }
 
   public async getCarsAndCounter(
@@ -45,6 +48,7 @@ class CarsListView extends BaseView {
 
   public getUpdateBlock(updateBlock: UpdateCarView | null) {
     this.updateBlock = updateBlock;
+    this.setUpdateInputs();
   }
 
   private drawCars(cars: { name: string; color: string; id: number }[]): void {
@@ -69,13 +73,25 @@ class CarsListView extends BaseView {
     car.removeView();
   }
 
+  private setUpdateInputs() {
+    if (this.updateBlock?.nameInput && this.updateBlock.colorInput) {
+      const { updateInputName, updateInputColor } = getGarageState();
+      this.updateBlock.nameInput.value = updateInputName;
+      this.updateBlock.colorInput.value = updateInputColor;
+    }
+  }
+
   private async selectCar(car: CarView): Promise<void> {
     await fetchCarByApi(car.carId);
     this.selectedCar = car;
+
     if (this.updateBlock?.nameInput && this.updateBlock.colorInput) {
+
       this.updateBlock.nameInput.value = car.carName;
       this.updateBlock.colorInput.value = car.carColor;
     }
+    setUpdateInputs(car.carName, car.carColor);
+    saveGarageStateToStorage();
   }
 
   private drawCarsCounter(): void {

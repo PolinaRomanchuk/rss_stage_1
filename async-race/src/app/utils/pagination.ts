@@ -5,31 +5,30 @@ import BaseView from '../views/baseView';
 class Pagination<T> extends BaseView {
   public currentPageNumber: number = 1;
   public currPage: HTMLElement | null = null;
+  private totalItems: number = 0;
+
+  private buttons: HTMLButtonElement[] = [];
+  private nextBtn: BaseView;
+  private prevBtn: BaseView;
+
   private data: (
     page: number,
     limit: number,
   ) => Promise<{ items: T[]; totalCount: number }>;
+
   private limit: number;
 
-  private totalItems: number = 0;
-
-  private nextBtn: BaseView;
-  private prevBtn: BaseView;
-  private buttons: HTMLButtonElement[] = [];
-
   constructor(
-    data: (
-      page: number,
-      limit: number,
-    ) => Promise<{ items: T[]; totalCount: number }>,
+    data: (page: number, limit: number,) => Promise<{ items: T[]; totalCount: number }>,
     limit: number,
+    private onPageChange: (page: number) => void = () => { },
+    initialPage: number = 1
   ) {
-    super({
-      tag: 'div',
-      classNames: ['pagination-container'],
-    });
+    super({ tag: 'div', classNames: ['pagination-container'], });
+    
     this.data = data;
     this.limit = limit;
+    this.currentPageNumber = initialPage;
 
     const currentPage = new BaseView({
       tag: 'span',
@@ -82,12 +81,14 @@ class Pagination<T> extends BaseView {
 
   private async getNextPage() {
     this.currentPageNumber += 1;
+    this.onPageChange(this.currentPageNumber);
     await this.loadPage();
   }
 
   private async getPrevPage() {
     if (this.currentPageNumber > 1) {
       this.currentPageNumber -= 1;
+      this.onPageChange(this.currentPageNumber);
       await this.loadPage();
     }
   }

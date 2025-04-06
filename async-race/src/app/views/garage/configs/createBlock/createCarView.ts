@@ -5,6 +5,7 @@ import InputView from '../../../../utils/inputView';
 import Pagination from '../../../../utils/pagination';
 import RaceState from '../../../../states/raceState';
 import { manageDisabledInRace } from '../../../../states/buttonsState';
+import { getGarageState } from '../../../../states/garageState';
 
 class CreateCarView extends BaseView {
   private buttons: HTMLButtonElement[] = [];
@@ -41,16 +42,20 @@ class CreateCarView extends BaseView {
   }
 
   private drawNameInput(): InputView {
-    const name = new InputView();
+    const name = new InputView('create');
     name.setType('text');
     name.addClass(['car-name-input']);
+    const { inputName } = getGarageState();
+    name.setValue(inputName);
     return name;
   }
 
   private drawColorInput(): InputView {
-    const color = new InputView();
+    const color = new InputView('create');
     color.setType('color');
     color.addClass(['car-color-input']);
+    const { inputColor } = getGarageState();
+    color.setValue(inputColor);
     return color;
   }
 }

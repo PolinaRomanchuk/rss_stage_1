@@ -57,7 +57,7 @@ class UpdateCarView extends BaseView {
   }
 
   private drawNameInput(): InputView {
-    const name = new InputView();
+    const name = new InputView('update');
     name.setType('text');
     name.addClass(['car-name-input']);
     name.getView().textContent = this.getName();
@@ -65,7 +65,7 @@ class UpdateCarView extends BaseView {
   }
 
   private drawColorInput(): InputView {
-    const color = new InputView();
+    const color = new InputView('update');
     color.setType('color');
     color.addClass(['car-color-input']);
     return color;

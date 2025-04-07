@@ -92,6 +92,7 @@ class CarsListView extends BaseView {
     }
     setUpdateInputs(car.carName, car.carColor);
     saveGarageStateToStorage();
+    this.updateBlock?.setDisabledState(false);
   }
 
   private drawCarsCounter(): void {

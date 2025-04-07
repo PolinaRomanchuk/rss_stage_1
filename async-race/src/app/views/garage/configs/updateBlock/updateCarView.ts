@@ -24,7 +24,7 @@ class UpdateCarView extends BaseView {
     });
     const name = this.drawNameInput();
     const color = this.drawColorInput();
-    const button = new UpdateCarBtn(carsList, name, color, pagination);
+    const button = new UpdateCarBtn(carsList, name, color, pagination, this);
     this.appendChildren([name, color, button]);
     this.carsList = carsList;
 
@@ -45,6 +45,8 @@ class UpdateCarView extends BaseView {
     if (buttonElement instanceof HTMLButtonElement) {
       this.buttons.push(buttonElement);
     }
+
+    this.setDisabledState(true);
 
     if (this.buttons && this.inputs) {
       RaceState.getInstance().subscribe(() =>
@@ -78,6 +80,16 @@ class UpdateCarView extends BaseView {
   }
   private getName(): string {
     return this.carsList?.selectedCar?.carName || '';
+  }
+
+  public setDisabledState(state: boolean): void {
+    this.inputs.forEach((input) => {
+      input.disabled = state;
+    });
+
+    this.buttons.forEach((button) => {
+      button.disabled = state;
+    });
   }
 }
 export default UpdateCarView;

@@ -75,5 +75,6 @@ class InputView extends BaseView {
 
     saveGarageStateToStorage();
   }
+
 }
 export default InputView;

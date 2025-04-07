@@ -15,8 +15,13 @@ class UpdateCarBtn extends BaseView {
       tag: 'button',
       classNames: ['update-car-button'],
       textContent: 'update',
-      callback: () => updateCarByApi(carsList, nameInput, colorInput, pagination),
+      callback: () => {
+        updateCarByApi(carsList, nameInput, colorInput, pagination);
+        nameInput.reset();
+        colorInput.reset();
+      },
     });
   }
+
 }
 export default UpdateCarBtn;

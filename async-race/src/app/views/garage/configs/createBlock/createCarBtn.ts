@@ -15,7 +15,11 @@ class CreateCarBtn extends BaseView {
       tag: 'button',
       classNames: ['create-car-button'],
       textContent: 'create',
-      callback: () => createCarByApi(carsList, nameInput, colorInput, pagination),
+      callback: () => {
+        createCarByApi(carsList, nameInput, colorInput, pagination);
+        nameInput.reset();
+        colorInput.reset();
+      },
     });
   }
 }

@@ -1,6 +1,5 @@
 type InputPurpose = 'create' | 'update';
 
-
 import {
   saveGarageStateToStorage,
   setInputName,
@@ -17,32 +16,16 @@ class InputView extends BaseView {
   constructor(purpose: InputPurpose) {
     super({ tag: 'input', classNames: ['set-car-input'] });
     this.purpose = purpose;
-    const currInput = this.getView();
 
+    const currInput = this.getView();
     if (currInput instanceof HTMLInputElement) {
       this.input = currInput;
+
       this.input.addEventListener('input', (event) => {
         const target = event.target;
         if (!(target instanceof HTMLInputElement) || !this.input) return;
         this.input.value = target.value;
-
-        if (this.input.type === 'text') {
-          if (this.purpose === 'create') {
-            setInputName(this.input.value);
-          } else {
-            setUpdateInputName(this.input.value);
-          }
-        }
-
-        if (this.input.type === 'color') {
-          if (this.purpose === 'create') {
-            setInputColor(this.input.value);
-          } else {
-            setUpdateInputColor(this.input.value);
-          }
-        }
-
-        saveGarageStateToStorage();
+        this.updateState(target.value);
       });
     }
   }
@@ -57,29 +40,40 @@ class InputView extends BaseView {
   public setValue(value: string): void {
     if (this.input) {
       this.input.value = value;
-      if (this.input.type === 'text') {
-        if (this.purpose === 'create') {
-          setInputName(value);
-        } else {
-          setUpdateInputName(value);
-        }
-      }
-
-      if (this.input.type === 'color') {
-        if (this.purpose === 'create') {
-          setInputColor(value);
-        } else {
-          setUpdateInputColor(value);
-        }
-      }
-
-      saveGarageStateToStorage();
+      this.updateState(value);
     }
-
   }
 
   public setType(type: string): void {
     if (this.input) this.input.type = type;
+  }
+
+  public reset(): void {
+    this.setValue(this.input?.type === 'color' ? '#000000' : '');
+  }
+
+  private updateState(value: string): void {
+    if (!this.input) return;
+
+    const type = this.input.type;
+
+    if (type === 'text') {
+      if (this.purpose === 'create') {
+        setInputName(value);
+      } else {
+        setUpdateInputName(value);
+      }
+    }
+
+    if (type === 'color') {
+      if (this.purpose === 'create') {
+        setInputColor(value);
+      } else {
+        setUpdateInputColor(value);
+      }
+    }
+
+    saveGarageStateToStorage();
   }
 }
 export default InputView;

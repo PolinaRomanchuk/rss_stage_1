@@ -13,8 +13,13 @@ class CarSvg extends BaseView {
     this.renderSvg();
   }
   private renderSvg(): void {
-    this.getView().innerHTML = Svg;
-    this.svgElement = this.getView().querySelector('svg');
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(Svg, 'image/svg+xml');
+    const svgEl = svgDoc.documentElement;
+    if (svgEl instanceof SVGSVGElement) {
+      this.svgElement = svgEl;
+      this.getView().appendChild(svgEl);
+    }
   }
 
   public setCarColor(color: string): void {

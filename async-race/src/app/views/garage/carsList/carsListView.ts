@@ -24,7 +24,6 @@ class CarsListView extends BaseView {
 
   constructor() {
     super({ tag: 'div', classNames: ['cars-list-container'] });
-    
   }
 
   public async getCarsAndCounter(

@@ -1,5 +1,3 @@
-import { manageDisabledInRace } from '../states/buttonsState';
-import RaceState from '../states/raceState';
 import BaseView from '../views/baseView';
 
 class Pagination<T> extends BaseView {
@@ -25,7 +23,7 @@ class Pagination<T> extends BaseView {
     initialPage: number = 1
   ) {
     super({ tag: 'div', classNames: ['pagination-container'], });
-    
+
     this.data = data;
     this.limit = limit;
     this.currentPageNumber = initialPage;
@@ -43,7 +41,7 @@ class Pagination<T> extends BaseView {
       classNames: ['next-page-button'],
       textContent: 'Next',
       callback: () => this.getNextPage(),
-    });
+    }, true, true);
     this.nextBtn = nextBtn;
 
     const prevBtn = new BaseView({
@@ -51,23 +49,11 @@ class Pagination<T> extends BaseView {
       classNames: ['previous-page-button'],
       textContent: 'Back',
       callback: () => this.getPrevPage(),
-    });
+    }, true, true);
     this.prevBtn = prevBtn;
 
     this.appendChildren([prevBtn, currentPage, nextBtn]);
     this.loadPage();
-
-    const next = nextBtn.getView();
-    const prev = prevBtn.getView();
-    if (
-      next instanceof HTMLButtonElement &&
-      prev instanceof HTMLButtonElement
-    ) {
-      this.buttons.push(next, prev);
-    }
-    if (this.buttons) {
-      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.buttons, true));
-    }
   }
 
   public setTotalItems(totalCount: number): void {

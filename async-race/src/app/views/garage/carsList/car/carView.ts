@@ -8,7 +8,6 @@ import FinishImg from '../../../../../assets/img/finish.png';
 import '../car/car.css';
 import RaceState from '../../../../states/raceState';
 import {
-  manageDisabledInRace,
   updateRestartBtn,
   updateStartBtn,
 } from '../../../../states/buttonsState';
@@ -17,7 +16,6 @@ class CarView extends BaseView {
   public carNameElement: BaseView | null = null;
   public carSvgElement: CarSvg | null = null;
   public carId: number;
-  public buttons: HTMLButtonElement[] = [];
   private isCarRunning: boolean = false;
   private startButton: HTMLButtonElement | null = null;
   private restartButton: HTMLButtonElement | null = null;
@@ -33,12 +31,6 @@ class CarView extends BaseView {
     super({ tag: 'div', classNames: ['car-container'] });
     this.carId = data.id;
     this.renderCarWithButtons(data, onDelete, onSelect);
-
-    if (this.buttons) {
-      RaceState.getInstance().subscribe(() =>
-        manageDisabledInRace(this.buttons),
-      );
-    }
   }
 
   private renderCarWithButtons(
@@ -60,15 +52,6 @@ class CarView extends BaseView {
       carControlContainer,
       carPathContainer,
     ]);
-
-    const select = selectBtn.getView();
-    const deleteb = deleteBtn.getView();
-    if (
-      select instanceof HTMLButtonElement &&
-      deleteb instanceof HTMLButtonElement
-    ) {
-      this.buttons.push(select, deleteb);
-    }
   }
 
   private createCarControlContainer(car: CarView): BaseView {

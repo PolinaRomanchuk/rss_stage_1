@@ -10,7 +10,7 @@ class GenerateCarsBtn extends BaseView {
       classNames: ['generate-cars-button'],
       textContent: 'Generate cars',
       callback: () => generateCars(carsList, pagination),
-    });
+    }, true);
   }
 }
 export default GenerateCarsBtn;

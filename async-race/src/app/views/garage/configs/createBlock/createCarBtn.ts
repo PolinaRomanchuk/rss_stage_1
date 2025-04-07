@@ -20,7 +20,7 @@ class CreateCarBtn extends BaseView {
         nameInput.reset();
         colorInput.reset();
       },
-    });
+    }, true);
   }
 }
 export default CreateCarBtn;

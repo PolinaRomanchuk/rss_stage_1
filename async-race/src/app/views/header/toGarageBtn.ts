@@ -7,7 +7,7 @@ class ToGarageBtn extends BaseView {
       tag: 'button',
       classNames: ['to-garage-btn'],
       textContent: 'To garage',
-    });
+    }, true);
     const button = this.getView();
     button.addEventListener('click', () => {
       router.navigate('');

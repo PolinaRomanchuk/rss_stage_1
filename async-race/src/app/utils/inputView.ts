@@ -14,7 +14,7 @@ class InputView extends BaseView {
   private purpose: InputPurpose;
 
   constructor(purpose: InputPurpose) {
-    super({ tag: 'input', classNames: ['set-car-input'] });
+    super({ tag: 'input', classNames: ['set-car-input'] }, true, true);
     this.purpose = purpose;
 
     const currInput = this.getView();

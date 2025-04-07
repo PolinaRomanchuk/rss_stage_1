@@ -3,13 +3,10 @@ import CreateCarBtn from './createCarBtn';
 import CarsListView from '../../carsList/carsListView';
 import InputView from '../../../../utils/inputView';
 import Pagination from '../../../../utils/pagination';
-import RaceState from '../../../../states/raceState';
-import { manageDisabledInRace } from '../../../../states/buttonsState';
+
 import { getGarageState } from '../../../../states/garageState';
 
 class CreateCarView extends BaseView {
-  private buttons: HTMLButtonElement[] = [];
-  private inputs: HTMLInputElement[] = [];
 
   constructor(
     carsList: CarsListView,
@@ -22,23 +19,6 @@ class CreateCarView extends BaseView {
     const button = new CreateCarBtn(carsList, name, color, pagination);
 
     this.appendChildren([name, color, button]);
-
-    const nameInput = name.getView();
-    const colorInput = color.getView();
-
-    if (nameInput instanceof HTMLInputElement && colorInput instanceof HTMLInputElement) {
-      this.inputs.push(nameInput, colorInput);
-    }
-
-    const buttonElement = button.getView();
-    if (buttonElement instanceof HTMLButtonElement) {
-      this.buttons.push(buttonElement);
-    }
-
-    if (this.buttons && this.inputs) {
-      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.buttons));
-      RaceState.getInstance().subscribe(() => manageDisabledInRace(this.inputs));
-    }
   }
 
   private drawNameInput(): InputView {

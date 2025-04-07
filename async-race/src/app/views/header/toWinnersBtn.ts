@@ -12,7 +12,7 @@ class ToWinnersBtn extends BaseView {
       classNames: ['to-winners-btn'],
       textContent: 'To winners',
 
-    });
+    }, true);
     const button = this.getView();
     button.addEventListener('click', () => {
       if (this.carsList) {

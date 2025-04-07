@@ -9,13 +9,11 @@ import CarsListView from '../carsList/carsListView';
 import Pagination from '../../../utils/pagination';
 import {
   updateRaceBtn,
-  manageDisabledInRace,
   updateResetBtn,
 } from '../../../states/buttonsState';
 import RaceState from '../../../states/raceState';
 
 class ConfigsView extends BaseView {
-  private buttons: HTMLButtonElement[] = [];
   public updateBlock: UpdateCarView | null = null;
 
   constructor(
@@ -48,14 +46,10 @@ class ConfigsView extends BaseView {
       generateBtn instanceof HTMLButtonElement
     ) {
       resetBtn.disabled = true;
-      this.buttons = [generateBtn];
-      if (this.buttons) {
-        RaceState.getInstance().subscribe(() =>
-          manageDisabledInRace(this.buttons),
-        );
-        RaceState.getInstance().subscribe(() => updateRaceBtn(raceBtn));
-        RaceState.getInstance().subscribe(() => updateResetBtn(resetBtn));
-      }
+
+      RaceState.getInstance().subscribe(() => updateRaceBtn(raceBtn));
+      RaceState.getInstance().subscribe(() => updateResetBtn(resetBtn));
+
     }
   }
 }

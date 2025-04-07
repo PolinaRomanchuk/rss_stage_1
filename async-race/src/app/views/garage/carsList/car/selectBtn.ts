@@ -8,7 +8,7 @@ class SelectBtn extends BaseView {
       classNames: ['select-button'],
       textContent: 'Select',
       callback: () => onSelect(car),
-    });
+    }, true);
   }
 }
 export default SelectBtn;

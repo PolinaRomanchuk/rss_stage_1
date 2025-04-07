@@ -23,7 +23,7 @@ class UpdateCarBtn extends BaseView {
         colorInput.reset();
         updateCarView.setDisabledState(true);
       },
-    });
+    }, true, true);
   }
 
 }

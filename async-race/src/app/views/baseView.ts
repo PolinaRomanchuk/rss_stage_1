@@ -1,11 +1,22 @@
+import { manageDisabledInRace } from '../states/buttonsState';
+import RaceState from '../states/raceState';
 import { ElementCreator, ElementParams } from '../utils/elementCreator';
 
 class BaseView {
-  private baseElement: HTMLElement;
+  private baseElement: HTMLElement | HTMLButtonElement | HTMLInputElement;
   private children: BaseView[] = [];
 
-  constructor(params: ElementParams) {
+  constructor(params: ElementParams, subscribeToRace?: boolean, isMustBeDisabled?: boolean) {
     this.baseElement = new ElementCreator(params).getElement();
+
+    if (subscribeToRace && (this.baseElement instanceof HTMLButtonElement || this.baseElement instanceof HTMLInputElement)
+    ) {
+      RaceState.getInstance().subscribe(() => {
+        if (this.baseElement instanceof HTMLButtonElement || this.baseElement instanceof HTMLInputElement) {
+          manageDisabledInRace([this.baseElement], isMustBeDisabled);
+        }
+      });
+    }
   }
 
   public append(child: BaseView | HTMLElement): void {

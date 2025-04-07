@@ -8,7 +8,7 @@ class DeleteBtn extends BaseView {
       classNames: ['delete-button'],
       textContent: 'Delete',
       callback: () => onDelete(car),
-    });
+    }, true);
   }
 }
 export default DeleteBtn;

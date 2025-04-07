@@ -3,6 +3,7 @@ import UpdateCarBtn from './updateCarBtn';
 import CarsListView from '../../carsList/carsListView';
 import InputView from '../../../../utils/inputView';
 import Pagination from '../../../../utils/pagination';
+import { Car } from '../../../../../types/types';
 
 class UpdateCarView extends BaseView {
   private buttons: HTMLButtonElement[] = [];
@@ -14,7 +15,7 @@ class UpdateCarView extends BaseView {
 
   constructor(
     carsList: CarsListView,
-    pagination: Pagination<{ name: string; color: string; id: number }>,
+    pagination: Pagination<Car>,
   ) {
     super({
       tag: 'div',

@@ -12,12 +12,12 @@ class CarSvg extends BaseView {
 
     this.renderSvg();
   }
-  private renderSvg() {
+  private renderSvg(): void {
     this.getView().innerHTML = Svg;
     this.svgElement = this.getView().querySelector('svg');
   }
 
-  public setCarColor(color: string) {
+  public setCarColor(color: string): void {
     if (!this.svgElement) return;
 
     this.svgElement.querySelectorAll('path').forEach((path) => {

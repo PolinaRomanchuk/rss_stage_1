@@ -1,12 +1,5 @@
+import type { GarageState } from "../../types/types";
 const STORAGE_KEY = 'my-garage-state';
-
-type GarageState = {
-  currentPage: number;
-  inputName: string;
-  inputColor: string;
-  updateInputName: string;
-  updateInputColor: string;
-};
 
 const garageState: GarageState = {
   currentPage: 1,
@@ -20,42 +13,41 @@ export function getGarageState(): GarageState {
   return { ...garageState };
 }
 
-export function setCurrentPage(page: number) {
+export function setCurrentPage(page: number): void {
   garageState.currentPage = page;
 }
 
-export function setInputName(name: string) {
+export function setInputName(name: string): void {
   garageState.inputName = name;
 }
 
-export function setInputColor(color: string) {
+export function setInputColor(color: string): void {
   garageState.inputColor = color;
 }
 
-export function setGarageInputs(name: string, color: string) {
+export function setGarageInputs(name: string, color: string): void {
   garageState.inputName = name;
   garageState.inputColor = color;
 }
 
-export function setUpdateInputs(name: string, color: string) {
+export function setUpdateInputs(name: string, color: string): void {
   garageState.updateInputName = name;
   garageState.updateInputColor = color;
 }
 
-export function setUpdateInputName(name: string) {
+export function setUpdateInputName(name: string): void {
   garageState.updateInputName = name;
 }
 
-export function setUpdateInputColor(color: string) {
+export function setUpdateInputColor(color: string): void {
   garageState.updateInputColor = color;
 }
 
-
-export function saveGarageStateToStorage() {
+export function saveGarageStateToStorage(): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(garageState));
 }
 
-export function loadGarageStateFromStorage() {
+export function loadGarageStateFromStorage(): void {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (raw) {
     try {

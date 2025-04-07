@@ -1,22 +1,19 @@
 import BaseView from '../../../baseView';
 import CreateCarBtn from './createCarBtn';
-import CarsListView from '../../carsList/carsListView';
 import InputView from '../../../../utils/inputView';
 import Pagination from '../../../../utils/pagination';
 
 import { getGarageState } from '../../../../states/garageState';
+import { Car } from '../../../../../types/types';
 
 class CreateCarView extends BaseView {
 
-  constructor(
-    carsList: CarsListView,
-    pagination: Pagination<{ name: string; color: string; id: number }>,
-  ) {
+  constructor(pagination: Pagination<Car>,) {
     super({ tag: 'div', classNames: ['create-car-container'] });
 
     const name = this.drawNameInput();
     const color = this.drawColorInput();
-    const button = new CreateCarBtn(carsList, name, color, pagination);
+    const button = new CreateCarBtn(name, color, pagination);
 
     this.appendChildren([name, color, button]);
   }

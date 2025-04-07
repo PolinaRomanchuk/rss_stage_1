@@ -4,13 +4,14 @@ import CarsListView from '../../carsList/carsListView';
 import { updateCarByApi } from '../../../../services/garageServices';
 import Pagination from '../../../../utils/pagination';
 import UpdateCarView from './updateCarView';
+import { Car } from '../../../../../types/types';
 
 class UpdateCarBtn extends BaseView {
   constructor(
     carsList: CarsListView,
     nameInput: InputView,
     colorInput: InputView,
-    pagination: Pagination<{ name: string; color: string; id: number; }>,
+    pagination: Pagination<Car>,
     updateCarView: UpdateCarView
   ) {
     super({

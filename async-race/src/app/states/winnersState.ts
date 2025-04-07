@@ -1,10 +1,6 @@
-const STORAGE_KEY = 'my-winners-state';
+import { WinnersState } from "../../types/types";
 
-type WinnersState = {
-  currentPage: number;
-  sortBy: 'id' | 'wins' | 'time';
-  sortOrder: 'ASC' | 'DESC';
-};
+const STORAGE_KEY = 'my-winners-state';
 
 const winnersState: WinnersState = {
   currentPage: 1,
@@ -16,32 +12,30 @@ export function getWinnersState(): WinnersState {
   return { ...winnersState };
 }
 
-export function setCurrentPage(page: number) {
+export function setCurrentPage(page: number): void {
   winnersState.currentPage = page;
 }
 
-export function setSortBy(sortBy: 'id' | 'wins' | 'time') {
+export function setSortBy(sortBy: 'id' | 'wins' | 'time'): void {
   winnersState.sortBy = sortBy;
 }
 
-export function setSortOrder(sortOrder: 'ASC' | 'DESC') {
+export function setSortOrder(sortOrder: 'ASC' | 'DESC'): void {
   winnersState.sortOrder = sortOrder;
 }
 
-
-
-export function saveWinnersStateToStorage() {
+export function saveWinnersStateToStorage(): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(winnersState));
 }
 
-export function loadWinnersStateFromStorage() {
+export function loadWinnersStateFromStorage(): void {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (raw) {
     try {
       const parsed = JSON.parse(raw);
       winnersState.currentPage = parsed.currentPage || 1;
       winnersState.sortBy = parsed.sortBy || 'id';
-      winnersState.sortOrder = parsed.sortOrder  || 'ASC';
+      winnersState.sortOrder = parsed.sortOrder || 'ASC';
     } catch (error) {
       console.error('Error', error);
     }

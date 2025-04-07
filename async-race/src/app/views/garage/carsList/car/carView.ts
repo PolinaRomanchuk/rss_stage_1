@@ -11,37 +11,35 @@ import {
   updateRestartBtn,
   updateStartBtn,
 } from '../../../../states/buttonsState';
+import { Car } from '../../../../../types/types';
 
 class CarView extends BaseView {
-  public carNameElement: BaseView | null = null;
   public carSvgElement: CarSvg | null = null;
-  public carId: number;
+
+  private carNameElement: BaseView | null = null;
   private isCarRunning: boolean = false;
   private startButton: HTMLButtonElement | null = null;
   private restartButton: HTMLButtonElement | null = null;
 
+  public carId: number;
   public carName: string = '';
   public carColor: string = '';
 
   constructor(
-    data: { name: string; color: string; id: number },
+    carData: Car,
     onDelete: (car: CarView) => void,
     onSelect: (car: CarView) => void,
   ) {
     super({ tag: 'div', classNames: ['car-container'] });
-    this.carId = data.id;
-    this.renderCarWithButtons(data, onDelete, onSelect);
+    this.carId = carData.id;
+    this.renderCarWithButtons(carData, onDelete, onSelect);
   }
 
-  private renderCarWithButtons(
-    data: { name: string; color: string; id: number },
-    onDelete: (car: CarView) => void,
-    onSelect: (car: CarView) => void,
-  ): void {
+  private renderCarWithButtons(carData: Car, onDelete: (car: CarView) => void, onSelect: (car: CarView) => void,): void {
     const selectBtn = new SelectBtn(this, onSelect);
     const deleteBtn = new DeleteBtn(this, onDelete);
-    if (data) {
-      this.initializeCar(data.name, data.color);
+    if (carData) {
+      this.initializeCar(carData.name, carData.color);
     }
     const carControlContainer = this.createCarControlContainer(this);
     const carPathContainer = this.createCarPathContainer();
@@ -64,12 +62,9 @@ class CarView extends BaseView {
     carControlContainer.appendChildren([startCar, restartCar]);
 
     const start = startCar.getView();
-
     const restart = restartCar.getView();
-    if (
-      start instanceof HTMLButtonElement &&
-      restart instanceof HTMLButtonElement
-    ) {
+
+    if (start instanceof HTMLButtonElement && restart instanceof HTMLButtonElement) {
       this.startButton = start;
       this.restartButton = restart;
 
@@ -140,17 +135,17 @@ class CarView extends BaseView {
     this.carName = name;
   }
 
-  private startCar() {
+  private startCar(): void {
     this.isCarRunning = true;
     this.updateButtons();
   }
 
-  private restartCar() {
+  private restartCar(): void {
     this.isCarRunning = false;
     this.updateButtons();
   }
 
-  private updateButtons() {
+  private updateButtons(): void {
     if (this.startButton && this.restartButton) {
       this.startButton.disabled = this.isCarRunning;
       this.restartButton.disabled = !this.isCarRunning;

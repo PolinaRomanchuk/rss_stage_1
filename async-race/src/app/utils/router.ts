@@ -4,19 +4,19 @@ class Router {
   private routes: Record<string, () => void> = {};
   private contentContainer: HTMLElement | null = null;
 
-  setContentContainer(container: HTMLElement) {
+  setContentContainer(container: HTMLElement): void {
     this.contentContainer = container;
   }
 
-  addRoute(path: string, callback: () => void) {
+  addRoute(path: string, callback: () => void): void {
     this.routes[path] = callback;
   }
 
-  navigate(path: string) {
+  navigate(path: string): void {
     window.location.hash = `#${path}`;
   }
 
-  public handleRouteChange() {
+  public handleRouteChange(): void {
     const path = window.location.hash.replace(/^#/, '') || '';
     const routeCallback = this.routes[path];
 
@@ -27,7 +27,7 @@ class Router {
     }
   }
 
-  private renderErrorPage() {
+  private renderErrorPage(): void {
     if (this.contentContainer) {
       const errorPage = new ErrorView();
       this.contentContainer.replaceChildren();

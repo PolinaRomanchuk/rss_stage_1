@@ -12,16 +12,14 @@ import {
   updateResetBtn,
 } from '../../../states/buttonsState';
 import RaceState from '../../../states/raceState';
+import { Car } from '../../../../types/types';
 
 class ConfigsView extends BaseView {
   public updateBlock: UpdateCarView | null = null;
 
-  constructor(
-    carsList: CarsListView,
-    pagination: Pagination<{ name: string; color: string; id: number }>,
-  ) {
+  constructor(carsList: CarsListView, pagination: Pagination<Car>) {
     super({ tag: 'div', classNames: ['garage-configs-container'] });
-    const inputBlock = new CreateCarView(carsList, pagination);
+    const inputBlock = new CreateCarView(pagination);
     const updateBlock = new UpdateCarView(carsList, pagination);
 
     this.updateBlock = updateBlock;
@@ -32,7 +30,7 @@ class ConfigsView extends BaseView {
     });
     const race = new RaceBtn(pagination, carsList);
     const reset = new ResetBtn(carsList);
-    const generate = new GenerateCarsBtn(carsList, pagination);
+    const generate = new GenerateCarsBtn(pagination);
     buttonContainer.appendChildren([race, reset, generate]);
     this.appendChildren([inputBlock, updateBlock, buttonContainer]);
 
@@ -49,7 +47,6 @@ class ConfigsView extends BaseView {
 
       RaceState.getInstance().subscribe(() => updateRaceBtn(raceBtn));
       RaceState.getInstance().subscribe(() => updateResetBtn(resetBtn));
-
     }
   }
 }

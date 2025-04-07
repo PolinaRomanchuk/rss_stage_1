@@ -1,20 +1,14 @@
 import BaseView from '../views/baseView';
 
 class Pagination<T> extends BaseView {
-  public currentPageNumber: number = 1;
-  public currPage: HTMLElement | null = null;
-  private totalItems: number = 0;
-
-  private buttons: HTMLButtonElement[] = [];
   private nextBtn: BaseView;
   private prevBtn: BaseView;
-
-  private data: (
-    page: number,
-    limit: number,
-  ) => Promise<{ items: T[]; totalCount: number }>;
-
+  public currPage: HTMLElement | null = null;
+  public currentPageNumber: number = 1;
+  private totalItems: number = 0;
   private limit: number;
+
+  private data: (page: number, limit: number,) => Promise<{ items: T[]; totalCount: number }>;
 
   constructor(
     data: (page: number, limit: number,) => Promise<{ items: T[]; totalCount: number }>,
@@ -28,68 +22,62 @@ class Pagination<T> extends BaseView {
     this.limit = limit;
     this.currentPageNumber = initialPage;
 
-    const currentPage = new BaseView({
-      tag: 'span',
-      classNames: ['current-page'],
-      textContent: `${this.currentPageNumber}`,
-    });
-    this.currentPageNumber = Number(currentPage.getView().textContent);
-    this.currPage = currentPage.getView();
+    this.currPage = this.createCurrentPageElement().getView();
+    this.nextBtn = this.createButton('Next', () => this.getNextPage());
+    this.prevBtn = this.createButton('Back', () => this.getPrevPage());
 
-    const nextBtn = new BaseView({
-      tag: 'button',
-      classNames: ['next-page-button'],
-      textContent: 'Next',
-      callback: () => this.getNextPage(),
-    }, true, true);
-    this.nextBtn = nextBtn;
-
-    const prevBtn = new BaseView({
-      tag: 'button',
-      classNames: ['previous-page-button'],
-      textContent: 'Back',
-      callback: () => this.getPrevPage(),
-    }, true, true);
-    this.prevBtn = prevBtn;
-
-    this.appendChildren([prevBtn, currentPage, nextBtn]);
+    this.appendChildren([this.prevBtn, this.currPage, this.nextBtn]);
     this.loadPage();
   }
 
-  public setTotalItems(totalCount: number): void {
-    this.totalItems = totalCount;
-    this.updatePaginationState();
-  }
-
-  public getMaxPages(): number {
-    return Math.ceil(this.totalItems / this.limit);
-  }
-
-  private async getNextPage() {
-    this.currentPageNumber += 1;
-    this.onPageChange(this.currentPageNumber);
-    await this.loadPage();
-  }
-
-  private async getPrevPage() {
-    if (this.currentPageNumber > 1) {
-      this.currentPageNumber -= 1;
-      this.onPageChange(this.currentPageNumber);
-      await this.loadPage();
-    }
-  }
-
-  public async loadPage() {
+  public async loadPage(): Promise<void> {
     try {
-      const { totalCount } = await this.data(
-        this.currentPageNumber,
-        this.limit,
-      );
+      const { totalCount } = await this.data(this.currentPageNumber, this.limit,);
       this.setTotalItems(totalCount);
       this.updateCurrentPage();
       this.updatePaginationState();
     } catch (error) {
-      console.error('Error', error);
+      console.error('Pagination load error', error);
+    }
+  }
+
+  private createButton(name: string, callback: () => void): BaseView {
+    return new BaseView({
+      tag: 'button',
+      classNames: [`${name.toLowerCase()}-page-button`],
+      textContent: name,
+      callback,
+    }, true, true);
+  }
+
+  private createCurrentPageElement(): BaseView {
+    return new BaseView({
+      tag: 'span',
+      classNames: ['current-page'],
+      textContent: `${this.currentPageNumber}`,
+    });
+  }
+
+  private setTotalItems(totalCount: number): void {
+    this.totalItems = totalCount;
+    this.updatePaginationState();
+  }
+
+  private getMaxPages(): number {
+    return Math.ceil(this.totalItems / this.limit);
+  }
+
+  private async getNextPage(): Promise<void> {
+    this.currentPageNumber += 1;
+    await this.loadPage();
+    this.onPageChange(this.currentPageNumber);
+  }
+
+  private async getPrevPage(): Promise<void> {
+    if (this.currentPageNumber > 1) {
+      this.currentPageNumber -= 1;
+      await this.loadPage();
+      this.onPageChange(this.currentPageNumber);
     }
   }
 
@@ -99,7 +87,7 @@ class Pagination<T> extends BaseView {
     }
   }
 
-  public updatePaginationState(): void {
+  private updatePaginationState(): void {
     const maxPages = this.getMaxPages();
     const prev = this.prevBtn.getView();
     const next = this.nextBtn.getView();

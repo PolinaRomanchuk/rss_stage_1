@@ -4,7 +4,7 @@ import CarSvg from '../garage/carsList/car/carSvg';
 import '../winners/winners.css';
 import { getWinnersState, saveWinnersStateToStorage, setCurrentPage, setSortBy, setSortOrder } from '../../states/winnersState';
 import { fetchWinnersData } from '../../services/winnerServices';
-import type { Winner } from '../../../types/types';
+import type { WinnerViewData } from '../../../types/types';
 
 class WinnersView extends BaseView {
   private LIMIT_PAGES: number = 10;
@@ -92,7 +92,7 @@ class WinnersView extends BaseView {
     return table;
   }
 
-  private createPagination(): Pagination<Winner> {
+  private createPagination(): Pagination<WinnerViewData> {
     return new Pagination(
       async (page, limit) => {
         this.currentPageNumber = page;
@@ -109,7 +109,7 @@ class WinnersView extends BaseView {
     );
   }
 
-  private async loadAndRenderWinners(page: number, limit: number): Promise<{ winners: Winner[]; totalCount: number }> {
+  private async loadAndRenderWinners(page: number, limit: number): Promise<{ winners: WinnerViewData[]; totalCount: number }> {
     try {
       const { winnersData, totalCount } = await fetchWinnersData(
         page,
@@ -131,7 +131,7 @@ class WinnersView extends BaseView {
     }
   }
 
-  private renderWinners(winners: Winner[]): void {
+  private renderWinners(winners: WinnerViewData[]): void {
     if (this.winnersTableBodyView) {
       this.winnersTableBodyView.removeAllChildren();
     } else {

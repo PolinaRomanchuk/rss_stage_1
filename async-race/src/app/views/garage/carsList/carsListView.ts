@@ -7,6 +7,7 @@ import {
 } from '../../../services/garageServices';
 import Pagination from '../../../utils/pagination';
 import UpdateCarView from '../configs/updateBlock/updateCarView';
+import type { Car } from '../../../../types/types';
 
 import { getGarageState, saveGarageStateToStorage, setUpdateInputs } from '../../../states/garageState';
 
@@ -14,43 +15,30 @@ class CarsListView extends BaseView {
   public cars: CarView[] = [];
   public selectedCar: CarView | null = null;
   private carsCounterElement: HTMLElement | null = null;
-  private pagination: Pagination<{
-    name: string;
-    color: string;
-    id: number;
-  }> | null = null;
-
+  private pagination: Pagination<Car> | null = null;
   private updateBlock: UpdateCarView | null = null;
 
   constructor() {
     super({ tag: 'div', classNames: ['cars-list-container'] });
   }
 
-  public async getCarsAndCounter(
-    currPage: number,
-    limit: number
-  ): Promise<{
-    cars: { name: string; color: string; id: number }[];
-    totalCount: number;
-  }> {
+  public async getCarsAndCounter(currPage: number, limit: number): Promise<{ cars: Car[]; totalCount: number; }> {
     const { cars, totalCount } = await fetchCarsByApi(currPage, limit);
     this.drawCars(cars);
     this.updateCarsCounter(totalCount);
     return { cars, totalCount };
   }
 
-  public setPagination(
-    pagination: Pagination<{ name: string; color: string; id: number }>
-  ) {
+  public setPagination(pagination: Pagination<Car>): void {
     this.pagination = pagination;
   }
 
-  public getUpdateBlock(updateBlock: UpdateCarView | null) {
+  public getUpdateBlock(updateBlock: UpdateCarView | null): void {
     this.updateBlock = updateBlock;
     this.setUpdateInputs();
   }
 
-  private drawCars(cars: { name: string; color: string; id: number }[]): void {
+  private drawCars(cars: Car[]): void {
     this.removeAllChildren();
     this.drawCarsCounter();
 
@@ -67,12 +55,12 @@ class CarsListView extends BaseView {
   }
 
   private async deleteCar(car: CarView): Promise<void> {
-    if (this.pagination) await deleteCarByApi(this, car.carId, this.pagination);
+    if (this.pagination) await deleteCarByApi(car.carId, this.pagination);
     this.cars = this.cars.filter((cr) => cr !== car);
     car.removeView();
   }
 
-  private setUpdateInputs() {
+  private setUpdateInputs(): void {
     if (this.updateBlock?.nameInput && this.updateBlock.colorInput) {
       const { updateInputName, updateInputColor } = getGarageState();
       this.updateBlock.nameInput.value = updateInputName;

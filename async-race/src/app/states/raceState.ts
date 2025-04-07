@@ -13,19 +13,19 @@ class RaceState {
     return RaceState.instance;
   }
 
-  startRace() {
+  startRace(): void {
     this.raceInProgress = true;
     this.raceInFinish = false;
     this.notifySubscribers();
   }
 
-  endRace() {
+  endRace(): void {
     this.raceInProgress = false;
     this.raceInFinish = true;
     this.notifySubscribers();
   }
 
-  refreshRace() {
+  refreshRace(): void {
     this.raceInProgress = false;
     this.raceInFinish = false;
     this.notifySubscribers();
@@ -39,11 +39,11 @@ class RaceState {
     return this.raceInFinish;
   }
 
-  subscribe(callback: () => void) {
+  subscribe(callback: () => void): void {
     this.subscribers.push(callback);
   }
 
-  private notifySubscribers() {
+  private notifySubscribers(): void {
     this.subscribers.forEach((callback) => callback());
   }
 }

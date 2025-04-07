@@ -5,6 +5,7 @@ import { getCars } from '../API/garage';
 import CarsListView from '../views/garage/carsList/carsListView';
 import RaceState from '../states/raceState';
 import { handleWinner, showWinner } from './winnerServices';
+import { Car } from '../../types/types';
 
 let activeAnimation: number | null = null;
 let cancelAnimation = false;
@@ -100,7 +101,7 @@ export async function getAllCarsInPage(page: number, limit: number = 7) {
   }
 }
 
-export async function startRace(pagination: Pagination<{ name: string; color: string; id: number }>, carElements: CarsListView): Promise<void> {
+export async function startRace(pagination: Pagination<Car>, carElements: CarsListView): Promise<void> {
   const raceState = RaceState.getInstance();
   raceState.startRace();
 
@@ -113,7 +114,7 @@ export async function startRace(pagination: Pagination<{ name: string; color: st
     );
 
     await Promise.all(
-      carsToStart.map((carView: CarView) => startCar(carView, isRacing)),
+      carsToStart.filter((carView): carView is CarView => carView !== undefined).map((carView: CarView) => startCar(carView, isRacing)),
     );
   }
 }

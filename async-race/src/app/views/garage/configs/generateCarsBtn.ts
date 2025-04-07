@@ -1,15 +1,15 @@
 import BaseView from '../../baseView';
-import CarsListView from '../carsList/carsListView';
 import { generateCars } from '../../../services/garageServices';
 import Pagination from '../../../utils/pagination';
+import { Car } from '../../../../types/types';
 
 class GenerateCarsBtn extends BaseView {
-  constructor(carsList: CarsListView, pagination: Pagination<{ name: string; color: string; id: number; }>) {
+  constructor(pagination: Pagination<Car>) {
     super({
       tag: 'button',
       classNames: ['generate-cars-button'],
       textContent: 'Generate cars',
-      callback: () => generateCars(carsList, pagination),
+      callback: () => generateCars(pagination),
     }, true);
   }
 }

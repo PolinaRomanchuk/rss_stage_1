@@ -10,20 +10,15 @@ import {
 import { deleteWinner, getWinner } from '../API/winners';
 import { getRandomCarName } from '../utils/carNames';
 import Pagination from '../utils/pagination';
+import type { Car } from '../../types/types';
 
 const GENERATE_COUNT: number = 100;
 
-export async function fetchCarsByApi(
-  currPage: number,
-  limit: number,
-): Promise<{
-  cars: { name: string; color: string; id: number }[];
-  totalCount: number;
-}> {
+export async function fetchCarsByApi(currPage: number, limit: number,): Promise<{ cars: Car[]; totalCount: number; }> {
   try {
     return await getCars(currPage, limit);
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error fetching cars', error);
     return { cars: [], totalCount: 0 };
   }
 }
@@ -32,16 +27,11 @@ export async function fetchCarByApi(id: number): Promise<void> {
   try {
     await getCar(id);
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error fetching car', error);
   }
 }
 
-export async function createCarByApi(
-  carsList: CarsListView,
-  nameInput: InputView,
-  colorInput: InputView,
-  pagination: Pagination<{ name: string; color: string; id: number }>,
-) {
+export async function createCarByApi(nameInput: InputView, colorInput: InputView, pagination: Pagination<Car>) {
   const name = nameInput.getValue();
   const color = colorInput.getValue();
   try {
@@ -49,16 +39,11 @@ export async function createCarByApi(
 
     await pagination.loadPage();
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error creating car', error);
   }
 }
 
-export async function updateCarByApi(
-  carsList: CarsListView,
-  nameInput: InputView,
-  colorInput: InputView,
-  pagination: Pagination<{ name: string; color: string; id: number }>,
-): Promise<void> {
+export async function updateCarByApi(carsList: CarsListView, nameInput: InputView, colorInput: InputView, pagination: Pagination<Car>): Promise<void> {
   const name = nameInput.getValue();
   const color = colorInput.getValue();
 
@@ -68,21 +53,17 @@ export async function updateCarByApi(
 
     await pagination.loadPage();
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error updating car', error);
   }
 }
 
-export async function deleteCarByApi(
-  carsList: CarsListView,
-  id: number,
-  pagination: Pagination<{ name: string; color: string; id: number }>,
-): Promise<void> {
+export async function deleteCarByApi(id: number, pagination: Pagination<Car>): Promise<void> {
   try {
     await deleteCar(id);
     await deleteWinnerIfExists(id);
     await pagination.loadPage();
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error deleting car', error);
   }
 }
 
@@ -97,10 +78,7 @@ export async function deleteWinnerIfExists(id: number): Promise<void> {
   }
 }
 
-export async function generateCars(
-  carsList: CarsListView,
-  pagination: Pagination<{ name: string; color: string; id: number }>,
-) {
+export async function generateCars(pagination: Pagination<Car>): Promise<void> {
   try {
     const cars = Array.from({ length: GENERATE_COUNT }, () => ({
       name: getRandomCarName(),
@@ -110,10 +88,10 @@ export async function generateCars(
     await Promise.all(cars.map((car) => createCar(car)));
     await pagination.loadPage();
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error generating cars', error);
   }
 }
 
-export function getRandomColor() {
+export function getRandomColor(): string {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }

@@ -21,7 +21,6 @@ class App {
 
     this.setupRoutes();
     router.handleRouteChange();
-
   }
 
   private setupRoutes(): void {
@@ -45,7 +44,6 @@ class App {
     const winnersView = new WinnersView();
     this.contentContainer.append(winnersView.getView());
   }
-
 
   private clearContent(): void {
     this.contentContainer.replaceChildren();

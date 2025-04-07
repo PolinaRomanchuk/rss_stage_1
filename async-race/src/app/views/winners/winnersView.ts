@@ -1,145 +1,147 @@
 import BaseView from '../baseView';
 import Pagination from '../../utils/pagination';
-import { getWinners } from '../../API/winners';
 import CarSvg from '../garage/carsList/car/carSvg';
-import { getCar } from '../../API/garage';
 import '../winners/winners.css';
 import { getWinnersState, saveWinnersStateToStorage, setCurrentPage, setSortBy, setSortOrder } from '../../states/winnersState';
+import { fetchWinnersData } from '../../services/winnerServices';
+import type { Winner } from '../../../types/types';
 
 class WinnersView extends BaseView {
   private LIMIT_PAGES: number = 10;
-  private table: BaseView;
-  private totalCounter: number = 0;
-  private totalCountView: BaseView;
-  private tBodyElement: BaseView | null = null;
+
+  private winnersTableView: BaseView | null = null;
+  private totalWinnersCountView: BaseView | null = null;
+  private winnersTableBodyView: BaseView | null = null;
   private sortBy: 'id' | 'wins' | 'time' = 'id';
   private sortOrder: 'ASC' | 'DESC' = 'ASC';
+  private currentPageNumber: number = 1;
+  private winnersCountNumber: number = 0;
 
   constructor() {
-    super({
-      tag: 'div',
-      classNames: ['winners-container'],
-    });
+    super({ tag: 'div', classNames: ['winners-container'], });
 
-    const winnerState = getWinnersState();
-    this.sortBy = winnerState.sortBy;
-    this.sortOrder = winnerState.sortOrder;
+    this.initState();
+    this.initView();
+  }
 
-    const pagination = new Pagination(async (page, limit) => {
-      const { winners, totalCount } = await this.loadWinners(page, limit);
-      return { items: winners, totalCount };
-    }, this.LIMIT_PAGES, (page: number) => {
-      setCurrentPage(page);
-      saveWinnersStateToStorage();
-    },
-      winnerState.currentPage);
+  private initView(): void {
+    const nameView = this.createNameView();
+    this.totalWinnersCountView = this.createTotalCountView();
+    this.winnersTableView = this.createTable();
+    const pagination = this.createPagination();
 
-    const nameView = new BaseView({
-      tag: 'div',
-      classNames: ['current-view-name'],
-      textContent: 'Winners',
-    });
-
-    this.totalCountView = new BaseView({
-      tag: 'div',
-      classNames: ['total-winners-count'],
-      textContent: '0 winners',
-    });
-
-    this.table = new BaseView({
-      tag: 'table',
-      classNames: ['winners-table'],
-    });
-
-    this.createTableHeader();
     this.appendChildren([
       nameView,
-      this.totalCountView,
-      this.table,
+      this.totalWinnersCountView,
+      this.winnersTableView,
       pagination,
     ]);
   }
 
-  private createTableHeader() {
+  private initState(): void {
+    const winnerState = getWinnersState();
+    this.sortBy = winnerState.sortBy;
+    this.sortOrder = winnerState.sortOrder;
+    this.currentPageNumber = winnerState.currentPage;
+  }
+
+  private createNameView(): BaseView {
+    return new BaseView({
+      tag: 'div',
+      classNames: ['current-view-name'],
+      textContent: 'Winners',
+    });
+  }
+
+  private createTotalCountView(): BaseView {
+    return new BaseView({
+      tag: 'div',
+      classNames: ['total-winners-count'],
+      textContent: '0 winners',
+    });
+  }
+
+  private createTable(): BaseView {
+    const table = new BaseView({
+      tag: 'table',
+      classNames: ['winners-table'],
+    });
+
     const thead = new BaseView({
       tag: 'thead',
       classNames: ['winners-table-head'],
     });
+
     const headerRow = new BaseView({ tag: 'tr' });
-
     const headers = ['#', 'Car', 'Name', 'Wins', 'Best Time (seconds)'];
-    headers.forEach((headerText) => {
-      const th = new BaseView({
-        tag: 'th',
-        textContent: headerText,
-      });
 
-      if (headerText === 'Best Time (seconds)') {
-        th.getView().addEventListener('click', async () => {
-          this.sortWinners('time');
-        });
-      }
+    headers.forEach((headerText) => {
+      const th = new BaseView({ tag: 'th', textContent: headerText });
+
       if (headerText === 'Wins') {
-        th.getView().addEventListener('click', async () => {
-          this.sortWinners('wins');
-        });
+        th.getView().addEventListener('click', () => this.sortWinners('wins'));
+      } else if (headerText === 'Best Time (seconds)') {
+        th.getView().addEventListener('click', () => this.sortWinners('time'));
       }
+
       headerRow.append(th);
     });
 
     thead.append(headerRow);
-    this.table.append(thead);
+    table.append(thead);
+    return table;
   }
 
-  private async loadWinners(page: number, limit: number) {
+  private createPagination(): Pagination<Winner> {
+    return new Pagination(
+      async (page, limit) => {
+        this.currentPageNumber = page;
+        const { winners, totalCount } = await this.loadAndRenderWinners(page, limit);
+        return { items: winners, totalCount };
+      },
+      this.LIMIT_PAGES,
+      (page) => {
+        this.currentPageNumber = page;
+        setCurrentPage(page);
+        saveWinnersStateToStorage();
+      },
+      this.currentPageNumber
+    );
+  }
+
+  private async loadAndRenderWinners(page: number, limit: number): Promise<{ winners: Winner[]; totalCount: number }> {
     try {
-      const { winners, totalCount } = await getWinners(
+      const { winnersData, totalCount } = await fetchWinnersData(
         page,
         limit,
         this.sortBy,
         this.sortOrder
       );
-      this.totalCounter = totalCount;
-      this.totalCountView.getView().textContent = `${this.totalCounter} winners`;
 
-      const winnersData = await Promise.all(
-        winners.map(async (winner) => {
-          const carData = await getCar(winner.id);
-          return {
-            id: winner.id,
-            name: carData.car.name,
-            color: carData.car.color,
-            wins: winner.wins,
-            time: winner.time,
-          };
-        })
-      );
+      this.winnersCountNumber = totalCount;
+      if (this.totalWinnersCountView) {
+        this.totalWinnersCountView.getView().textContent = `${this.winnersCountNumber} winners`;
+      }
 
       this.renderWinners(winnersData);
       return { winners: winnersData, totalCount };
     } catch (error) {
-      console.error('Error', error);
+      console.error('Error load winners', error);
       return { winners: [], totalCount: 0 };
     }
   }
 
-  private renderWinners(
-    winners: {
-      id: number;
-      name: string;
-      color: string;
-      wins: number;
-      time: number;
-    }[]
-  ) {
-    if (this.tBodyElement) {
-      this.tBodyElement.removeAllChildren();
+  private renderWinners(winners: Winner[]): void {
+    if (this.winnersTableBodyView) {
+      this.winnersTableBodyView.removeAllChildren();
     } else {
-      this.tBodyElement = new BaseView({
+      this.winnersTableBodyView = new BaseView({
         tag: 'tbody',
         classNames: ['winners-table-body'],
       });
-      this.table.append(this.tBodyElement);
+      if (this.winnersTableView) {
+        this.winnersTableView.append(this.winnersTableBodyView);
+      }
     }
 
     winners.forEach((winner, index) => {
@@ -149,7 +151,7 @@ class WinnersView extends BaseView {
       carElement.setCarColor(winner.color);
 
       const rowData = [
-        (index + 1).toString(),
+        ((this.currentPageNumber - 1) * this.LIMIT_PAGES + index + 1).toString(),
         carElement.getView().outerHTML,
         winner.name,
         winner.wins.toString(),
@@ -168,12 +170,13 @@ class WinnersView extends BaseView {
 
         row.append(td);
       });
-      if (this.tBodyElement) {
-        this.tBodyElement.append(row);
+      if (this.winnersTableBodyView) {
+        this.winnersTableBodyView.append(row);
       }
     });
   }
-  private async sortWinners(newSortBy: 'id' | 'wins' | 'time') {
+
+  private async sortWinners(newSortBy: 'id' | 'wins' | 'time'): Promise<void> {
     if (this.sortBy === newSortBy) {
       this.sortOrder = this.sortOrder === 'ASC' ? 'DESC' : 'ASC';
     } else {
@@ -185,7 +188,7 @@ class WinnersView extends BaseView {
     setSortOrder(this.sortOrder);
     saveWinnersStateToStorage();
 
-    await this.loadWinners(1, this.LIMIT_PAGES);
+    await this.loadAndRenderWinners(this.currentPageNumber, this.LIMIT_PAGES);
   }
 }
 

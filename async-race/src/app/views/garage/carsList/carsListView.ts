@@ -39,6 +39,8 @@ class CarsListView extends BaseView {
   }
 
   private drawCars(cars: Car[]): void {
+    this.cars.forEach(car => car.removeView());
+    this.cars = [];
     this.removeAllChildren();
     this.drawCarsCounter();
 

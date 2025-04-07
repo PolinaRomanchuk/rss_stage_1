@@ -10,11 +10,11 @@ import { Car } from '../../types/types';
 let activeAnimation: number | null = null;
 let cancelAnimation = false;
 let isWinner = false;
+const TRACK_WIDTH_PERCENT = 81;
 
 export async function getVelocityAndDistanceByApi(id: number,): Promise<{ velocity: number; distance: number } | undefined> {
   try {
     const response = await startOrStopEngine(id, 'started');
-    console.log('Received response:', response);
     return { velocity: response.velocity, distance: response.distance };
   } catch (error) {
     console.error('Error getting velocity and distance', error);
@@ -31,9 +31,14 @@ export async function stopCar(id: number): Promise<void> {
 }
 
 export async function startCar(car: CarView, isRacing?: boolean): Promise<void> {
-  const carDrivingData = await getVelocityAndDistanceByApi(car.carId);
-  if (carDrivingData) {
-    await startDriving(car, carDrivingData, isRacing);
+  try {
+    const carDrivingData = await getVelocityAndDistanceByApi(car.carId);
+    if (carDrivingData) {
+      await startDriving(car, carDrivingData, isRacing);
+    }
+  }
+  catch (error) {
+    console.error('Car start error', error);
   }
 }
 
@@ -42,7 +47,7 @@ export async function startDriving(car: CarView, carDrivingData: | { velocity: n
     const carElement = car.carSvgElement.getView();
     const timeDuration = carDrivingData.distance / carDrivingData.velocity;
     const screenWidth = window.innerWidth;
-    const maxDistance = (81 * screenWidth) / 100;
+    const maxDistance = (TRACK_WIDTH_PERCENT * screenWidth) / 100;
     const start = performance.now();
 
     cancelAnimation = false;
@@ -62,7 +67,7 @@ export async function startDriving(car: CarView, carDrivingData: | { velocity: n
         if (progress >= 1 && !isWinner && isRacing) {
           isWinner = true;
           showWinner(car);
-          handleWinner(car.carId, timeDuration);
+          handleWinner(car.carId, getCorrectTime(timeDuration));
         }
       }
 
@@ -81,14 +86,18 @@ export async function startDriving(car: CarView, carDrivingData: | { velocity: n
 }
 
 export async function restartCar(car: CarView): Promise<void> {
-  cancelAnimation = true;
-  if (activeAnimation !== null) {
-    cancelAnimationFrame(activeAnimation);
-  }
-  await stopCar(car.carId);
-  if (car.carSvgElement) {
-    const carElement = car.carSvgElement.getView();
-    carElement.style.transform = `translateX(0px)`;
+  try {
+    cancelAnimation = true;
+    if (activeAnimation !== null) {
+      cancelAnimationFrame(activeAnimation);
+    }
+    await stopCar(car.carId);
+    if (car.carSvgElement) {
+      const carElement = car.carSvgElement.getView();
+      carElement.style.transform = `translateX(0px)`;
+    }
+  } catch (error) {
+    console.error('Restart error', error);
   }
 }
 
@@ -102,34 +111,45 @@ export async function getAllCarsInPage(page: number, limit: number = 7) {
 }
 
 export async function startRace(pagination: Pagination<Car>, carElements: CarsListView): Promise<void> {
-  const raceState = RaceState.getInstance();
-  raceState.startRace();
+  try {
+    const raceState = RaceState.getInstance();
+    raceState.startRace();
 
-  const cars = await getAllCarsInPage(pagination.currentPageNumber);
-  if (cars) {
-    const isRacing = true;
-    const carsToStart = cars.map(
-      (car: { name: string; color: string; id: number }) =>
-        carElements.cars.find((view) => view.carId === car.id),
-    );
+    const cars = await getAllCarsInPage(pagination.currentPageNumber);
+    if (cars) {
+      const isRacing = true;
+      const carsToStart = cars.map(
+        (car: Car) =>
+          carElements.cars.find((view) => view.carId === car.id),
+      );
 
-    await Promise.all(
-      carsToStart.filter((carView): carView is CarView => carView !== undefined).map((carView: CarView) => startCar(carView, isRacing)),
-    );
+      await Promise.all(
+        carsToStart.filter((carView): carView is CarView => carView !== undefined).map((carView: CarView) => startCar(carView, isRacing)),
+      );
+    }
+  } catch (error) {
+    console.error('Start race error', error);
   }
 }
 
 export async function resetRace(carsListView: CarsListView): Promise<void> {
-  const raceState = RaceState.getInstance();
-  raceState.refreshRace();
+  try {
+    const raceState = RaceState.getInstance();
+    raceState.refreshRace();
 
-  isWinner = false;
-  const carsToReset = carsListView.cars.filter(
-    (carView) =>
-      carView.carSvgElement?.getView().style.transform !== 'translateX(0px)',
-  );
+    isWinner = false;
+    const carsToReset = carsListView.cars.filter(
+      (carView) =>
+        carView.carSvgElement?.getView().style.transform !== 'translateX(0px)',
+    );
 
-  await Promise.all(carsToReset.map((carView) => restartCar(carView)));
+    await Promise.all(carsToReset.map((carView) => restartCar(carView)));
+  } catch (error) {
+    console.error('Reset race error', error);
+  }
 }
 
 
+function getCorrectTime(time: number): number {
+  return Math.min(parseFloat((time / 1000).toFixed(2)));
+}

@@ -25,19 +25,23 @@ export async function fetchWinnersData(page: number, limit: number, sortBy: 'id'
 }
 
 export async function handleWinner(carId: number, time: number): Promise<void> {
-  const winner = await getWinner(carId);
-  if (winner) {
-    await updateWinnerTimeAndWins(winner, time);
-  } else {
-    await createWinner({ id: carId, wins: 1, time });
+  try {
+    const winner = await getWinner(carId);
+    if (winner) {
+      await updateWinnerTimeAndWins(winner, time);
+    } else {
+      await createWinner({ id: carId, wins: 1, time });
+    }
+  }
+  catch (error) {
+    console.error('Error with winner', error);
   }
 }
 
 async function updateWinnerTimeAndWins(winner: Winner, time: number): Promise<void> {
   const newWins = winner.wins + 1;
-  const newTime = Math.min(winner.time, parseFloat((time / 1000).toFixed(2)));
+  const newTime = Math.min(winner.time, time);
   await updateWinner(winner.id, { wins: newWins, time: newTime });
-  console.log(`Winner id:${winner.id}, winner time:${time}`);
 }
 
 export function showWinner(car: CarView): void {

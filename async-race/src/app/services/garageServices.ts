@@ -74,7 +74,7 @@ export async function deleteWinnerIfExists(id: number): Promise<void> {
       await deleteWinner(id);
     }
   } catch (error) {
-    console.error('Error', error);
+    console.error('Winner is not found', error);
   }
 }
 

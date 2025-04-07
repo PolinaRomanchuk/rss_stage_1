@@ -32,7 +32,6 @@ export async function createWinner(winner: Winner): Promise<void> {
   });
 
   if (!response.ok) throw new Error('Error creating winner');
-
   return await response.json();
 }
 

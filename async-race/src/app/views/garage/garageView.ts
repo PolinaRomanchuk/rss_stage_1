@@ -11,6 +11,7 @@ import {
 
 class GarageView extends BaseView {
   private LIMIT_PAGES: number = 7;
+  public carsList: CarsListView;
 
   constructor() {
     super({
@@ -41,6 +42,7 @@ class GarageView extends BaseView {
       classNames: ['current-view-name'],
       textContent: 'Garage',
     });
+    this.carsList = carsList;
 
     this.appendChildren([configs, nameView, carsList, pagination]);
   }

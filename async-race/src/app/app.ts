@@ -5,20 +5,23 @@ import WinnersView from './views/winners/winnersView';
 
 class App {
   private contentContainer: HTMLElement;
+  public garage: GarageView | null = null;
+  private header: HeaderView;
 
   constructor() {
     this.contentContainer = document.createElement('div');
     this.contentContainer.classList.add('content');
     router.setContentContainer(this.contentContainer);
+    this.header = new HeaderView();
   }
 
   renderApp(): void {
-    const header = new HeaderView();
-    document.body.append(header.getView());
+    document.body.append(this.header.getView());
     document.body.append(this.contentContainer);
 
     this.setupRoutes();
     router.handleRouteChange();
+
   }
 
   private setupRoutes(): void {
@@ -33,6 +36,8 @@ class App {
     this.clearContent();
     const garageView = new GarageView();
     this.contentContainer.append(garageView.getView());
+    this.garage = garageView;
+    this.header.setCars(garageView);
   }
 
   private renderWinners(): void {

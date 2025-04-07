@@ -4,7 +4,6 @@ import WinnerView from '../views/garage/winnerCarView';
 
 export async function handleWinner(carId: number, time: number) {
   const winner = await getWinner(carId);
-  console.log(carId, time);
   if (winner) {
     await updateWinnerTimeAndWins(winner, time);
   } else {
@@ -16,6 +15,7 @@ async function updateWinnerTimeAndWins(winner: { id: number; wins: number; time:
   const newWins = winner.wins + 1;
   const newTime = Math.min(winner.time, parseFloat((time / 1000).toFixed(2)));
   await updateWinner(winner.id, { wins: newWins, time: newTime });
+  console.log(`Winner id:${winner.id}, winner time:${time}`);
 }
 
 export function showWinner(car: CarView) {

@@ -1,6 +1,7 @@
 import router from './utils/router';
 import AuthenticationView from './views/authenticationView/authenticationView';
 import BaseView from './views/baseView';
+import InfoView from './views/infoView/InfoView';
 
 class App {
   private contentContainer: HTMLElement;
@@ -32,8 +33,8 @@ class App {
 
   private renderAuthentication(): void {
     this.clearContent();
-      const authView = new AuthenticationView();
-      this.contentContainer.append(authView.getView());
+    const authView = new AuthenticationView();
+    this.contentContainer.append(authView.getView());
   }
 
   private renderChat(): void {
@@ -44,8 +45,8 @@ class App {
 
   private renderInfo(): void {
     this.clearContent();
-    //  const infoView = new InfoView();
-    //this.contentContainer.append(infoView.getView());
+    const infoView = new InfoView();
+    this.contentContainer.append(infoView.getView());
   }
 
   private clearContent(): void {

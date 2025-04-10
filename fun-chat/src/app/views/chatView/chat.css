@@ -1,0 +1,130 @@
+.header-chat-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  background-color: aquamarine;
+}
+
+.chat-container {
+  width: 60vw;
+  height: 60vh;
+  background-color: rgba(192, 192, 192, 0.187);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.chat-window {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.right-header-container {
+  display: flex;
+}
+
+.chat-content-container {
+  display: flex;
+  width: 100%;
+  height: 85%;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-list-content {
+  width: 40%;
+}
+
+.dialogue-content {
+  width: 60%;
+}
+
+.user-list-content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-right: 1px solid gray;
+}
+
+.footer-container {
+  display: flex;
+  height: 5%;
+}
+
+.search-input {
+  margin-top: 10px;
+  width: 90%;
+}
+
+.user-list-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.user-list-header,
+.friend {
+  margin-left: 10px;
+}
+.user-list-header {
+  margin-bottom: 5px;
+}
+
+.dialogue-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.companion-name {
+  border-bottom:
+    1px,
+    solid gray;
+  height: 5%;
+}
+.message-container {
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.configur-message-container {
+  height: 5%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.configs-message {
+  display: flex;
+}
+
+.temp-container {
+  display: flex;
+  justify-content: space-between;
+}

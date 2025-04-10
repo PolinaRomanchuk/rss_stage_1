@@ -25,7 +25,7 @@ class InfoView extends BaseView {
   renderLink(): BaseView {
     const link = new BaseView({ tag: 'a', classNames: ['git-link'], textContent: 'GitHub' });
     const view = link.getView();
-    view.setAttribute('href', '/https://github.com/PolinaRomanchuk');
+    view.setAttribute('href', 'https://github.com/PolinaRomanchuk');
     return link;
   }
 

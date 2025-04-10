@@ -61,7 +61,11 @@ class AuthenticationView extends BaseView {
   }
 
   private renderLogInButton(): BaseView {
-    return new BaseView({ tag: 'button', classNames: ['login-button'], textContent: 'Log in' });
+    const button = new BaseView({ tag: 'button', classNames: ['login-button'], textContent: 'Log in' });
+    button.getView().addEventListener('click', () => {
+      router.navigate('chat');
+    })
+    return button;
   }
 
   private renderInfo(): BaseView {

@@ -31,6 +31,12 @@ class InputView extends BaseView {
     }
   }
 
+  public setPlaceholder(value: string): void {
+    if (this.input) {
+      this.input.placeholder = value;
+    }
+  }
+
   public setType(type: string): void {
     if (this.input) this.input.type = type;
   }

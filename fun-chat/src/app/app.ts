@@ -1,4 +1,5 @@
 import router from './utils/router';
+import AuthenticationView from './views/authenticationView/authenticationView';
 import BaseView from './views/baseView';
 
 class App {
@@ -31,8 +32,8 @@ class App {
 
   private renderAuthentication(): void {
     this.clearContent();
-    //  const authView = new renderAuthenticationView();
-    //  this.contentContainer.append(authView.getView());
+      const authView = new AuthenticationView();
+      this.contentContainer.append(authView.getView());
   }
 
   private renderChat(): void {

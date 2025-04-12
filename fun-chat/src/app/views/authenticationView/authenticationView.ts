@@ -37,6 +37,7 @@ class AuthenticationView extends BaseView {
   }
   private renderLoginInput(): InputView {
     const login = new InputView();
+    login.addClass('login-input');
     login.setPlaceholder('Username');
     return login;
   }
@@ -52,6 +53,7 @@ class AuthenticationView extends BaseView {
   }
   private renderPasswordInput(): InputView {
     const password = new InputView();
+    password.addClass('password-input');
     password.setPlaceholder('Password');
     return password;
   }

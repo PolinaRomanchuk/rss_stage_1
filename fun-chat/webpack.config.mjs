@@ -33,7 +33,7 @@ export default{
       },
       {
         test: /\.svg$/i,
-        type: 'asset/source',
+        type: 'asset/resource',
       },
     ],
   },

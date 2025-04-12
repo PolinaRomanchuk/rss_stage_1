@@ -2,6 +2,19 @@
   transition: all 0.3s ease-out;
 }
 
+html {
+  --color-font-main: #091d34;
+  --color-window-background: #e1ecf9;
+  --color-btn-background-inactive: #609ce1c7;
+  --color-btn-background-focus: #609ce180;
+  --color-btn-border: #133863;
+  --color-accent: #236ab9;
+
+  font-family: 'Dosis', sans-serif;
+  font-size: larger;
+  color: var(--color-font-main);
+}
+
 body {
   width: 99vw;
   height: 99vh;
@@ -9,6 +22,54 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+button {
+  min-width: 100px;
+  min-height: 30px;
+  cursor: pointer;
+  background-color: var(--color-btn-background-inactive);
+  border: var(--color-btn-border) 1px solid;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: inherit;
+
+  &:hover {
+    background-color: var(--color-btn-background-focus);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+input {
+  background-color: var(--color-btn-background-focus);
+  border-color: var(--color-btn-border);
+  border-width: 1px;
+  border-style: solid;
+  padding: 0 10px 0 10px;
+  color: inherit;
+  border-radius: 5px;
+
+  &:focus-visible {
+    outline-color: var(--color-btn-border);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+input::placeholder{
+  color: inherit;
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .reconnect-overlay {

@@ -1,0 +1,24 @@
+.info-container {
+  width: 350px;
+  height: 400px;
+  background-color: var(--color-window-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.info-window {
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.info-header {
+  font-size: 40px;
+  font-family: 'Itim', cursive;
+}

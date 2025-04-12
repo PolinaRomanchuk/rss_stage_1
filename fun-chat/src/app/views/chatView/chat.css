@@ -4,19 +4,37 @@
   align-items: center;
   width: 100%;
   height: 10%;
-  background-color: aquamarine;
+  background-color: var(--color-accent);
+  border-radius: 5px 5px 0 0;
+}
+
+.chat-name {
+  font-size: 40px;
+  font-family: 'Itim', cursive;
+  padding-left: 10px;
+}
+
+.right-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-right: 10px;
+  width: 200px;
+}
+
+.chat-user-name {
+  font-family: 'Itim', cursive;
 }
 
 .chat-container {
   width: 60vw;
-  height: 60vh;
-  background-color: rgba(192, 192, 192, 0.187);
+  height: 70vh;
+  background-color: var(--color-window-background);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  padding: 10px;
 }
 
 .chat-window {
@@ -25,10 +43,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.right-header-container {
-  display: flex;
 }
 
 .chat-content-container {
@@ -40,29 +54,42 @@
 }
 
 .user-list-content {
-  width: 40%;
-}
-
-.dialogue-content {
-  width: 60%;
-}
-
-.user-list-content {
+  width: 30%;
   height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
-  border-right: 1px solid gray;
+  border-right: 1px solid var(--color-accent);
 }
 
-.footer-container {
+.search-container {
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 100%;
   display: flex;
-  height: 5%;
+  align-items: center;
+  height: 30px;
+}
+
+.search-icon {
+  height: 30px;
+  width: 30px;
+}
+
+.search-button {
+  min-width: auto;
+  min-height: auto;
+  padding: 0;
+  background-color: unset;
+  border: unset;
+  &:hover {
+    background-color: unset;
+  }
 }
 
 .search-input {
-  margin-top: 10px;
-  width: 90%;
+  width: 75%;
+  height: 30px;
 }
 
 .user-list-container {
@@ -78,26 +105,34 @@
 }
 .user-list-header {
   margin-bottom: 5px;
+  font-family: 'Itim', cursive;
+  font-size: larger;
 }
 
 .dialogue-content {
-  width: 100%;
+  width: 70%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  margin: 10px;
 }
 
-.companion-name {
-  border-bottom:
-    1px,
-    solid gray;
-  height: 5%;
+.friend-name {
+  font-family: 'Itim', cursive;
+  font-size: 30px;
+  margin-right: 10px;
 }
 .message-container {
   height: 90%;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  margin: 10px;
+}
+.messages-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
 }
 
 .configur-message-container {
@@ -105,26 +140,75 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
 }
 
-.footer-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+.message-input {
+  height: 30px;
+  width: 70%;
 }
 
 .message-content {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: aliceblue;
 }
+
 .configs-message {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
 }
 
 .temp-container {
   display: flex;
   justify-content: space-between;
+}
+
+.name-in-message {
+  font-family: 'Itim', cursive;
+}
+
+.message-status-icon,
+.edit-icon {
+  width: 20px;
+  height: 20px;
+}
+.edit-icon-container,
+.message-status-container {
+  width: 20px;
+  height: 20px;
+}
+
+.message-date {
+  font-size: 14px;
+}
+
+.friend-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.online-status-container {
+  display: flex;
+  margin-right: 10px;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  border-radius: 50%;
+}
+
+
+.companion-name-container{
+  display: flex;
+  align-items: center;
 }

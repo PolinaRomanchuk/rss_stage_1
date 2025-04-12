@@ -1,7 +1,7 @@
 import router from './utils/router';
 import AuthenticationView from './views/authenticationView/authenticationView';
 import BaseView from './views/baseView';
-import ChatView from './views/chatView/ChatView';
+import ChatView from './views/chatView/chatView';
 import InfoView from './views/infoView/InfoView';
 
 class App {
@@ -40,7 +40,7 @@ class App {
 
   private renderChat(): void {
     this.clearContent();
-      const chatView = new ChatView();
+    const chatView = new ChatView();
     this.contentContainer.append(chatView.getView());
   }
 

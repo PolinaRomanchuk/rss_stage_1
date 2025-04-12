@@ -1,5 +1,6 @@
 import BaseView from "../baseView";
 import BackButton from "../components/backButton";
+import '../infoView/info.css';
 
 class InfoView extends BaseView {
   private contentContainer: BaseView;

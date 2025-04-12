@@ -145,8 +145,18 @@
 }
 
 .message-input {
-  height: 30px;
-  width: 70%;
+  height: 20px;
+  width: 80%;
+  resize: none;
+  border-radius: 5px;
+  border-color: var(--color-btn-border);
+  border-width: 0.1px;
+  border-style: solid;
+  padding: 5px;
+  outline-width: 1px;
+  &:focus-visible {
+    outline-color: var(--color-btn-border);
+  }
 }
 
 .message-content {
@@ -207,8 +217,7 @@
   border-radius: 50%;
 }
 
-
-.companion-name-container{
+.companion-name-container {
   display: flex;
   align-items: center;
 }

@@ -39,14 +39,18 @@ class ChatView extends BaseView {
     const wraper = new BaseView({ tag: 'div', classNames: ['messages-wrapper'] });
     wraper.appendChildren([new MessageView(), new MessageView(), new MessageView(), new MessageView()]);
     messageContainer.appendChildren([wraper]);
-    const messageInput = new InputView();
-    messageInput.addClass('message-input');
+    const messageInput = this.renderMessageTextArea();
 
     const sendBtn = new BaseView({ tag: 'button', classNames: ['send-button'], textContent: 'Send' });
     const conf = new BaseView({ tag: 'div', classNames: ['configur-message-container'] });
     conf.appendChildren([messageInput, sendBtn])
     content.appendChildren([companionName, messageContainer, conf]);
     return content;
+  }
+
+  private renderMessageTextArea(): BaseView {
+    const messageArea = new BaseView({ tag: 'textarea', classNames: ['message-input'] });
+    return messageArea;
   }
 
   private renderCompanionName(): BaseView {

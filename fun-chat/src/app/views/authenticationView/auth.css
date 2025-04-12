@@ -39,6 +39,7 @@
 .password-validation-span {
   color: #f51010;
   font-size: medium;
+  width: 190px;
 }
 
 .login-input::placeholder,.password-input::placeholder  {

@@ -1,0 +1,38 @@
+const socket = new WebSocket('ws://localhost:4000');
+
+export async function authenticateUser(username: string, password: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const requestId = Date.now().toString();
+    const message = {
+      id: requestId,
+      type: 'USER_LOGIN',
+      payload: {
+        user: {
+          login: username,
+          password: password,
+        },
+      },
+    };
+
+    const handleMessage = (event: MessageEvent) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === 'USER_LOGIN' && data.id === requestId) {
+        socket.removeEventListener('message', handleMessage);
+
+        const isLogined = data.payload.user.isLogined;
+
+        if (isLogined) {
+          resolve();
+        } else {
+          reject('Incorrect login or password');
+        }
+      }
+    };
+
+    socket.addEventListener('message', handleMessage);
+    socket.send(JSON.stringify(message));
+  });
+}
+
+export { socket };

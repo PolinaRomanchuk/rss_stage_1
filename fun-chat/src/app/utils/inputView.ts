@@ -2,6 +2,8 @@ import BaseView from '../views/baseView';
 
 class InputView extends BaseView {
   private input: HTMLInputElement | null = null;
+  private validFunc: ((value: string) => string) | null = null;
+  private validSpan: BaseView | null = null;
 
   constructor() {
     super({ tag: 'input' });
@@ -14,6 +16,7 @@ class InputView extends BaseView {
         const target = event.target;
         if (!(target instanceof HTMLInputElement) || !this.input) return;
         this.input.value = target.value;
+        this.isValid(target.value);
       });
     }
   }
@@ -44,5 +47,24 @@ class InputView extends BaseView {
   public reset(): void {
     this.setValue('');
   }
+
+  public isValid(value: string): void {
+    if (!this.validFunc || !this.input) return;
+    const result = this.validFunc(value);
+
+    if (result !== "ok" && this.validSpan) {
+      this.validSpan.setTextContent(result);
+    } else if (result === "ok" && this.validSpan) {
+      this.validSpan.setTextContent('');
+    }
+  }
+
+  public setValidFunction(func: (value: string) => string): void {
+    this.validFunc = func;
+  }
+  public setValidSpan(span: BaseView): void {
+    this.validSpan = span;
+  }
 }
+
 export default InputView;

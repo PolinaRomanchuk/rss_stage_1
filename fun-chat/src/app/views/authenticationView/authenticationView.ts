@@ -2,9 +2,15 @@ import BaseView from "../baseView";
 import '../authenticationView/auth.css';
 import InputView from "../../utils/inputView";
 import router from "../../utils/router";
+import { authUser, isLoginValid, isPasswordValid } from "../../services/authService";
 
 class AuthenticationView extends BaseView {
   private contentContainer: BaseView;
+  private loginView: InputView | null = null;
+  private passwordView: InputView | null = null;
+
+  private loginValidationSpan: BaseView | null = null;
+  private passwordValidationSpan: BaseView | null = null;
 
   constructor() {
     super({ tag: 'div', classNames: ['auth-container'] });
@@ -32,41 +38,59 @@ class AuthenticationView extends BaseView {
 
   private renderLoginContainer(): BaseView {
     const container = new BaseView({ tag: 'div', classNames: ['login-container'] });
-    container.appendChildren([this.renderLoginInput(), this.renderLoginValidation()])
+    const span = this.renderLoginValidation();
+    container.appendChildren([this.renderLoginInput(), span]);
     return container;
   }
   private renderLoginInput(): InputView {
-    const login = new InputView();
-    login.addClass('login-input');
-    login.setPlaceholder('Username');
-    return login;
+    this.loginView = new InputView();
+    this.loginView.addClass('login-input');
+    this.loginView.setPlaceholder('Username');
+    if (this.loginValidationSpan) {
+      this.loginView.setValidSpan(this.loginValidationSpan);
+      this.loginView.setValidFunction(isLoginValid);
+    }
+    return this.loginView;
   }
 
   private renderLoginValidation(): BaseView {
-    return new BaseView({ tag: 'span', classNames: ['login-validation-span'], textContent: 'test' });
+    this.loginValidationSpan = new BaseView({ tag: 'span', classNames: ['login-validation-span'] });
+    return this.loginValidationSpan;
   }
 
   private renderPasswordContainer(): BaseView {
     const container = new BaseView({ tag: 'div', classNames: ['password-container'] });
-    container.appendChildren([this.renderPasswordInput(), this.renderPasswordValidation()]);
+    const span = this.renderPasswordValidation();
+    container.appendChildren([this.renderPasswordInput(), span]);
     return container;
   }
   private renderPasswordInput(): InputView {
-    const password = new InputView();
-    password.addClass('password-input');
-    password.setPlaceholder('Password');
-    return password;
+    this.passwordView = new InputView();
+    this.passwordView.addClass('password-input');
+    this.passwordView.setPlaceholder('Password');
+    if (this.passwordValidationSpan) {
+      this.passwordView.setValidSpan(this.passwordValidationSpan);
+      this.passwordView.setValidFunction(isPasswordValid);
+    }
+    return this.passwordView;
   }
 
   private renderPasswordValidation(): BaseView {
-    return new BaseView({ tag: 'span', classNames: ['password-validation-span'], textContent: 'test' });
+    this.passwordValidationSpan = new BaseView({ tag: 'span', classNames: ['password-validation-span'] });
+    return this.passwordValidationSpan;
   }
 
   private renderLogInButton(): BaseView {
     const button = new BaseView({ tag: 'button', classNames: ['login-button'], textContent: 'Log in' });
-    button.getView().addEventListener('click', () => {
-      router.navigate('chat');
-    })
+    button.getView().addEventListener('click', async () => {
+      if (this.loginView && this.passwordView) {
+        const username = this.loginView.getValue();
+        const password = this.passwordView.getValue();
+        if (this.passwordValidationSpan?.getView().textContent == '' && this.loginValidationSpan?.getView().textContent == '') {
+          authUser(username, password);
+        }
+      }
+    });
     return button;
   }
 

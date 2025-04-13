@@ -1,3 +1,5 @@
+import { clearAuth, setAuthUser } from "../states/authState";
+
 const socket = new WebSocket('ws://localhost:4000');
 
 export async function authenticateUser(username: string, password: string): Promise<void> {
@@ -23,6 +25,7 @@ export async function authenticateUser(username: string, password: string): Prom
         const isLogined = data.payload.user.isLogined;
 
         if (isLogined) {
+          setAuthUser(username, password);
           resolve();
         } else {
           reject('Incorrect login or password');
@@ -41,5 +44,43 @@ export async function authenticateUser(username: string, password: string): Prom
     socket.send(JSON.stringify(message));
   });
 }
+
+
+export async function logoutUserApi(username: string, password: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const requestId = Date.now().toString();
+    const message = {
+      id: requestId,
+      type: 'USER_LOGOUT',
+      payload: {
+        user: {
+          login: username,
+          password: password,
+        },
+      },
+    };
+
+    const handleMessage = (event: MessageEvent) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === 'USER_LOGOUT' && data.id === requestId) {
+        socket.removeEventListener('message', handleMessage);
+        clearAuth();
+        resolve();
+      }
+
+      if (data.type === 'ERROR' && data.id === requestId) {
+        socket.removeEventListener('message', handleMessage);
+        const error = data.payload.error;
+        reject(error);
+        return;
+      }
+    };
+
+    socket.addEventListener('message', handleMessage);
+    socket.send(JSON.stringify(message));
+  });
+}
+
 
 export { socket };

@@ -6,6 +6,8 @@ import MessageView from "./messageView";
 import SearchIcone from '../../../assets/img/search.png';
 import ChatFooterView from "./chatFooterView/chatFooterView";
 import OnlineUserStatus from "../components/onlineUserStatus";
+import {  getAuthUserLogin, getAuthUserPassword, isAuthenticated } from "../../states/authState";
+import { logoutUser } from "../../services/authService";
 
 class ChatView extends BaseView {
   private contentContainer: BaseView;
@@ -13,6 +15,10 @@ class ChatView extends BaseView {
   constructor() {
     super({ tag: 'div', classNames: ['chat-container'] });
     this.contentContainer = this;
+    if (!isAuthenticated()) {
+      router.navigate('login');
+      return;
+    }
     this.renderContent();
   }
 
@@ -111,7 +117,12 @@ class ChatView extends BaseView {
     const userName = new BaseView({ tag: 'div', classNames: ['chat-user-name'], textContent: 'User TEST' });
     const logOutBtn = new BaseView({ tag: 'button', classNames: ['chat-logout-button'], textContent: 'Log out' });
     logOutBtn.getView().addEventListener('click', () => {
-      router.navigate('');
+      const userlogin = getAuthUserLogin();
+      const userPassword = getAuthUserPassword();
+      if (userlogin && userPassword) {
+        logoutUser(userlogin, userPassword);
+        
+      }
     })
     rightContainer.appendChildren([userName, logOutBtn]);
     container.appendChildren([name, rightContainer]);

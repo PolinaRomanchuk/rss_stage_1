@@ -11,7 +11,7 @@ class BackButton extends BaseView {
     })
   }
   private back(): void {
-    router.navigate('');
+    router.navigate('login');
   }
 }
 export default BackButton;

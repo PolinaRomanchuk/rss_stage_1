@@ -3,7 +3,7 @@ import '../authenticationView/auth.css';
 import InputView from "../../utils/inputView";
 import router from "../../utils/router";
 import { authUser, isLoginValid, isPasswordValid } from "../../services/authService";
-import { getAuth } from "../../states/authState";
+import { isAuthenticated  } from "../../states/authState";
 
 class AuthenticationView extends BaseView {
   private contentContainer: BaseView;
@@ -16,7 +16,7 @@ class AuthenticationView extends BaseView {
   constructor() {
     super({ tag: 'div', classNames: ['auth-container'] });
     this.contentContainer = this;
-    if (getAuth()) {
+    if (isAuthenticated ()) {
       router.navigate('chat');
       return;
     }

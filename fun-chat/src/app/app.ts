@@ -24,7 +24,7 @@ class App {
   }
 
   private setupRoutes(): void {
-    router.addRoute('', () => this.renderAuthentication());
+    router.addRoute('login', () => this.renderAuthentication());
     router.addRoute('chat', () => this.renderChat());
     router.addRoute('info', () => this.renderInfo());
     window.addEventListener('popstate', () => {

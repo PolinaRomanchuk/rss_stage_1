@@ -54,7 +54,7 @@ class AuthenticationView extends BaseView {
   }
 
   private renderLoginValidation(): BaseView {
-    this.loginValidationSpan = new BaseView({ tag: 'span', classNames: ['login-validation-span'] });
+    this.loginValidationSpan = new BaseView({ tag: 'span', classNames: ['login-validation-span'], textContent: ' ' });
     return this.loginValidationSpan;
   }
 
@@ -76,7 +76,7 @@ class AuthenticationView extends BaseView {
   }
 
   private renderPasswordValidation(): BaseView {
-    this.passwordValidationSpan = new BaseView({ tag: 'span', classNames: ['password-validation-span'] });
+    this.passwordValidationSpan = new BaseView({ tag: 'span', classNames: ['password-validation-span'], textContent: ' ' });
     return this.passwordValidationSpan;
   }
 
@@ -86,6 +86,14 @@ class AuthenticationView extends BaseView {
       if (this.loginView && this.passwordView) {
         const username = this.loginView.getValue();
         const password = this.passwordView.getValue();
+        const loginSpan = this.loginValidationSpan;
+        const passwordSpan = this.passwordValidationSpan;
+
+        if (loginSpan && loginSpan.getView().textContent == ' ' && passwordSpan && passwordSpan.getView().textContent == ' ') {
+          passwordSpan.getView().textContent = 'enter at least 4 characters with one capital letter';
+          loginSpan.getView().textContent = 'enter at least 4 characters';
+        }
+
         if (this.passwordValidationSpan?.getView().textContent == '' && this.loginValidationSpan?.getView().textContent == '') {
           authUser(username, password);
         }

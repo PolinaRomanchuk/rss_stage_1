@@ -28,6 +28,13 @@ export async function authenticateUser(username: string, password: string): Prom
           reject('Incorrect login or password');
         }
       }
+
+      if (data.type === 'ERROR' && data.id === requestId) {
+        socket.removeEventListener('message', handleMessage);
+        const error = data.payload.error;
+        reject(error);
+        return;
+      }
     };
 
     socket.addEventListener('message', handleMessage);

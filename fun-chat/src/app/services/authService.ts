@@ -1,12 +1,17 @@
 import { authenticateUser } from '../API/authAPI'
+import { setAuth } from '../states/authState';
 import router from '../utils/router';
+import AuthError from '../views/authenticationView/authError';
 
 export async function authUser(usernameInput: string, passwordInput: string) {
   try {
     await authenticateUser(usernameInput, passwordInput);
+    setAuth(true);
     router.navigate('chat');
   } catch (error) {
-    console.error(error);
+    const message = typeof error === 'string' ? error : 'Unknown error';
+    const errorView = new AuthError(message).getView();
+    document.body.append(errorView);
   }
 }
 
@@ -25,3 +30,5 @@ export function isPasswordValid(password: string): string | 'ok' {
   }
   return 'ok';
 }
+
+

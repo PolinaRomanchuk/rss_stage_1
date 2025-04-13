@@ -3,6 +3,7 @@ import '../authenticationView/auth.css';
 import InputView from "../../utils/inputView";
 import router from "../../utils/router";
 import { authUser, isLoginValid, isPasswordValid } from "../../services/authService";
+import { getAuth } from "../../states/authState";
 
 class AuthenticationView extends BaseView {
   private contentContainer: BaseView;
@@ -15,6 +16,10 @@ class AuthenticationView extends BaseView {
   constructor() {
     super({ tag: 'div', classNames: ['auth-container'] });
     this.contentContainer = this;
+    if (getAuth()) {
+      router.navigate('chat');
+      return;
+    }
     this.renderContent();
   }
 
@@ -68,6 +73,7 @@ class AuthenticationView extends BaseView {
     this.passwordView = new InputView();
     this.passwordView.addClass('password-input');
     this.passwordView.setPlaceholder('Password');
+    this.passwordView.setType('password');
     if (this.passwordValidationSpan) {
       this.passwordView.setValidSpan(this.passwordValidationSpan);
       this.passwordView.setValidFunction(isPasswordValid);
@@ -83,23 +89,33 @@ class AuthenticationView extends BaseView {
   private renderLogInButton(): BaseView {
     const button = new BaseView({ tag: 'button', classNames: ['login-button'], textContent: 'Log in' });
     button.getView().addEventListener('click', async () => {
-      if (this.loginView && this.passwordView) {
-        const username = this.loginView.getValue();
-        const password = this.passwordView.getValue();
-        const loginSpan = this.loginValidationSpan;
-        const passwordSpan = this.passwordValidationSpan;
+      this.handleLogInButton();
+    });
 
-        if (loginSpan && loginSpan.getView().textContent == ' ' && passwordSpan && passwordSpan.getView().textContent == ' ') {
-          passwordSpan.getView().textContent = 'enter at least 4 characters with one capital letter';
-          loginSpan.getView().textContent = 'enter at least 4 characters';
-        }
-
-        if (this.passwordValidationSpan?.getView().textContent == '' && this.loginValidationSpan?.getView().textContent == '') {
-          authUser(username, password);
-        }
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        this.handleLogInButton();
       }
     });
     return button;
+  }
+
+  private handleLogInButton() {
+    if (this.loginView && this.passwordView) {
+      const username = this.loginView.getValue();
+      const password = this.passwordView.getValue();
+      const loginSpan = this.loginValidationSpan;
+      const passwordSpan = this.passwordValidationSpan;
+
+      if (loginSpan && loginSpan.getView().textContent == ' ' && passwordSpan && passwordSpan.getView().textContent == ' ') {
+        passwordSpan.getView().textContent = 'enter at least 4 characters with one capital letter';
+        loginSpan.getView().textContent = 'enter at least 4 characters';
+      }
+
+      if (this.passwordValidationSpan?.getView().textContent == '' && this.loginValidationSpan?.getView().textContent == '') {
+        authUser(username, password);
+      }
+    }
   }
 
   private renderInfo(): BaseView {

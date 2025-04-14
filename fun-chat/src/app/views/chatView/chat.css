@@ -138,16 +138,18 @@
   border-radius: 5px;
   padding: 5px;
   background-color: aliceblue;
+  width: 70%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .configs-message {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
 }
 
-.temp-container {
+.text-message-and-configs-container {
   display: flex;
   justify-content: space-between;
 }
@@ -175,7 +177,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  &:hover{
+  &:hover {
     background-color: var(--color-btn-background-focus);
     cursor: pointer;
   }
@@ -196,4 +198,16 @@
 .companion-name-container {
   display: flex;
   align-items: center;
+}
+
+.say-hi-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-text{
+  font-size: 15px;
+  max-width: 85%;
+  word-break: break-word;
 }

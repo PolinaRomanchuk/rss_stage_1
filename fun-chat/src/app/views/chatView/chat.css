@@ -64,7 +64,7 @@
   height: 30px;
 }
 
-.user-list-container {
+.users-list-container {
   display: flex;
   flex-direction: column;
   width: 100%;

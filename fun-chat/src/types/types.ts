@@ -4,3 +4,8 @@ export type ElementParams = {
   textContent?: string;
   callback?: (event: Event) => void;
 }
+
+export type User = {
+  login: string,
+  isLogined: boolean,
+}

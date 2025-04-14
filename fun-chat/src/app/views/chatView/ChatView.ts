@@ -8,6 +8,7 @@ import ChatFooterView from "./chatFooterView/chatFooterView";
 import OnlineUserStatus from "../components/onlineUserStatus";
 import { isAuthenticated } from "../../states/authState";
 import ChatHeaderView from "./chatHeaderView/chatHeaderView";
+import ChatUsersListView from "./chatUsersView/chatUsersListView";
 
 class ChatView extends BaseView {
   private contentContainer: BaseView;
@@ -24,10 +25,10 @@ class ChatView extends BaseView {
 
   private renderContent() {
     const window = this.renderChatWindow();
-    const headerContainer = new ChatHeaderView();
+    const header = new ChatHeaderView();
     const content = this.renderChatContent();
     const footer = new ChatFooterView();
-    window.appendChildren([headerContainer, content, footer]);
+    window.appendChildren([header, content, footer]);
     this.contentContainer.appendChildren([window]);
   }
 
@@ -38,6 +39,7 @@ class ChatView extends BaseView {
     content.appendChildren([usersList, dialogue]);
     return content;
   }
+  
   private renderDialogue(): BaseView {
     const content = new BaseView({ tag: 'div', classNames: ['dialogue-content'] });
     const companionName = this.renderCompanionName();
@@ -62,7 +64,7 @@ class ChatView extends BaseView {
   private renderCompanionName(): BaseView {
     const container = new BaseView({ tag: 'div', classNames: ['companion-name-container'] });
     const companionName = new BaseView({ tag: 'div', classNames: ['friend-name'], textContent: 'Anonym' });
-    const status = new OnlineUserStatus();
+    const status = new OnlineUserStatus(true);
     container.appendChildren([companionName, status]);
     return container;
   }
@@ -70,20 +72,12 @@ class ChatView extends BaseView {
   private renderUsersList(): BaseView {
     const content = new BaseView({ tag: 'div', classNames: ['user-list-content'] });
     const search = this.renderSearch();
-    const userListContainer = new BaseView({ tag: 'div', classNames: ['user-list-container'] });
+    const userListContainer = new BaseView({ tag: 'div', classNames: ['users-list-container'] });
     const userListHeader = new BaseView({ tag: 'div', classNames: ['user-list-header'], textContent: 'Users' });
-    const friend = this.renderFriend();
-    userListContainer.appendChildren([userListHeader, friend]);
+    const friends = new ChatUsersListView();
+    userListContainer.appendChildren([userListHeader, friends]);
     content.appendChildren([search, userListContainer]);
     return content;
-  }
-
-  private renderFriend(): BaseView {
-    const container = new BaseView({ tag: 'div', classNames: ['friend-container'] });
-    const friend = new BaseView({ tag: 'div', classNames: ['friend'], textContent: 'test friend' });
-    const status = new OnlineUserStatus();
-    container.appendChildren([friend, status])
-    return container;
   }
 
   private renderSearch(): BaseView {

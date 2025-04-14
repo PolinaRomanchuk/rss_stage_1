@@ -1,6 +1,5 @@
 import { clearAuth, setAuthUser } from "../states/authState";
-
-const socket = new WebSocket('ws://localhost:4000');
+import socket from '../API/socketInstance';
 
 export async function authenticateUser(username: string, password: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -45,7 +44,6 @@ export async function authenticateUser(username: string, password: string): Prom
   });
 }
 
-
 export async function logoutUserApi(username: string, password: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const requestId = Date.now().toString();
@@ -81,6 +79,3 @@ export async function logoutUserApi(username: string, password: string): Promise
     socket.send(JSON.stringify(message));
   });
 }
-
-
-export { socket };

@@ -1,6 +1,5 @@
 import { User } from "../../types/types";
-
-const socket = new WebSocket('ws://localhost:4000');
+import socket from "./socketInstance";
 
 export async function gettingAllAuthenticatedUsers(): Promise<User[]> {
   return new Promise((resolve, reject) => {
@@ -61,5 +60,3 @@ export async function gettingAllUnauthorizedUsers(): Promise<User[]> {
     socket.send(JSON.stringify(message));
   });
 }
-
-export { socket };

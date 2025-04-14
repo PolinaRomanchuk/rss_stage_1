@@ -6,7 +6,6 @@ class OnlineUserStatus extends BaseView {
   private circleElement: BaseView | null = null;
   constructor(isActive: boolean) {
     super({ tag: 'div', classNames: ['online-status-container'] });
-
     this.drawCircle(isActive)
   }
 

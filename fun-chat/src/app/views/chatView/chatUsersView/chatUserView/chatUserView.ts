@@ -5,15 +5,20 @@ import OnlineUserStatus from "../../../components/onlineUserStatus";
 class ChatUserView extends BaseView {
   private container: BaseView;
   public name: string;
-  private isActive: boolean;
+  public isActive: boolean;
+  public selectedUser: ChatUserView | null = null;
   private statusElement: OnlineUserStatus | null = null;
 
-  constructor(friend: User) {
-    super({ tag: 'div', classNames: ['friend-container'] });
+  constructor(friend: User, onSelect: (user: ChatUserView) => void) {
+    super({ tag: 'div', classNames: ['friend-container'], callback: () => onSelect(this) });
     this.container = this;
     this.name = friend.login;
     this.isActive = friend.isLogined;
     this.renderFriend();
+  }
+  public selectUser(): ChatUserView {
+    this.selectedUser = this;
+    return this.selectedUser;
   }
 
   private renderFriend(): void {
@@ -33,5 +38,6 @@ class ChatUserView extends BaseView {
       this.statusElement.setStatus(isActive);
     }
   }
+
 }
 export default ChatUserView;

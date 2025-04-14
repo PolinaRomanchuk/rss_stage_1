@@ -6,8 +6,8 @@ import MessageView from "./messageView";
 import SearchIcone from '../../../assets/img/search.png';
 import ChatFooterView from "./chatFooterView/chatFooterView";
 import OnlineUserStatus from "../components/onlineUserStatus";
-import {  getAuthUserLogin, getAuthUserPassword, isAuthenticated } from "../../states/authState";
-import { logoutUser } from "../../services/authService";
+import { isAuthenticated } from "../../states/authState";
+import ChatHeaderView from "./chatHeaderView/chatHeaderView";
 
 class ChatView extends BaseView {
   private contentContainer: BaseView;
@@ -24,7 +24,7 @@ class ChatView extends BaseView {
 
   private renderContent() {
     const window = this.renderChatWindow();
-    const headerContainer = this.renderHeaderContainer();
+    const headerContainer = new ChatHeaderView();
     const content = this.renderChatContent();
     const footer = new ChatFooterView();
     window.appendChildren([headerContainer, content, footer]);
@@ -110,24 +110,6 @@ class ChatView extends BaseView {
     return button;
   }
 
-  private renderHeaderContainer(): BaseView {
-    const container = new BaseView({ tag: 'div', classNames: ['header-chat-container'] });
-    const name = new BaseView({ tag: 'div', classNames: ['chat-name'], textContent: 'Fun chat' });
-    const rightContainer = new BaseView({ tag: 'div', classNames: ['right-header-container'] });
-    const userName = new BaseView({ tag: 'div', classNames: ['chat-user-name'], textContent: 'User TEST' });
-    const logOutBtn = new BaseView({ tag: 'button', classNames: ['chat-logout-button'], textContent: 'Log out' });
-    logOutBtn.getView().addEventListener('click', () => {
-      const userlogin = getAuthUserLogin();
-      const userPassword = getAuthUserPassword();
-      if (userlogin && userPassword) {
-        logoutUser(userlogin, userPassword);
-        
-      }
-    })
-    rightContainer.appendChildren([userName, logOutBtn]);
-    container.appendChildren([name, rightContainer]);
-    return container;
-  }
   private renderChatWindow(): BaseView {
     return new BaseView({ tag: 'div', classNames: ['chat-window'] });
   }

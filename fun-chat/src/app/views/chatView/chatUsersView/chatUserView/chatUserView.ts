@@ -4,7 +4,7 @@ import OnlineUserStatus from "../../../components/onlineUserStatus";
 
 class ChatUserView extends BaseView {
   private container: BaseView;
-  private name: string;
+  public name: string;
   private isActive: boolean;
   private statusElement: OnlineUserStatus | null = null;
 

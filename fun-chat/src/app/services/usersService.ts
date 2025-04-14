@@ -1,6 +1,7 @@
 import { User } from "../../types/types";
 import { gettingAllAuthenticatedUsers, gettingAllUnauthorizedUsers } from "../API/usersAPI";
 import { getAuthUserLogin } from "../states/authState";
+import ChatUsersListView from "../views/chatView/chatUsersView/chatUsersListView";
 
 export async function fetchUsers(): Promise<User[]> {
   try {
@@ -17,4 +18,9 @@ export async function fetchUsers(): Promise<User[]> {
 function avoidCurrentUser(activeUsers: User[]): User[] {
   const currLogin = getAuthUserLogin();
   return activeUsers.filter(user => user.login !== currLogin);
+}
+
+
+export function findUser(input: string, users: ChatUsersListView) {
+ return users.friends.find(friend => friend.name === input);
 }

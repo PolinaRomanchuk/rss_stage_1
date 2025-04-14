@@ -1,14 +1,13 @@
-import InputView from "../../utils/inputView";
 import router from "../../utils/router";
 import BaseView from "../baseView";
 import '../chatView/chat.css';
 import MessageView from "./messageView";
-import SearchIcone from '../../../assets/img/search.png';
 import ChatFooterView from "./chatFooterView/chatFooterView";
 import OnlineUserStatus from "../components/onlineUserStatus";
 import { isAuthenticated } from "../../states/authState";
 import ChatHeaderView from "./chatHeaderView/chatHeaderView";
 import ChatUsersListView from "./chatUsersView/chatUsersListView";
+import SearchUserView from "./searchUserView/searchUserView";
 
 class ChatView extends BaseView {
   private contentContainer: BaseView;
@@ -34,13 +33,13 @@ class ChatView extends BaseView {
 
   private renderChatContent(): BaseView {
     const content = new BaseView({ tag: 'div', classNames: ['chat-content-container'] });
-    const usersList = this.renderUsersList();
-    const dialogue = this.renderDialogue();
+    const usersList = this.renderUsersBlock();
+    const dialogue = this.renderDialogueBlock();
     content.appendChildren([usersList, dialogue]);
     return content;
   }
-  
-  private renderDialogue(): BaseView {
+
+  private renderDialogueBlock(): BaseView {
     const content = new BaseView({ tag: 'div', classNames: ['dialogue-content'] });
     const companionName = this.renderCompanionName();
     const messageContainer = new BaseView({ tag: 'div', classNames: ['message-container'] });
@@ -69,39 +68,16 @@ class ChatView extends BaseView {
     return container;
   }
 
-  private renderUsersList(): BaseView {
-    const content = new BaseView({ tag: 'div', classNames: ['user-list-content'] });
-    const search = this.renderSearch();
+  private renderUsersBlock(): BaseView {
+    const content = new BaseView({ tag: 'div', classNames: ['user-block-content'] });
+    const search = new SearchUserView();
     const userListContainer = new BaseView({ tag: 'div', classNames: ['users-list-container'] });
     const userListHeader = new BaseView({ tag: 'div', classNames: ['user-list-header'], textContent: 'Users' });
     const friends = new ChatUsersListView();
+    search.setUsers(friends);
     userListContainer.appendChildren([userListHeader, friends]);
     content.appendChildren([search, userListContainer]);
     return content;
-  }
-
-  private renderSearch(): BaseView {
-    const container = new BaseView({ tag: 'div', classNames: ['search-container'] });
-    const icon = this.renderIcon();
-    const userSearch = new InputView();
-    userSearch.addClass('search-input');
-    userSearch.setPlaceholder('Search');
-    container.appendChildren([icon, userSearch]);
-    return container;
-  }
-
-  private renderIcon(): BaseView {
-    const button = new BaseView({ tag: 'button', classNames: ['search-button'] });
-
-    const icon = new BaseView({ tag: 'img', classNames: ['search-icon'] });
-    const iconElement = icon.getView()
-
-    if (iconElement instanceof HTMLImageElement) {
-      iconElement.src = SearchIcone;
-      iconElement.alt = 'Search';
-    }
-    button.appendChildren([icon]);
-    return button;
   }
 
   private renderChatWindow(): BaseView {

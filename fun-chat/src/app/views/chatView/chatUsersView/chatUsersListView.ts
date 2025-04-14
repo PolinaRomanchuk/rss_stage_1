@@ -6,7 +6,7 @@ import ChatUserView from "./chatUserView/chatUserView";
 
 class ChatUsersListView extends BaseView {
   private container: BaseView;
-  private friends: ChatUserView[] = [];
+  public friends: ChatUserView[] = [];
 
   constructor() {
     super({ tag: 'div', classNames: ['users-list-container'] });

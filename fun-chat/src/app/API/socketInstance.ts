@@ -1,2 +1,7 @@
 const socket = new WebSocket('ws://localhost:4000');
-export default socket;
+
+function setMessageHandler(handler: (event: MessageEvent) => void) {
+  socket.addEventListener('message', handler);
+}
+
+export { socket, setMessageHandler };

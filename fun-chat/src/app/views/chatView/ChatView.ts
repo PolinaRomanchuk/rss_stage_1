@@ -7,6 +7,8 @@ import ChatHeaderView from "./chatHeaderView/chatHeaderView";
 import ChatUsersListView from "./chatUsersView/chatUsersListView";
 import SearchUserView from "./searchUserView/searchUserView";
 import DialogueView from "../dialogueView/dialogueView";
+import { registerDialogueInstance, startMessageListener } from "../../services/messageSocketHandler";
+
 
 class ChatView extends BaseView {
   private contentContainer: BaseView;
@@ -20,6 +22,7 @@ class ChatView extends BaseView {
       return;
     }
     this.renderContent();
+    this.message();
   }
 
   private renderContent() {
@@ -35,6 +38,7 @@ class ChatView extends BaseView {
     const content = new BaseView({ tag: 'div', classNames: ['chat-content-container'] });
     const dialogue = new DialogueView();
     this.dialogue = dialogue;
+    registerDialogueInstance(dialogue);
     const usersList = this.renderUsersBlock();
     content.appendChildren([usersList, dialogue]);
     return content;
@@ -57,6 +61,10 @@ class ChatView extends BaseView {
 
   private renderChatWindow(): BaseView {
     return new BaseView({ tag: 'div', classNames: ['chat-window'] });
+  }
+
+  private message() {
+    startMessageListener();
   }
 }
 export default ChatView;

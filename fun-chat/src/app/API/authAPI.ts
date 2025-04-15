@@ -1,5 +1,5 @@
 import { clearAuth, setAuthUser } from "../states/authState";
-import socket from '../API/socketInstance';
+import {socket} from '../API/socketInstance';
 
 export async function authenticateUser(username: string, password: string): Promise<void> {
   return new Promise((resolve, reject) => {

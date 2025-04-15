@@ -1,4 +1,5 @@
-import { fetchingMessageHistoryWithUser, sendingMessageToUser } from "../../API/messageAPI";
+import { Message } from "../../../types/types";
+import { fetchingMessageHistoryWithUser, messageReadStatusChange, sendingMessageToUser } from "../../API/messageAPI";
 import BaseView from "../baseView";
 import ChatUserView from "../chatView/chatUsersView/chatUserView/chatUserView";
 import MessageView from "../chatView/messageView";
@@ -11,6 +12,8 @@ class DialogueView extends BaseView {
   private companionNameElement: BaseView | null = null;
   private messagesContainer: BaseView | null = null;
   private newMessageInput: BaseView | null = null;
+  private messageViews: MessageView[] = [];
+
 
   constructor() {
     super({ tag: 'div', classNames: ['dialogue-content'] });
@@ -37,10 +40,11 @@ class DialogueView extends BaseView {
     conf.appendChildren([messageInput, sendBtn]);
     this.container.appendChildren([companionName, messageContainer, conf]);
   }
+
   private async getMessageHistory() {
-    const login = this.currentCompanion?.name;
-    if (login) {
-      const messages = await fetchingMessageHistoryWithUser(login);
+    const loginCompanion = this.currentCompanion?.name;
+    if (loginCompanion) {
+      const messages = await fetchingMessageHistoryWithUser(loginCompanion);
 
       if (this.messagesContainer) {
         this.messagesContainer.removeAllChildren();
@@ -50,7 +54,9 @@ class DialogueView extends BaseView {
         } else {
           messages.forEach(message => {
             if (this.messagesContainer) {
-              this.messagesContainer.append(new MessageView(message));
+              const view = new MessageView(message);
+              this.messagesContainer.append(view);
+              this.messageViews.push(view);
             }
           });
         }
@@ -58,13 +64,17 @@ class DialogueView extends BaseView {
     }
   }
 
+  private findMessageById(messageId: string): MessageView | null {
+    return this.messageViews.find(view => view.messageId === messageId) || null;
+  }
+
   private async send() {
     let text = '';
     const textarea = this.newMessageInput?.getView();
     if (textarea instanceof HTMLTextAreaElement) {
       text = textarea.value;
-
       const login = this.currentCompanion?.name;
+
       if (login) {
         await sendingMessageToUser(login, text);
       }
@@ -86,8 +96,12 @@ class DialogueView extends BaseView {
     status.changeClass('add', 'hide');
     this.currentCompanionStatus = status;
     container.appendChildren([companionName, status]);
+
+
     return container;
+
   }
+
 
   public setCompanion(user: ChatUserView): void {
     this.currentCompanion = user;
@@ -95,7 +109,13 @@ class DialogueView extends BaseView {
       this.companionNameElement.setTextContent(user.name);
       this.currentCompanionStatus.setStatus(user.isActive);
       this.currentCompanionStatus.changeClass('remove', 'hide');
-      this.getMessageHistory();
+      this.getMessageHistory().then(() => {
+        this.messageViews.forEach(msgView => {
+          if (msgView.messageId && this.currentCompanion?.name === msgView.message.from) {
+            messageReadStatusChange(msgView.messageId);
+          }
+        });
+      });
     }
   }
 
@@ -103,5 +123,20 @@ class DialogueView extends BaseView {
     const defaultMessage = new BaseView({ tag: 'div', classNames: ['say-hi-message'], textContent: 'Say hi to start talking' });
     return defaultMessage;
   }
+
+  public addIncomingMessageToView(message: Message) {
+    if (this.messagesContainer && this.currentCompanion?.name === message.from) {
+      this.messagesContainer.append(new MessageView(message));
+    }
+  }
+
+  public updateMessageStatus(messageId: string, status: 'sent' | 'delivered' | 'read') {
+    console.log(`${messageId} ${status}`);
+    const messageView = this.findMessageById(messageId);
+    if (messageView) {
+      messageView.setStatus(status);
+    }
+  }
+
 }
 export default DialogueView;

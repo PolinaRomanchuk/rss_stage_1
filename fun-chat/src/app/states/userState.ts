@@ -1,5 +1,5 @@
 import { User } from "../../types/types";
-import socket from "../API/socketInstance";
+import {socket} from "../API/socketInstance";
 
 let loginHandler: ((user: User) => void) | null = null;
 let logoutHandler: ((user: User) => void) | null = null;

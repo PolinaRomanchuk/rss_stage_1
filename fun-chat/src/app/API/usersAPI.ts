@@ -1,5 +1,5 @@
 import { User } from "../../types/types";
-import socket from "./socketInstance";
+import {socket} from "./socketInstance";
 
 export async function gettingAllAuthenticatedUsers(): Promise<User[]> {
   return new Promise((resolve, reject) => {

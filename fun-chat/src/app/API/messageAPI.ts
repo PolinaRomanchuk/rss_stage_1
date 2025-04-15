@@ -132,3 +132,77 @@ export async function notificationOfMessageReadStatusChange(event: MessageEvent)
     return message.payload.message;
   }
 }
+
+
+
+export async function messageTextEditing(id: string, text: string): Promise<Message> {
+  return new Promise((resolve, reject) => {
+    const requestId = Date.now().toString();
+    const message = {
+      id: requestId,
+      type: 'MSG_EDIT',
+      payload: {
+        message: {
+          id: id,
+          text: text
+        },
+      },
+    };
+
+    const handleMessage = (event: MessageEvent) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === 'MSG_EDIT' && data.id === requestId) {
+        socket.removeEventListener('message', handleMessage);
+        const message = data.payload.message;
+        resolve(message);
+      } 
+
+      if (data.type === 'ERROR' && data.id === requestId) {
+        socket.removeEventListener('message', handleMessage);
+        const error = data.payload.error;
+        reject(error);
+        return;
+      }
+    };
+
+    socket.addEventListener('message', handleMessage);
+    socket.send(JSON.stringify(message));
+  });
+}
+
+export async function messageDeletion(id: string): Promise<Message> {
+  return new Promise((resolve, reject) => {
+    const requestId = Date.now().toString();
+    const message = {
+      id: requestId,
+      type: 'MSG_DELETE',
+      payload: {
+        message: {
+          id: id,
+         
+        },
+      },
+    };
+
+    const handleMessage = (event: MessageEvent) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === 'MSG_DELETE' && data.id === requestId) {
+        socket.removeEventListener('message', handleMessage);
+        const message = data.payload.message;
+        resolve(message);
+      } 
+
+      if (data.type === 'ERROR' && data.id === requestId) {
+        socket.removeEventListener('message', handleMessage);
+        const error = data.payload.error;
+        reject(error);
+        return;
+      }
+    };
+
+    socket.addEventListener('message', handleMessage);
+    socket.send(JSON.stringify(message));
+  });
+}

@@ -4,20 +4,24 @@ import StatusRead from '../../../assets/img/status-read.png';
 import Edit from '../../../assets/img/edit.png';
 import { Message } from "../../../types/types";
 import { getAuthUserLogin } from "../../states/authState";
+import Delete from '../../../assets/img/trash-can.png';
 
 
 class MessageView extends BaseView {
-  private contentContainer: BaseView;
+  public contentContainer: BaseView;
   private statusIcon: HTMLImageElement | null = null;
   public message: Message;
   public messageId: string;
+  public hiddenContainer: BaseView | null = null;
 
-  constructor(message: Message) {
-    super({ tag: 'div', classNames: ['message-content'] });
+
+
+  constructor(message: Message, onSelect: (message: MessageView) => void, onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void) {
+    super({ tag: 'div', classNames: ['message-content'], callback: () => onSelect(this) });
     this.contentContainer = this;
     this.message = message;
     this.messageId = message.id;
-    this.renderContent(message);
+    this.renderContent(message, onEdit, onDelete);
   }
 
   private getMessageStatus(): 'sent' | 'delivered' | 'read' {
@@ -32,22 +36,42 @@ class MessageView extends BaseView {
     }
   }
 
-  private renderContent(message: Message) {
+  private renderContent(message: Message, onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void) {
     const name = this.renderName(message);
     const container = new BaseView({ tag: 'div', classNames: ['text-message-and-configs-container'] });
     const messageText = this.renderMessageText(message.text);
     const conf = this.renderConfigs(message);
+    const edit = this.renderEdit(onEdit);
+    const delet = this.renderDelete(onDelete);
+
+    const hiddenContainer = new BaseView({ tag: 'div', classNames: ['hidden-config-container'] });
+    this.hiddenContainer = hiddenContainer;
+    this.hiddenContainer.addClass('hide');
+    hiddenContainer.appendChildren([edit, delet]);
     container.appendChildren([messageText, conf]);
-    this.contentContainer.appendChildren([name, container]);
+    this.contentContainer.appendChildren([name, container, hiddenContainer]);
   }
   private renderConfigs(message: Message) {
     const container = new BaseView({ tag: 'div', classNames: ['configs-message'] });
     const status = this.renderMessageStatus(this.getMessageStatus());
     const datetime = this.getDate(message.datetime);
     const date = new BaseView({ tag: 'div', classNames: ['message-date'], textContent: `${datetime}` });
-    const select = this.renderEdit();
-    container.appendChildren([date, status, select]);
+    container.appendChildren([date, status]);
     return container;
+  }
+  private renderDelete(onDelete: (message: MessageView) => void): BaseView {
+    const delet = new BaseView({ tag: 'div', classNames: ['delete-icon-container'] });
+
+    const icon = new BaseView({ tag: 'img', classNames: ['delete-icon'], callback: () => onDelete(this) });
+    const iconElement = icon.getView();
+
+    if (iconElement instanceof HTMLImageElement) {
+      iconElement.src = Delete;
+      iconElement.alt = 'delete';
+    }
+
+    delet.appendChildren([icon]);
+    return delet;
   }
 
   private getDate(date: number) {
@@ -84,10 +108,9 @@ class MessageView extends BaseView {
     return container;
   }
 
-  private renderEdit(): BaseView {
+  private renderEdit(onEdit: (message: MessageView) => void): BaseView {
     const edit = new BaseView({ tag: 'div', classNames: ['edit-icon-container'] });
-    edit.changeClass('add', 'hide');
-    const icon = new BaseView({ tag: 'img', classNames: ['edit-icon'] });
+    const icon = new BaseView({ tag: 'img', classNames: ['edit-icon'], callback: () => onEdit(this) });
     const iconElement = icon.getView();
 
     if (iconElement instanceof HTMLImageElement) {

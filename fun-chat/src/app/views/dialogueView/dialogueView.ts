@@ -1,5 +1,6 @@
 import { Message } from "../../../types/types";
-import { fetchingMessageHistoryWithUser, messageReadStatusChange, sendingMessageToUser } from "../../API/messageAPI";
+import { fetchingMessageHistoryWithUser, messageDeletion, messageReadStatusChange, messageTextEditing, sendingMessageToUser } from "../../API/messageAPI";
+import { getAuthUserLogin } from "../../states/authState";
 import BaseView from "../baseView";
 import ChatUserView from "../chatView/chatUsersView/chatUserView/chatUserView";
 import MessageView from "../chatView/messageView";
@@ -13,6 +14,9 @@ class DialogueView extends BaseView {
   private messagesContainer: BaseView | null = null;
   private newMessageInput: BaseView | null = null;
   private messageViews: MessageView[] = [];
+  private selectedMessage: MessageView | null = null;
+
+  private sendButton: BaseView | null = null;
 
 
   constructor() {
@@ -30,15 +34,22 @@ class DialogueView extends BaseView {
     const messageInput = this.renderMessageTextArea();
 
     const sendBtn = new BaseView({
-      tag: 'button', classNames: ['send-button'], textContent: 'Send',
-      callback: () => {
-        this.send();
-        this.getMessageHistory();
-      }
+      tag: 'button', classNames: ['send-button'], textContent: 'Send', callback: this.handleSendButtonClick.bind(this),
     });
+    this.sendButton = sendBtn;
     const conf = new BaseView({ tag: 'div', classNames: ['configur-message-container'] });
     conf.appendChildren([messageInput, sendBtn]);
     this.container.appendChildren([companionName, messageContainer, conf]);
+  }
+
+  private async handleSendButtonClick() {
+    if (this.selectedMessage) {
+      await this.editSelectedMessage();
+    } else {
+      await this.send();
+    }
+
+    await this.getMessageHistory();
   }
 
   private async getMessageHistory() {
@@ -48,13 +59,15 @@ class DialogueView extends BaseView {
 
       if (this.messagesContainer) {
         this.messagesContainer.removeAllChildren();
+        this.messageViews = [];
 
         if (messages.length === 0) {
           this.messagesContainer.append(this.renderDefaultMessage());
         } else {
           messages.forEach(message => {
             if (this.messagesContainer) {
-              const view = new MessageView(message);
+              const view = new MessageView(message, this.selectMessage.bind(this), this.editMessage.bind(this), this.deleteMessage.bind(this));
+
               this.messagesContainer.append(view);
               this.messageViews.push(view);
             }
@@ -126,7 +139,7 @@ class DialogueView extends BaseView {
 
   public addIncomingMessageToView(message: Message) {
     if (this.messagesContainer && this.currentCompanion?.name === message.from) {
-      this.messagesContainer.append(new MessageView(message));
+      this.messagesContainer.append(new MessageView(message, this.selectMessage.bind(this), this.editMessage.bind(this), this.deleteMessage.bind(this)));
     }
   }
 
@@ -135,6 +148,54 @@ class DialogueView extends BaseView {
     const messageView = this.findMessageById(messageId);
     if (messageView) {
       messageView.setStatus(status);
+    }
+  }
+
+
+  public async deleteMessage(message: MessageView): Promise<void> {
+    this.selectedMessage = message;
+    if (this.selectedMessage?.message.from === getAuthUserLogin()) {
+      await messageDeletion(message.messageId);
+      message.contentContainer.removeView();
+    } else {
+      return;
+    }
+  }
+  public async editMessage(message: MessageView): Promise<void> {
+    this.selectedMessage = message;
+    if (this.selectedMessage?.message.from === getAuthUserLogin()) {
+      const textarea = this.newMessageInput?.getView();
+      if (textarea instanceof HTMLTextAreaElement) {
+        textarea.value = this.selectedMessage.message.text;
+      }
+
+    } else {
+      return;
+    }
+  }
+
+
+  public async selectMessage(message: MessageView): Promise<void> {
+    this.selectedMessage = message;
+    if (this.selectedMessage?.message.from === getAuthUserLogin()) {
+      message.hiddenContainer?.removeClass('hide');
+    } else {
+      return;
+    }
+  }
+
+  private async editSelectedMessage() {
+    const messageId = this.selectedMessage?.messageId;
+    let text = '';
+    const textarea = this.newMessageInput?.getView();
+    if (textarea instanceof HTMLTextAreaElement) {
+      text = textarea.value;
+
+      if (messageId) {
+        await messageTextEditing(messageId, text);
+      }
+      textarea.value = '';
+      this.selectedMessage = null;
     }
   }
 

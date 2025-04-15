@@ -88,7 +88,7 @@ class DialogueView extends BaseView {
       text = textarea.value;
       const login = this.currentCompanion?.name;
 
-      if (login) {
+      if (login && text != '') {
         await sendingMessageToUser(login, text);
       }
       textarea.value = '';
@@ -191,11 +191,11 @@ class DialogueView extends BaseView {
     if (textarea instanceof HTMLTextAreaElement) {
       text = textarea.value;
 
-      if (messageId) {
+      if (messageId && text != '') {
         await messageTextEditing(messageId, text);
+        textarea.value = '';
+        this.selectedMessage = null;
       }
-      textarea.value = '';
-      this.selectedMessage = null;
     }
   }
 

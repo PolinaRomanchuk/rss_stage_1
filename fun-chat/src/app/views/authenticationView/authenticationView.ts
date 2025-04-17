@@ -3,7 +3,7 @@ import '../authenticationView/auth.css';
 import InputView from "../../utils/inputView";
 import router from "../../utils/router";
 import { authUser, isLoginValid, isPasswordValid } from "../../services/authService";
-import { isAuthenticated  } from "../../states/authState";
+import { isAuthenticated } from "../../states/authState";
 
 class AuthenticationView extends BaseView {
   private contentContainer: BaseView;
@@ -16,7 +16,8 @@ class AuthenticationView extends BaseView {
   constructor() {
     super({ tag: 'div', classNames: ['auth-container'] });
     this.contentContainer = this;
-    if (isAuthenticated ()) {
+    if (isAuthenticated()) {
+      this.removeEventListener();
       router.navigate('chat');
       return;
     }
@@ -92,13 +93,19 @@ class AuthenticationView extends BaseView {
       this.handleLogInButton();
     });
 
-    document.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
-        this.handleLogInButton();
-      }
-    });
+    document.addEventListener('keydown', this.enterKeyHandler);
     return button;
   }
+
+  private enterKeyHandler = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      this.handleLogInButton();
+    }
+  };
+  public removeEventListener() {
+    document.removeEventListener('keydown', this.enterKeyHandler);
+  }
+
 
   private handleLogInButton() {
     if (this.loginView && this.passwordView) {
@@ -114,6 +121,7 @@ class AuthenticationView extends BaseView {
 
       if (this.passwordValidationSpan?.getView().textContent == '' && this.loginValidationSpan?.getView().textContent == '') {
         authUser(username, password);
+        this.removeEventListener()
       }
     }
   }
@@ -124,6 +132,7 @@ class AuthenticationView extends BaseView {
     view.setAttribute('href', '#info');
     view.addEventListener('click', (event) => {
       event.preventDefault();
+      this.removeEventListener();
       router.navigate('info');
     });
     return link;

@@ -18,6 +18,7 @@ class ChatView extends BaseView {
     super({ tag: 'div', classNames: ['chat-container'] });
     this.contentContainer = this;
     if (!isAuthenticated()) {
+      this.dialogue?.removeEventListener();
       router.navigate('login');
       return;
     }

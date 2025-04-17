@@ -37,9 +37,20 @@ class DialogueView extends BaseView {
       tag: 'button', classNames: ['send-button'], textContent: 'Send', callback: this.handleSendButtonClick.bind(this),
     });
     this.sendButton = sendBtn;
+    document.addEventListener('keydown', this.enterKeyHandler);
+
     const conf = new BaseView({ tag: 'div', classNames: ['configur-message-container'] });
     conf.appendChildren([messageInput, sendBtn]);
     this.container.appendChildren([companionName, messageContainer, conf]);
+  }
+
+  private enterKeyHandler = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+     this.handleSendButtonClick();
+    }
+  };
+  public removeEventListener() {
+    document.removeEventListener('keydown', this.enterKeyHandler);
   }
 
   private async handleSendButtonClick() {

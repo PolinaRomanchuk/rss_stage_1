@@ -11,10 +11,12 @@ class DialogueView extends BaseView {
   private currentCompanion: ChatUserView | null = null;
   private currentCompanionStatus: OnlineUserStatus | null = null;
   private companionNameElement: BaseView | null = null;
-  private messagesContainer: BaseView | null = null;
+  private messagesWraper: BaseView | null = null;
   private newMessageInput: BaseView | null = null;
   private messageViews: MessageView[] = [];
   private selectedMessage: MessageView | null = null;
+
+  private messagesContainer :BaseView | null = null;
 
   constructor() {
     super({ tag: 'div', classNames: ['dialogue-content'] });
@@ -25,8 +27,9 @@ class DialogueView extends BaseView {
   private renderDialogue() {
     const companionName = this.renderCompanion();
     const messageContainer = new BaseView({ tag: 'div', classNames: ['message-container'] });
+    this.messagesContainer = messageContainer;
     const messagesWraper = new BaseView({ tag: 'div', classNames: ['messages-wrapper'] });
-    this.messagesContainer = messagesWraper;
+    this.messagesWraper = messagesWraper;
     messageContainer.appendChildren([messagesWraper]);
     const messageInput = this.renderMessageTextArea();
 
@@ -64,22 +67,23 @@ class DialogueView extends BaseView {
     if (loginCompanion) {
       const messages = await fetchingMessageHistoryWithUser(loginCompanion);
 
-      if (this.messagesContainer) {
-        this.messagesContainer.removeAllChildren();
+      if (this.messagesWraper) {
+        this.messagesWraper.removeAllChildren();
         this.messageViews = [];
 
         if (messages.length === 0) {
-          this.messagesContainer.append(this.renderDefaultMessage());
+          this.messagesWraper.append(this.renderDefaultMessage());
         } else {
           messages.forEach(message => {
-            if (this.messagesContainer) {
+            if (this.messagesWraper) {
               const view = new MessageView(message, this.selectMessage.bind(this), this.editMessage.bind(this), this.deleteMessage.bind(this));
 
-              this.messagesContainer.append(view);
+              this.messagesWraper.append(view);
               this.messageViews.push(view);
             }
           });
         }
+        this.scrollMessagesToBottom();
       }
     }
   }
@@ -99,6 +103,7 @@ class DialogueView extends BaseView {
         await sendingMessageToUser(login, text);
       }
       textarea.value = '';
+      this.scrollMessagesToBottom();
     }
   }
 
@@ -145,8 +150,9 @@ class DialogueView extends BaseView {
   }
 
   public addIncomingMessageToView(message: Message) {
-    if (this.messagesContainer && this.currentCompanion?.name === message.from) {
-      this.messagesContainer.append(new MessageView(message, this.selectMessage.bind(this), this.editMessage.bind(this), this.deleteMessage.bind(this)));
+    if (this.messagesWraper && this.currentCompanion?.name === message.from) {
+      this.messagesWraper.append(new MessageView(message, this.selectMessage.bind(this), this.editMessage.bind(this), this.deleteMessage.bind(this)));
+      this.scrollMessagesToBottom();
     }
   }
 
@@ -207,6 +213,11 @@ class DialogueView extends BaseView {
       }
     }
   }
-
+  private scrollMessagesToBottom(): void {
+    const container = this.messagesContainer?.getView();
+    if (container instanceof HTMLElement) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }
 }
 export default DialogueView;

@@ -159,7 +159,8 @@
 }
 
 .message-status-icon,
-.edit-icon, .delete-icon {
+.edit-icon,
+.delete-icon {
   width: 20px;
   height: 20px;
 }
@@ -177,6 +178,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 5px 0 5px;
   &:hover {
     background-color: var(--color-btn-background-focus);
     cursor: pointer;
@@ -206,13 +208,32 @@
   justify-content: center;
 }
 
-.message-text{
+.message-text {
   font-size: 15px;
   max-width: 85%;
   word-break: break-word;
 }
 
-.hidden-config-container{
+.hidden-config-container {
   display: flex;
   justify-content: flex-end;
+}
+
+.unread-messages-container {
+  border-radius: 50%;
+  border: solid 1px var(--color-btn-border);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.unread-messages-counter {
+  font-size: 12px;
+}
+
+.friend-container-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

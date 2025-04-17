@@ -7,12 +7,16 @@ import ChatHeaderView from "./chatHeaderView/chatHeaderView";
 import ChatUsersListView from "./chatUsersView/chatUsersListView";
 import SearchUserView from "./searchUserView/searchUserView";
 import DialogueView from "../dialogueView/dialogueView";
-import { registerDialogueInstance, startMessageListener } from "../../services/messageSocketHandler";
+import { registerChatViewInstance, registerDialogueInstance, startMessageListener } from "../../services/messageSocketHandler";
+import { Message } from "../../../types/types";
+import { fetchingMessageHistoryWithUser } from "../../API/messageAPI";
+import ChatUserView from "./chatUsersView/chatUserView/chatUserView";
 
 
 class ChatView extends BaseView {
   private contentContainer: BaseView;
   private dialogue: DialogueView | null = null;
+  private friends: ChatUsersListView | null = null;
 
   constructor() {
     super({ tag: 'div', classNames: ['chat-container'] });
@@ -24,6 +28,7 @@ class ChatView extends BaseView {
     }
     this.renderContent();
     this.message();
+    registerChatViewInstance(this);
   }
 
   private renderContent() {
@@ -52,6 +57,7 @@ class ChatView extends BaseView {
     const userListHeader = new BaseView({ tag: 'div', classNames: ['user-list-header'], textContent: 'Users' });
     if (this.dialogue) {
       const friends = new ChatUsersListView(this.dialogue);
+      this.friends = friends;
 
       search.setUsers(friends);
       userListContainer.appendChildren([userListHeader, friends]);
@@ -66,6 +72,22 @@ class ChatView extends BaseView {
 
   private message() {
     startMessageListener();
+  }
+
+  public async   addIncomingMessageToFriend(message: Message) {
+    const friend = this.friends?.friends.find(x => x.name === message.from);
+    if (friend) {
+     const counter = await this.getAllUnreadedMessages(friend);
+      friend?.unreadMessages?.setTextContent(String(counter));
+      friend?.unreadMessagesContainer?.removeClass('hide');
+    }
+
+  }
+
+  private async getAllUnreadedMessages(friend: ChatUserView) {
+    const messages = await fetchingMessageHistoryWithUser(friend.name);
+    const unread = messages.filter(message => message.status.isReaded === false).length;
+    return unread;
   }
 }
 export default ChatView;

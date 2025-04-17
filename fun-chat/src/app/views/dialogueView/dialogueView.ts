@@ -16,9 +16,6 @@ class DialogueView extends BaseView {
   private messageViews: MessageView[] = [];
   private selectedMessage: MessageView | null = null;
 
-  private sendButton: BaseView | null = null;
-
-
   constructor() {
     super({ tag: 'div', classNames: ['dialogue-content'] });
     this.container = this;
@@ -36,7 +33,6 @@ class DialogueView extends BaseView {
     const sendBtn = new BaseView({
       tag: 'button', classNames: ['send-button'], textContent: 'Send', callback: this.handleSendButtonClick.bind(this),
     });
-    this.sendButton = sendBtn;
     document.addEventListener('keydown', this.enterKeyHandler);
 
     const conf = new BaseView({ tag: 'div', classNames: ['configur-message-container'] });
@@ -153,6 +149,8 @@ class DialogueView extends BaseView {
       this.messagesContainer.append(new MessageView(message, this.selectMessage.bind(this), this.editMessage.bind(this), this.deleteMessage.bind(this)));
     }
   }
+
+  
 
   public updateMessageStatus(messageId: string, status: 'sent' | 'delivered' | 'read') {
     console.log(`${messageId} ${status}`);

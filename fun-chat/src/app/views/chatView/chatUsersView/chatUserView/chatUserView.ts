@@ -8,6 +8,8 @@ class ChatUserView extends BaseView {
   public isActive: boolean;
   public selectedUser: ChatUserView | null = null;
   private statusElement: OnlineUserStatus | null = null;
+  public unreadMessages: BaseView | null = null;
+  public unreadMessagesContainer: BaseView | null = null;
 
   constructor(friend: User, onSelect: (user: ChatUserView) => void) {
     super({ tag: 'div', classNames: ['friend-container'], callback: () => onSelect(this) });
@@ -22,10 +24,26 @@ class ChatUserView extends BaseView {
   }
 
   private renderFriend(): void {
+    const friendContainer = new BaseView({ tag: 'div', classNames: ['friend-container-content'] });
     const friend = new BaseView({ tag: 'div', classNames: ['friend'], textContent: `${this.name}` });
     const status = new OnlineUserStatus(this.isActive);
+    friendContainer.appendChildren([status, friend]);
+    const messages = this.renderMessages();
     this.statusElement = status;
-    this.container.appendChildren([friend, status]);
+    this.container.appendChildren([friendContainer, messages]);
+  }
+
+  private renderMessages(): BaseView {
+    const messages = new BaseView({ tag: 'div', classNames: ['unread-messages-container'] });
+    const counter = new BaseView({ tag: 'div', classNames: ['unread-messages-counter'] });
+   
+    this.unreadMessages = counter;
+    this.unreadMessagesContainer = messages;
+    if (counter.getView().textContent === '') {
+      this.unreadMessagesContainer.addClass('hide');
+    }
+    messages.append(counter);
+    return messages;
   }
 
   public getLogin(): string {
@@ -38,6 +56,7 @@ class ChatUserView extends BaseView {
       this.statusElement.setStatus(isActive);
     }
   }
+
 
 }
 export default ChatUserView;

@@ -185,6 +185,12 @@ class DialogueView extends BaseView {
       messageView.setStatus(status);
     }
   }
+  public updateMessageStatusEdit(messageId: string, status: 'edit' ) {
+    const messageView = this.findMessageById(messageId);
+    if (messageView) {
+      messageView.setEditStatus(status);
+    }
+  }
 
 
   public async deleteMessage(message: MessageView): Promise<void> {

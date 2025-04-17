@@ -14,6 +14,7 @@ class MessageView extends BaseView {
   public message: Message;
   public messageId: string;
   public hiddenContainer: BaseView | null = null;
+  public newContainer: BaseView | null = null;
 
   constructor(message: Message, onSelect: (message: MessageView) => void, onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void) {
     super({ tag: 'div', classNames: ['message-content'], callback: () => onSelect(this) });
@@ -38,8 +39,13 @@ class MessageView extends BaseView {
   private renderContent(message: Message, onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void) {
     const name = this.renderName(message);
     const container = new BaseView({ tag: 'div', classNames: ['text-message-and-configs-container'] });
+    
+    
     const messageText = this.renderMessageText(message.text);
+    const confWraper = new BaseView({tag: 'div', classNames:['config-chat-wraper']});
     const conf = this.renderConfigs(message);
+    confWraper.append(conf);
+    this.newContainer = confWraper;
     const edit = this.renderEdit(onEdit);
     const delet = this.renderDelete(onDelete);
 
@@ -47,8 +53,15 @@ class MessageView extends BaseView {
     this.hiddenContainer = hiddenContainer;
     this.hiddenContainer.addClass('hide');
     hiddenContainer.appendChildren([edit, delet]);
-    container.appendChildren([messageText, conf]);
+    container.appendChildren([messageText, confWraper]);
+    this.checkEditStatus();
     this.contentContainer.appendChildren([name, container, hiddenContainer]);
+  }
+  checkEditStatus() {
+    if(this.message.status.isEdited){
+      this.setEditStatus('edit');
+    }
+    
   }
   private renderConfigs(message: Message) {
     const container = new BaseView({ tag: 'div', classNames: ['configs-message'] });
@@ -145,6 +158,14 @@ class MessageView extends BaseView {
     
     parent.insertBefore(unreadMarker.getView(), this.contentContainer.getView());
     
+  }
+
+
+  public setEditStatus(status: 'edit'){
+    const container = new BaseView({tag: 'div', classNames:['edit-status-container']});
+    const text = new BaseView({tag: 'div', classNames:['edit-status-text'], textContent: status});
+    container.append(text);
+    this.newContainer?.append(container);
   }
 
 }

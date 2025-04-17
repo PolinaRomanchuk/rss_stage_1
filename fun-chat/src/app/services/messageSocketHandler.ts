@@ -30,5 +30,9 @@ export function startMessageListener() {
       const newMsg: Message = message.payload.message;
       dialogue?.updateMessageStatus(newMsg.id, 'read');
     }
+    if (message.type === 'MSG_EDIT') {
+   //   const newMsg: Message = message.payload.message;
+   //   dialogue?.updateMessageStatusEdit(newMsg.id, 'edit');
+    }
   });
 }

@@ -245,3 +245,11 @@
   background-color: var(--color-accent);
   margin: 10px 0;
 }
+
+.edit-status-text {
+  font-size: 12px;
+}
+.edit-status-container {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -238,3 +238,10 @@
   align-items: center;
   justify-content: center;
 }
+
+.unread-marker {
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-accent);
+  margin: 10px 0;
+}

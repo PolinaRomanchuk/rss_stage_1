@@ -16,7 +16,8 @@ class DialogueView extends BaseView {
   private messageViews: MessageView[] = [];
   private selectedMessage: MessageView | null = null;
 
-  private messagesContainer :BaseView | null = null;
+  private messagesContainer: BaseView | null = null;
+  private firstUnreadMessageView: MessageView | null = null;
 
   constructor() {
     super({ tag: 'div', classNames: ['dialogue-content'] });
@@ -45,7 +46,7 @@ class DialogueView extends BaseView {
 
   private enterKeyHandler = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
-     this.handleSendButtonClick();
+      this.handleSendButtonClick();
     }
   };
   public removeEventListener() {
@@ -74,18 +75,37 @@ class DialogueView extends BaseView {
         if (messages.length === 0) {
           this.messagesWraper.append(this.renderDefaultMessage());
         } else {
+          let foundUnread = false;
+         
           messages.forEach(message => {
             if (this.messagesWraper) {
               const view = new MessageView(message, this.selectMessage.bind(this), this.editMessage.bind(this), this.deleteMessage.bind(this));
 
               this.messagesWraper.append(view);
               this.messageViews.push(view);
+              if (message.from != getAuthUserLogin()) {
+                if (!foundUnread && !message.status.isReaded) {
+                  view.showUnreadMessage(this.messagesWraper.getView());
+                  foundUnread = true;
+                  this.firstUnreadMessageView = view;
+                }
+              }
+
             }
           });
         }
-        this.scrollMessagesToBottom();
+        if (this.firstUnreadMessageView) {
+          this.scrollToMessage(this.firstUnreadMessageView);
+        } else {
+          this.scrollMessagesToBottom();
+        }
       }
     }
+  }
+
+  private scrollToMessage(messageView: MessageView): void {
+    const messageElement = messageView.getView();
+    messageElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   private findMessageById(messageId: string): MessageView | null {
@@ -156,7 +176,7 @@ class DialogueView extends BaseView {
     }
   }
 
-  
+
 
   public updateMessageStatus(messageId: string, status: 'sent' | 'delivered' | 'read') {
     console.log(`${messageId} ${status}`);

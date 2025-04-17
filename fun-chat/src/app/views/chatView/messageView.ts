@@ -5,6 +5,7 @@ import Edit from '../../../assets/img/edit.png';
 import { Message } from "../../../types/types";
 import { getAuthUserLogin } from "../../states/authState";
 import Delete from '../../../assets/img/trash-can.png';
+import '../../views/chatView/chat.css'
 
 
 class MessageView extends BaseView {
@@ -13,8 +14,6 @@ class MessageView extends BaseView {
   public message: Message;
   public messageId: string;
   public hiddenContainer: BaseView | null = null;
-
-
 
   constructor(message: Message, onSelect: (message: MessageView) => void, onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void) {
     super({ tag: 'div', classNames: ['message-content'], callback: () => onSelect(this) });
@@ -137,5 +136,16 @@ class MessageView extends BaseView {
       this.statusIcon.alt = 'status-read';
     }
   }
+
+  public showUnreadMessage(parent: HTMLElement) {
+    const unreadMarker = new BaseView({
+      tag: 'div',
+      classNames: ['unread-marker'],
+    });
+    
+    parent.insertBefore(unreadMarker.getView(), this.contentContainer.getView());
+    
+  }
+
 }
 export default MessageView;

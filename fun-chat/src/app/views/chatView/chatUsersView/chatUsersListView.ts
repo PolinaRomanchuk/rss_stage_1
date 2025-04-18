@@ -1,44 +1,29 @@
 import { User } from "../../../../types/types";
-import { fetchUsers } from "../../../services/usersService";
+import { getAllUsers } from "../../../services/usersService";
 import { subscribeToUserStatusUpdates } from "../../../states/userState";
 import BaseView from "../../baseView";
-import DialogueView from "../../dialogueView/dialogueView";
+import DialogueView from "../dialogueView/dialogueView";
 import ChatUserView from "./chatUserView/chatUserView";
 
 class ChatUsersListView extends BaseView {
-  private container: BaseView;
-  public friends: ChatUserView[] = [];
+  public friendsList: ChatUserView[] = [];
   public selectedUser: ChatUserView | null = null;
   private dialogueView: DialogueView;
 
   constructor(dialogueView: DialogueView) {
     super({ tag: 'div', classNames: ['users-list-container'] });
     this.dialogueView = dialogueView;
-    this.container = this;
     this.renderUsersList();
+    this.initStatusListeners();
   }
 
-  public async getUsers(): Promise<User[]> {
-    return await fetchUsers();
-  }
-
-  private async renderUsersList() {
-    const friends = await this.getUsers();
+  private async renderUsersList(): Promise<void> {
+    const friends = await getAllUsers();
     this.drawUsers(friends);
-
-    subscribeToUserStatusUpdates({
-      onLogin: (user) => {
-        this.updateUserStatus(user.login, true);
-      },
-      onLogout: (user) => {
-        this.updateUserStatus(user.login, false);
-      },
-    });
   }
 
   private drawUsers(friends: User[]): void {
-    this.friends.forEach(friend => friend.removeView());
-    this.friends = [];
+    this.friendsList = [];
     this.removeAllChildren();
 
     friends.forEach((friend) => {
@@ -46,19 +31,24 @@ class ChatUsersListView extends BaseView {
         this.selectedUser = userView;
         this.dialogueView.setCompanion(userView);
       });
-      this.friends.push(newFriend);
-      this.container.append(newFriend);
+      this.friendsList.push(newFriend);
+      this.append(newFriend);
+    });
+  }
+
+  private initStatusListeners(): void {
+    subscribeToUserStatusUpdates({
+      onLogin: (user) => this.updateUserStatus(user.login, true),
+      onLogout: (user) => this.updateUserStatus(user.login, false),
     });
   }
 
   private updateUserStatus(login: string, isActive: boolean): void {
-    const userView = this.friends.find(friend => friend.getLogin() === login);
+    const userView = this.friendsList.find(friend => friend.getFriendLogin() === login);
     if (userView) {
-      userView.setUserStatus(isActive);
+      userView.setFriendStatus(isActive);
     }
   }
-
-
 }
 
 export default ChatUsersListView;

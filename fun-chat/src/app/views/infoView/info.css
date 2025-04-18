@@ -10,7 +10,7 @@
   padding: 10px;
 }
 
-.info-window {
+.info-content {
   height: 80%;
   display: flex;
   flex-direction: column;

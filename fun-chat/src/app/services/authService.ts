@@ -1,10 +1,10 @@
-import { authenticateUser, logoutUserApi } from '../API/authAPI'
+import { authenticateUserApi, logoutUserApi } from '../API/authAPI'
 import router from '../utils/router';
 import AuthError from '../views/authenticationView/authError';
 
-export async function authUser(usernameInput: string, passwordInput: string) {
+export async function loginUser(usernameInput: string, passwordInput: string): Promise<void> {
   try {
-    await authenticateUser(usernameInput, passwordInput);
+    await authenticateUserApi(usernameInput, passwordInput);
     router.navigate('chat');
   } catch (error) {
     const message = typeof error === 'string' ? error : 'Unknown error';
@@ -13,14 +13,14 @@ export async function authUser(usernameInput: string, passwordInput: string) {
   }
 }
 
-export function isLoginValid(login: string): string | 'ok' {
+export function checkLoginValid(login: string): string | 'ok' {
   if (login.length < 4) {
     return 'enter at least 4 characters';
   }
   return 'ok';
 }
 
-export function isPasswordValid(password: string): string | 'ok' {
+export function checkPasswordValid(password: string): string | 'ok' {
   if (password === password.toLowerCase()) {
     return 'enter at least 4 characters with one capital letter';
   } if (password.length < 4) {
@@ -29,8 +29,7 @@ export function isPasswordValid(password: string): string | 'ok' {
   return 'ok';
 }
 
-
-export async function logoutUser(username: string, password: string) {
+export async function logoutUser(username: string, password: string): Promise<void> {
   try {
     await logoutUserApi(username, password);
     router.navigate('login');

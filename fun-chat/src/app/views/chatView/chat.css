@@ -9,7 +9,7 @@
   border-radius: 5px;
 }
 
-.chat-window {
+.chat-content {
   width: 100%;
   height: 100%;
   display: flex;
@@ -25,7 +25,7 @@
   justify-content: center;
 }
 
-.user-block-content {
+.users-container {
   width: 30%;
   height: 100%;
   display: flex;
@@ -64,24 +64,24 @@
   height: 30px;
 }
 
-.users-list-container {
+.users-content {
   display: flex;
   flex-direction: column;
   width: 100%;
   margin-top: 10px;
 }
 
-.user-list-header,
-.friend {
+.users-header,
+.friend-name {
   margin-left: 10px;
 }
-.user-list-header {
+.users-header {
   margin-bottom: 5px;
   font-family: 'Itim', cursive;
   font-size: larger;
 }
 
-.dialogue-content {
+.dialogue-container {
   width: 70%;
   height: 100%;
   display: flex;
@@ -89,12 +89,12 @@
   margin: 10px;
 }
 
-.friend-name {
+.friend-name-in-dialogue {
   font-family: 'Itim', cursive;
   font-size: 30px;
   margin-right: 10px;
 }
-.message-container {
+.messages-container {
   height: 90%;
   overflow-y: auto;
   display: flex;
@@ -144,13 +144,13 @@
   overflow-wrap: break-word;
 }
 
-.configs-message {
+.message-data {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.text-message-and-configs-container {
+.message-body-container {
   display: flex;
   justify-content: space-between;
 }
@@ -166,7 +166,7 @@
   height: 20px;
 }
 .edit-icon-container,
-.message-status-container {
+.message-send-status-container {
   width: 20px;
   height: 20px;
 }
@@ -215,7 +215,7 @@
   word-break: break-word;
 }
 
-.hidden-config-container {
+.message-options-container {
   display: flex;
   justify-content: flex-end;
 }
@@ -233,7 +233,7 @@
   font-size: 12px;
 }
 
-.friend-container-content {
+.friend-content {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,7 +249,7 @@
 .edit-status-text {
   font-size: 12px;
 }
-.edit-status-container {
+.edited-indicator {
   display: flex;
   justify-content: flex-end;
 }

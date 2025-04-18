@@ -39,14 +39,6 @@ export async function sendingMessageToUser(login: string, text: string): Promise
   });
 }
 
-export async function receivingMessageFromUser(event: MessageEvent): Promise<void> {
-  const message = JSON.parse(event.data);
-
-  if (message.type === 'MSG_SEND') {
-    return message.payload.message;
-  }
-}
-
 export async function fetchingMessageHistoryWithUser(login: string): Promise<Message[]> {
   return new Promise((resolve, reject) => {
     const requestId = Date.now().toString();
@@ -80,14 +72,6 @@ export async function fetchingMessageHistoryWithUser(login: string): Promise<Mes
     socket.addEventListener('message', handleMessage);
     socket.send(JSON.stringify(message));
   });
-}
-
-export async function notificationOfMessageDeliveryStatusChange(event: MessageEvent): Promise<void> {
-  const message = JSON.parse(event.data);
-
-  if (message.type === 'MSG_DELIVER') {
-    return message.payload.message;
-  }
 }
 
 export async function messageReadStatusChange(messageId: string): Promise<void> {
@@ -124,16 +108,6 @@ export async function messageReadStatusChange(messageId: string): Promise<void> 
     socket.send(JSON.stringify(message));
   });
 }
-
-export async function notificationOfMessageReadStatusChange(event: MessageEvent): Promise<void> {
-  const message = JSON.parse(event.data);
-
-  if (message.type === 'MSG_READ') {
-    return message.payload.message;
-  }
-}
-
-
 
 export async function messageTextEditing(id: string, text: string): Promise<Message> {
   return new Promise((resolve, reject) => {

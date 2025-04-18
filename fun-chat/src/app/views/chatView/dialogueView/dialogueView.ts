@@ -1,13 +1,13 @@
-import { Message } from "../../../types/types";
-import { fetchingMessageHistoryWithUser, messageDeletion, messageReadStatusChange, messageTextEditing, sendingMessageToUser } from "../../API/messageAPI";
-import { getAuthUserLogin } from "../../states/authState";
-import BaseView from "../baseView";
-import ChatUserView from "../chatView/chatUsersView/chatUserView/chatUserView";
-import MessageView from "../chatView/messageView";
-import OnlineUserStatus from "../components/onlineUserStatus";
+import { Message } from "../../../../types/types";
+import { fetchingMessageHistoryWithUser, messageDeletion, messageReadStatusChange, messageTextEditing, sendingMessageToUser } from "../../../API/messageAPI";
+import { getAuthUserLogin } from "../../../states/authState";
+import BaseView from "../../baseView";
+import ChatUserView from "../chatUsersView/chatUserView/chatUserView";
+import MessageView from "./messageView";
+import OnlineUserStatus from "../../generalComponents/onlineUserStatus";
+import SendButton from "./sendButton";
 
 class DialogueView extends BaseView {
-  private container: BaseView;
   private currentCompanion: ChatUserView | null = null;
   private currentCompanionStatus: OnlineUserStatus | null = null;
   private companionNameElement: BaseView | null = null;
@@ -19,41 +19,31 @@ class DialogueView extends BaseView {
   private messagesContainer: BaseView | null = null;
   private firstUnreadMessageView: MessageView | null = null;
 
+  public sendButton: SendButton | null = null;
+
   constructor() {
-    super({ tag: 'div', classNames: ['dialogue-content'] });
-    this.container = this;
+    super({ tag: 'div', classNames: ['dialogue-container'] });
     this.renderDialogue();
   }
 
-  private renderDialogue() {
+  private renderDialogue(): void {
     const companionName = this.renderCompanion();
-    const messageContainer = new BaseView({ tag: 'div', classNames: ['message-container'] });
+    const messageContainer = new BaseView({ tag: 'div', classNames: ['messages-container'] });
     this.messagesContainer = messageContainer;
     const messagesWraper = new BaseView({ tag: 'div', classNames: ['messages-wrapper'] });
     this.messagesWraper = messagesWraper;
     messageContainer.appendChildren([messagesWraper]);
     const messageInput = this.renderMessageTextArea();
 
-    const sendBtn = new BaseView({
-      tag: 'button', classNames: ['send-button'], textContent: 'Send', callback: this.handleSendButtonClick.bind(this),
-    });
-    document.addEventListener('keydown', this.enterKeyHandler);
+    const sendBtn = new SendButton(this.handleSendButtonClick.bind(this));
+    this.sendButton = sendBtn;
 
     const conf = new BaseView({ tag: 'div', classNames: ['configur-message-container'] });
     conf.appendChildren([messageInput, sendBtn]);
-    this.container.appendChildren([companionName, messageContainer, conf]);
+    this.appendChildren([companionName, messageContainer, conf]);
   }
 
-  private enterKeyHandler = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      this.handleSendButtonClick();
-    }
-  };
-  public removeEventListener() {
-    document.removeEventListener('keydown', this.enterKeyHandler);
-  }
-
-  private async handleSendButtonClick() {
+  private async handleSendButtonClick(): Promise<void> {
     if (this.selectedMessage) {
       await this.editSelectedMessage();
     } else {
@@ -63,44 +53,44 @@ class DialogueView extends BaseView {
     await this.getMessageHistory();
   }
 
-  private async getMessageHistory() {
+  private async getMessageHistory(): Promise<void> {
     const loginCompanion = this.currentCompanion?.name;
-    if (loginCompanion) {
-      const messages = await fetchingMessageHistoryWithUser(loginCompanion);
+    if (!loginCompanion || !this.messagesWraper) return;
 
+    const messages = await fetchingMessageHistoryWithUser(loginCompanion);
+    this.messagesWraper.removeAllChildren();
+    this.messageViews = [];
+
+    if (messages.length === 0) {
+      this.messagesWraper.append(this.renderDefaultMessage());
+    } else {
+      this.renderMessages(messages);
+    }
+
+    if (this.firstUnreadMessageView) {
+      this.scrollToMessage(this.firstUnreadMessageView);
+    } else {
+      this.scrollMessagesToBottom();
+    }
+  }
+
+  private renderMessages(messages: Message[]) {
+    let foundUnread = false;
+
+    messages.forEach(message => {
       if (this.messagesWraper) {
-        this.messagesWraper.removeAllChildren();
-        this.messageViews = [];
-
-        if (messages.length === 0) {
-          this.messagesWraper.append(this.renderDefaultMessage());
-        } else {
-          let foundUnread = false;
-         
-          messages.forEach(message => {
-            if (this.messagesWraper) {
-              const view = new MessageView(message, this.selectMessage.bind(this), this.editMessage.bind(this), this.deleteMessage.bind(this));
-
-              this.messagesWraper.append(view);
-              this.messageViews.push(view);
-              if (message.from != getAuthUserLogin()) {
-                if (!foundUnread && !message.status.isReaded) {
-                  view.showUnreadMessage(this.messagesWraper.getView());
-                  foundUnread = true;
-                  this.firstUnreadMessageView = view;
-                }
-              }
-
-            }
-          });
-        }
-        if (this.firstUnreadMessageView) {
-          this.scrollToMessage(this.firstUnreadMessageView);
-        } else {
-          this.scrollMessagesToBottom();
+        const view = new MessageView(message, this.selectMessage.bind(this), this.setTextAreaByTextFromMessageToEdit.bind(this), this.deleteMessage.bind(this));
+        this.messagesWraper.append(view);
+        this.messageViews.push(view);
+        if (message.from != getAuthUserLogin()) {
+          if (!foundUnread && !message.status.isReaded) {
+            view.showUnreadMarker(this.messagesWraper.getView());
+            foundUnread = true;
+            this.firstUnreadMessageView = view;
+          }
         }
       }
-    }
+    });
   }
 
   private scrollToMessage(messageView: MessageView): void {
@@ -112,7 +102,7 @@ class DialogueView extends BaseView {
     return this.messageViews.find(view => view.messageId === messageId) || null;
   }
 
-  private async send() {
+  private async send(): Promise<void> {
     let text = '';
     const textarea = this.newMessageInput?.getView();
     if (textarea instanceof HTMLTextAreaElement) {
@@ -135,18 +125,14 @@ class DialogueView extends BaseView {
 
   private renderCompanion(): BaseView {
     const container = new BaseView({ tag: 'div', classNames: ['companion-name-container'] });
-    const companionName = new BaseView({ tag: 'div', classNames: ['friend-name'] });
+    const companionName = new BaseView({ tag: 'div', classNames: ['friend-name-in-dialogue'] });
     this.companionNameElement = companionName;
     const status = new OnlineUserStatus(true);
     status.changeClass('add', 'hide');
     this.currentCompanionStatus = status;
     container.appendChildren([companionName, status]);
-
-
     return container;
-
   }
-
 
   public setCompanion(user: ChatUserView): void {
     this.currentCompanion = user;
@@ -169,29 +155,27 @@ class DialogueView extends BaseView {
     return defaultMessage;
   }
 
-  public addIncomingMessageToView(message: Message) {
+  public addIncomingMessageToView(message: Message): void {
     if (this.messagesWraper && this.currentCompanion?.name === message.from) {
-      this.messagesWraper.append(new MessageView(message, this.selectMessage.bind(this), this.editMessage.bind(this), this.deleteMessage.bind(this)));
+      this.messagesWraper.append(new MessageView(message, this.selectMessage.bind(this), this.setTextAreaByTextFromMessageToEdit.bind(this), this.deleteMessage.bind(this)));
       this.scrollMessagesToBottom();
     }
   }
 
-
-
-  public updateMessageStatus(messageId: string, status: 'sent' | 'delivered' | 'read') {
+  public updateMessageStatus(messageId: string, status: 'sent' | 'delivered' | 'read'): void {
     console.log(`${messageId} ${status}`);
     const messageView = this.findMessageById(messageId);
     if (messageView) {
-      messageView.setStatus(status);
+      messageView.setSendStatus(status);
     }
   }
-  public updateMessageStatusEdit(messageId: string, status: 'edit' ) {
+
+  public updateMessageStatusEdit(messageId: string, status: 'edit'): void {
     const messageView = this.findMessageById(messageId);
     if (messageView) {
       messageView.setEditStatus(status);
     }
   }
-
 
   public async deleteMessage(message: MessageView): Promise<void> {
     this.selectedMessage = message;
@@ -202,30 +186,29 @@ class DialogueView extends BaseView {
       return;
     }
   }
-  public async editMessage(message: MessageView): Promise<void> {
+
+  public async setTextAreaByTextFromMessageToEdit(message: MessageView): Promise<void> {
     this.selectedMessage = message;
     if (this.selectedMessage?.message.from === getAuthUserLogin()) {
       const textarea = this.newMessageInput?.getView();
       if (textarea instanceof HTMLTextAreaElement) {
         textarea.value = this.selectedMessage.message.text;
       }
-
     } else {
       return;
     }
   }
-
 
   public async selectMessage(message: MessageView): Promise<void> {
     this.selectedMessage = message;
     if (this.selectedMessage?.message.from === getAuthUserLogin()) {
-      message.hiddenContainer?.removeClass('hide');
+      message.messageOptionsContainer?.removeClass('hide');
     } else {
       return;
     }
   }
 
-  private async editSelectedMessage() {
+  private async editSelectedMessage(): Promise<void> {
     const messageId = this.selectedMessage?.messageId;
     let text = '';
     const textarea = this.newMessageInput?.getView();
@@ -239,6 +222,7 @@ class DialogueView extends BaseView {
       }
     }
   }
+
   private scrollMessagesToBottom(): void {
     const container = this.messagesContainer?.getView();
     if (container instanceof HTMLElement) {

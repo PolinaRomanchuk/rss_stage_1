@@ -1,7 +1,7 @@
 import { clearAuth, setAuthUser } from "../states/authState";
 import {socket} from '../API/socketInstance';
 
-export async function authenticateUser(username: string, password: string): Promise<void> {
+export async function authenticateUserApi(username: string, password: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const requestId = Date.now().toString();
     const message = {
@@ -26,9 +26,7 @@ export async function authenticateUser(username: string, password: string): Prom
         if (isLogined) {
           setAuthUser(username, password);
           resolve();
-        } else {
-          reject('Incorrect login or password');
-        }
+        } 
       }
 
       if (data.type === 'ERROR' && data.id === requestId) {

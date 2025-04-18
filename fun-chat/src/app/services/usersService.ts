@@ -1,26 +1,27 @@
 import { User } from "../../types/types";
 import { gettingAllAuthenticatedUsers, gettingAllUnauthorizedUsers } from "../API/usersAPI";
 import { getAuthUserLogin } from "../states/authState";
-import ChatUsersListView from "../views/chatView/chatUsersView/chatUsersListView";
+import ChatUserView from "../views/chatView/chatUsersView/chatUserView/chatUserView";
 
-export async function fetchUsers(): Promise<User[]> {
+export async function getAllUsers(): Promise<User[]> {
   try {
     const activeUsers = await gettingAllAuthenticatedUsers();
-    const activeUsersWithoutCurrentUser = avoidCurrentUser(activeUsers);
+    const activeUsersWithoutAuthUser = avoidAuthUser(activeUsers);
     const inactiveUsers = await gettingAllUnauthorizedUsers();
-    return [...activeUsersWithoutCurrentUser, ...inactiveUsers];
+    return [...activeUsersWithoutAuthUser, ...inactiveUsers];
   } catch (error) {
     console.error(error);
     return [];
   }
 }
 
-function avoidCurrentUser(activeUsers: User[]): User[] {
-  const currLogin = getAuthUserLogin();
-  return activeUsers.filter(user => user.login !== currLogin);
+export function findUsers(input: string, users:  ChatUserView[]): ChatUserView[] {
+  const search = input.trim().toLowerCase();
+  if (!search) return users;
+  return users.filter(friend => friend.name.toLowerCase().includes(search));
 }
 
-
-export function findUser(input: string, users: ChatUsersListView) {
- return users.friends.find(friend => friend.name === input);
+function avoidAuthUser(activeUsers: User[]): User[] {
+  const currLogin = getAuthUserLogin();
+  return activeUsers.filter(user => user.login !== currLogin);
 }

@@ -1,4 +1,5 @@
-import BaseView from './baseView';
+import BaseView from '../baseView';
+import BackButton from './backButton';
 
 class ErrorView extends BaseView {
   constructor() {
@@ -13,7 +14,8 @@ class ErrorView extends BaseView {
       textContent: 'Page not found',
     });
 
-    this.append(textError);
+    const backButton = new BackButton();
+    this.appendChildren([textError, backButton]);
   }
 }
 export default ErrorView;

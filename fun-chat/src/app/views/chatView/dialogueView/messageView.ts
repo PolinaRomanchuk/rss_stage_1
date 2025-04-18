@@ -1,20 +1,19 @@
-import BaseView from "../baseView";
-import StatusSent from '../../../assets/img/status-sent.png';
-import StatusRead from '../../../assets/img/status-read.png';
-import Edit from '../../../assets/img/edit.png';
-import { Message } from "../../../types/types";
-import { getAuthUserLogin } from "../../states/authState";
-import Delete from '../../../assets/img/trash-can.png';
-import '../../views/chatView/chat.css'
-
+import BaseView from '../../baseView';
+import StatusSent from '../../../../assets/img/status-sent.png';
+import StatusRead from '../../../../assets/img/status-read.png';
+import Edit from '../../../../assets/img/edit.png';
+import { Message } from '../../../../types/types';
+import { getAuthUserLogin } from '../../../states/authState';
+import Delete from '../../../../assets/img/trash-can.png';
+import '../../../views/chatView/chat.css';
 
 class MessageView extends BaseView {
   public contentContainer: BaseView;
   private statusIcon: HTMLImageElement | null = null;
   public message: Message;
   public messageId: string;
-  public hiddenContainer: BaseView | null = null;
-  public newContainer: BaseView | null = null;
+  public messageOptionsContainer: BaseView | null = null;
+  public editStatusContainer: BaseView | null = null;
 
   constructor(message: Message, onSelect: (message: MessageView) => void, onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void) {
     super({ tag: 'div', classNames: ['message-content'], callback: () => onSelect(this) });
@@ -38,42 +37,44 @@ class MessageView extends BaseView {
 
   private renderContent(message: Message, onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void) {
     const name = this.renderName(message);
-    const container = new BaseView({ tag: 'div', classNames: ['text-message-and-configs-container'] });
-    
-    
+    const messageBodyContainer = new BaseView({ tag: 'div', classNames: ['message-body-container'] });
     const messageText = this.renderMessageText(message.text);
-    const confWraper = new BaseView({tag: 'div', classNames:['config-chat-wraper']});
-    const conf = this.renderConfigs(message);
-    confWraper.append(conf);
-    this.newContainer = confWraper;
-    const edit = this.renderEdit(onEdit);
-    const delet = this.renderDelete(onDelete);
-
-    const hiddenContainer = new BaseView({ tag: 'div', classNames: ['hidden-config-container'] });
-    this.hiddenContainer = hiddenContainer;
-    this.hiddenContainer.addClass('hide');
-    hiddenContainer.appendChildren([edit, delet]);
-    container.appendChildren([messageText, confWraper]);
+    const messageDataContainer = this.renderMessageDataContainer();
+    const messageOptionsContainer = this.renderMessageOptions(onEdit, onDelete);
+    messageBodyContainer.appendChildren([messageText, messageDataContainer]);
     this.checkEditStatus();
-    this.contentContainer.appendChildren([name, container, hiddenContainer]);
+    this.contentContainer.appendChildren([name, messageBodyContainer, messageOptionsContainer]);
   }
-  checkEditStatus() {
-    if(this.message.status.isEdited){
-      this.setEditStatus('edit');
-    }
-    
+
+  private renderMessageOptions(onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void): BaseView {
+    const messageOptionsContainer = new BaseView({ tag: 'div', classNames: ['message-options-container'] });
+    const editIconContainer = this.renderEditIcon(onEdit);
+    const deleteIconContainer = this.renderDeleteIcon(onDelete);
+    this.messageOptionsContainer = messageOptionsContainer;
+    this.messageOptionsContainer.addClass('hide');
+    messageOptionsContainer.appendChildren([editIconContainer, deleteIconContainer]);
+    return messageOptionsContainer;
   }
-  private renderConfigs(message: Message) {
-    const container = new BaseView({ tag: 'div', classNames: ['configs-message'] });
-    const status = this.renderMessageStatus(this.getMessageStatus());
+
+  private renderMessageDataContainer(): BaseView {
+    const messageDataContainer = new BaseView({ tag: 'div', classNames: ['message-data-container'] });
+    const messageData = this.renderMessageData(this.message);
+    messageDataContainer.append(messageData);
+    this.editStatusContainer = messageDataContainer;
+    return messageDataContainer;
+  }
+
+  private renderMessageData(message: Message): BaseView {
+    const container = new BaseView({ tag: 'div', classNames: ['message-data'] });
+    const status = this.renderMessageSendStatus(this.getMessageStatus());
     const datetime = this.getDate(message.datetime);
     const date = new BaseView({ tag: 'div', classNames: ['message-date'], textContent: `${datetime}` });
     container.appendChildren([date, status]);
     return container;
   }
-  private renderDelete(onDelete: (message: MessageView) => void): BaseView {
-    const delet = new BaseView({ tag: 'div', classNames: ['delete-icon-container'] });
 
+  private renderDeleteIcon(onDelete: (message: MessageView) => void): BaseView {
+    const deleteIconContainer = new BaseView({ tag: 'div', classNames: ['delete-icon-container'] });
     const icon = new BaseView({ tag: 'img', classNames: ['delete-icon'], callback: () => onDelete(this) });
     const iconElement = icon.getView();
 
@@ -82,11 +83,11 @@ class MessageView extends BaseView {
       iconElement.alt = 'delete';
     }
 
-    delet.appendChildren([icon]);
-    return delet;
+    deleteIconContainer.appendChildren([icon]);
+    return deleteIconContainer;
   }
 
-  private getDate(date: number) {
+  private getDate(date: number): string {
     const newDate = new Date(date);
     const hours = newDate.getHours().toString().padStart(2, '0');
     const minutes = newDate.getMinutes().toString().padStart(2, '0');
@@ -95,14 +96,14 @@ class MessageView extends BaseView {
 
   private renderMessageText(text: string): BaseView {
     return new BaseView({ tag: 'div', classNames: ['message-text'], textContent: `${text}` });
-
   }
+
   private renderName(message: Message): BaseView {
     return new BaseView({ tag: 'div', classNames: ['name-in-message'], textContent: `${message.from}` });
   }
 
-  private renderMessageStatus(messageStatus: 'sent' | 'delivered' | 'read'): BaseView {
-    const container = new BaseView({ tag: 'div', classNames: ['message-status-container'] });
+  private renderMessageSendStatus(messageStatus: 'sent' | 'delivered' | 'read'): BaseView {
+    const container = new BaseView({ tag: 'div', classNames: ['message-send-status-container'] });
     if (messageStatus === 'sent' || this.message.from !== getAuthUserLogin()) {
       return container;
     }
@@ -120,7 +121,7 @@ class MessageView extends BaseView {
     return container;
   }
 
-  private renderEdit(onEdit: (message: MessageView) => void): BaseView {
+  private renderEditIcon(onEdit: (message: MessageView) => void): BaseView {
     const edit = new BaseView({ tag: 'div', classNames: ['edit-icon-container'] });
     const icon = new BaseView({ tag: 'img', classNames: ['edit-icon'], callback: () => onEdit(this) });
     const iconElement = icon.getView();
@@ -134,7 +135,7 @@ class MessageView extends BaseView {
     return edit;
   }
 
-  public setStatus(status: 'sent' | 'delivered' | 'read') {
+  public setSendStatus(status: 'sent' | 'delivered' | 'read'): void {
     if (!this.statusIcon || this.message.from !== getAuthUserLogin()) {
       return;
     }
@@ -150,23 +151,27 @@ class MessageView extends BaseView {
     }
   }
 
-  public showUnreadMessage(parent: HTMLElement) {
+  public showUnreadMarker(parent: HTMLElement): void {
     const unreadMarker = new BaseView({
       tag: 'div',
       classNames: ['unread-marker'],
     });
-    
+
     parent.insertBefore(unreadMarker.getView(), this.contentContainer.getView());
-    
   }
 
-
-  public setEditStatus(status: 'edit'){
-    const container = new BaseView({tag: 'div', classNames:['edit-status-container']});
-    const text = new BaseView({tag: 'div', classNames:['edit-status-text'], textContent: status});
+  public setEditStatus(status: 'edit'): void {
+    const container = new BaseView({ tag: 'div', classNames: ['edited-indicator'] });
+    const text = new BaseView({ tag: 'div', classNames: ['edit-status-text'], textContent: status });
     container.append(text);
-    this.newContainer?.append(container);
+    this.editStatusContainer?.append(container);
   }
 
+  private checkEditStatus(): void {
+    if (this.message.status.isEdited) {
+      this.setEditStatus('edit');
+    }
+  }
 }
+
 export default MessageView;

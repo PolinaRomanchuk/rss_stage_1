@@ -1,4 +1,4 @@
-import ErrorView from '../views/errorView';
+import ErrorView from '../views/generalComponents/pageErrorView';
 
 class Router {
   private routes: Record<string, () => void> = {};

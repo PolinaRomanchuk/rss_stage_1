@@ -5,24 +5,22 @@ import ChatFooterView from "./chatFooterView/chatFooterView";
 import { isAuthenticated } from "../../states/authState";
 import ChatHeaderView from "./chatHeaderView/chatHeaderView";
 import ChatUsersListView from "./chatUsersView/chatUsersListView";
-import SearchUserView from "./searchUserView/searchUserView";
-import DialogueView from "../dialogueView/dialogueView";
+import SearchUserView from "./chatUsersView/searchUserView/searchUserView";
+import DialogueView from "./dialogueView/dialogueView";
 import { registerChatViewInstance, registerDialogueInstance, startMessageListener } from "../../services/messageSocketHandler";
 import { Message } from "../../../types/types";
 import { fetchingMessageHistoryWithUser } from "../../API/messageAPI";
 import ChatUserView from "./chatUsersView/chatUserView/chatUserView";
 
-
 class ChatView extends BaseView {
-  private contentContainer: BaseView;
   private dialogue: DialogueView | null = null;
   private friends: ChatUsersListView | null = null;
 
   constructor() {
     super({ tag: 'div', classNames: ['chat-container'] });
-    this.contentContainer = this;
+
     if (!isAuthenticated()) {
-      this.dialogue?.removeEventListener();
+      this.dialogue?.sendButton?.removeKeyHandler();
       router.navigate('login');
       return;
     }
@@ -31,13 +29,13 @@ class ChatView extends BaseView {
     registerChatViewInstance(this);
   }
 
-  private renderContent() {
-    const window = this.renderChatWindow();
+  private renderContent(): void {
+    const window = new BaseView({ tag: 'div', classNames: ['chat-content'] });
     const header = new ChatHeaderView();
     const content = this.renderChatContent();
     const footer = new ChatFooterView();
     window.appendChildren([header, content, footer]);
-    this.contentContainer.appendChildren([window]);
+    this.appendChildren([window]);
   }
 
   private renderChatContent(): BaseView {
@@ -51,10 +49,10 @@ class ChatView extends BaseView {
   }
 
   private renderUsersBlock(): BaseView {
-    const content = new BaseView({ tag: 'div', classNames: ['user-block-content'] });
+    const content = new BaseView({ tag: 'div', classNames: ['users-container'] });
     const search = new SearchUserView();
-    const userListContainer = new BaseView({ tag: 'div', classNames: ['users-list-container'] });
-    const userListHeader = new BaseView({ tag: 'div', classNames: ['user-list-header'], textContent: 'Users' });
+    const userListContainer = new BaseView({ tag: 'div', classNames: ['users-content'] });
+    const userListHeader = new BaseView({ tag: 'div', classNames: ['users-header'], textContent: 'Users' });
     if (this.dialogue) {
       const friends = new ChatUsersListView(this.dialogue);
       this.friends = friends;
@@ -66,25 +64,20 @@ class ChatView extends BaseView {
     return content;
   }
 
-  private renderChatWindow(): BaseView {
-    return new BaseView({ tag: 'div', classNames: ['chat-window'] });
-  }
-
-  private message() {
+  private message(): void {
     startMessageListener();
   }
 
-  public async   addIncomingMessageToFriend(message: Message) {
-    const friend = this.friends?.friends.find(x => x.name === message.from);
+  public async addIncomingMessageToFriend(message: Message): Promise<void> {
+    const friend = this.friends?.friendsList.find(x => x.name === message.from);
     if (friend) {
-     const counter = await this.getAllUnreadedMessages(friend);
+      const counter = await this.getAllUnreadedMessages(friend);
       friend?.unreadMessages?.setTextContent(String(counter));
       friend?.unreadMessagesContainer?.removeClass('hide');
     }
-
   }
 
-  private async getAllUnreadedMessages(friend: ChatUserView) {
+  private async getAllUnreadedMessages(friend: ChatUserView): Promise<number> {
     const messages = await fetchingMessageHistoryWithUser(friend.name);
     const unread = messages.filter(message => message.status.isReaded === false).length;
     return unread;

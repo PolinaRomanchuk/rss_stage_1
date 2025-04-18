@@ -1,5 +1,5 @@
 import BaseView from "../baseView";
-import BackButton from "../components/backButton";
+import BackButton from "../generalComponents/backButton";
 import '../infoView/info.css';
 
 class InfoView extends BaseView {
@@ -10,42 +10,41 @@ class InfoView extends BaseView {
     this.contentContainer = this;
     this.renderContent();
   }
+
   private renderContent(): void {
-    const window = this.renderAuthWindow();
+    const content = new BaseView({ tag: 'div', classNames: ['info-content'] });
     const header = this.renderHeader();
-    const text = this.renderTextInfo();
+    const text = this.renderText();
     const author = this.renderAuthor();
     const backButton = new BackButton();
     const year = this.renderYear();
     const linkGitHub = this.renderLink();
 
-    window.appendChildren([header, text, author, backButton, year, linkGitHub]);
-    this.contentContainer.appendChildren([window]);
-
+    content.appendChildren([header, text, author, backButton, year, linkGitHub]);
+    this.contentContainer.appendChildren([content]);
   }
-  renderLink(): BaseView {
+
+  private renderHeader(): BaseView {
+    return new BaseView({ tag: 'div', classNames: ['info-header'], textContent: 'About us' });
+  }
+
+  private renderText(): BaseView {
+    return new BaseView({ tag: 'div', classNames: ['info-text'], textContent: 'Fun chat is a platform for communication.' });
+  }
+
+  private renderAuthor(): BaseView {
+    return new BaseView({ tag: 'div', classNames: ['info-author'], textContent: 'This project was created by Polina Romanchuk.' });
+  }
+
+  private renderYear(): BaseView {
+    return new BaseView({ tag: 'div', classNames: ['info-year'], textContent: '© 2025' });
+  }
+
+  private renderLink(): BaseView {
     const link = new BaseView({ tag: 'a', classNames: ['git-link'], textContent: 'GitHub' });
     const view = link.getView();
     view.setAttribute('href', 'https://github.com/PolinaRomanchuk');
     return link;
   }
-
-  renderYear(): BaseView {
-    return new BaseView({ tag: 'div', classNames: ['info-year'], textContent: '© 2025' });
-  }
-  renderAuthor(): BaseView {
-    return new BaseView({ tag: 'div', classNames: ['info-author'], textContent: 'This project was created by Polina Romanchuk.' });
-  }
-  renderTextInfo(): BaseView {
-    return new BaseView({ tag: 'div', classNames: ['info-text'], textContent: 'Fun chat is a platform for communication.' });
-  }
-
-  private renderAuthWindow(): BaseView {
-    return new BaseView({ tag: 'div', classNames: ['info-window'] });
-  }
-  private renderHeader(): BaseView {
-    return new BaseView({ tag: 'div', classNames: ['info-header'], textContent: 'About us' });
-  }
-
 }
 export default InfoView;

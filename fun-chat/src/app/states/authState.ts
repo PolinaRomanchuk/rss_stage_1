@@ -1,7 +1,6 @@
 const LOGIN_KEY = 'user-login';
 const PASSWORD_KEY = 'user-password';
 
-
 export function setAuthUser(login: string, password: string): void {
   sessionStorage.setItem(LOGIN_KEY, login);
   sessionStorage.setItem(PASSWORD_KEY, password);

@@ -1,5 +1,5 @@
 import { setMessageHandler } from "../API/socketInstance";
-import DialogueView from "../views/dialogueView/dialogueView";
+import DialogueView from "../views/chatView/dialogueView/dialogueView";
 import { Message } from "../../types/types";
 import ChatView from "../views/chatView/chatView";
 
@@ -33,6 +33,10 @@ export function startMessageListener() {
     if (message.type === 'MSG_EDIT') {
       const newMsg: Message = message.payload.message;
       dialogue?.updateMessageStatusEdit(newMsg.id, 'edit');
+    }
+    if (message.type === 'MSG_DELETE') {
+    //  const newMsg: Message = message.payload.message;
+     // dialogue?.updateMessageStatus(newMsg.id, 'read');
     }
   });
 }

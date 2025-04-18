@@ -62,6 +62,7 @@ class InputView extends BaseView {
   public setValidFunction(func: (value: string) => string): void {
     this.validFunc = func;
   }
+
   public setValidSpan(span: BaseView): void {
     this.validSpan = span;
   }

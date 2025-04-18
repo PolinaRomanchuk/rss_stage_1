@@ -1,4 +1,4 @@
-import BaseView from "./baseView";
+import BaseView from '../baseView';
 import Gif from '../../assets/img/Spinner.gif'
 
 class ReconnectView extends BaseView {

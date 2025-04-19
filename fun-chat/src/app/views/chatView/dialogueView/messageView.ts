@@ -1,5 +1,5 @@
 import BaseView from '../../baseView';
-import StatusSent from '../../../../assets/img/status-sent.png';
+import StatusDelivered from '../../../../assets/img/status-sent.png';
 import StatusRead from '../../../../assets/img/status-read.png';
 import Edit from '../../../../assets/img/edit.png';
 import { Message } from '../../../../types/types';
@@ -14,6 +14,7 @@ class MessageView extends BaseView {
   public messageId: string;
   public messageOptionsContainer: BaseView | null = null;
   public editStatusContainer: BaseView | null = null;
+  private messageSendStatusContainer: BaseView | null = null;
 
   constructor(message: Message, onSelect: (message: MessageView) => void, onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void) {
     super({ tag: 'div', classNames: ['message-content'], callback: () => onSelect(this) });
@@ -104,21 +105,30 @@ class MessageView extends BaseView {
 
   private renderMessageSendStatus(messageStatus: 'sent' | 'delivered' | 'read'): BaseView {
     const container = new BaseView({ tag: 'div', classNames: ['message-send-status-container'] });
-    if (messageStatus === 'sent' || this.message.from !== getAuthUserLogin()) {
+    if (this.message.from !== getAuthUserLogin()) {
       return container;
     }
+    this.messageSendStatusContainer = container;
+    if (messageStatus === 'sent') {
+      return container;
+    }
+    const icon = this.renderSendStatusIcon(messageStatus);
 
+    container.appendChildren([icon]);
+    return container;
+  }
+
+  private renderSendStatusIcon(messageStatus: 'sent' | 'delivered' | 'read'): BaseView {
     const icon = new BaseView({ tag: 'img', classNames: ['message-status-icon'] });
+
     const iconElement = icon.getView();
 
     if (iconElement instanceof HTMLImageElement) {
       iconElement.alt = messageStatus === 'read' ? 'status-read' : 'status-delivered';
-      iconElement.src = messageStatus === 'read' ? StatusRead : StatusSent;
+      iconElement.src = messageStatus === 'read' ? StatusRead : StatusDelivered;
       this.statusIcon = iconElement;
     }
-
-    container.appendChildren([icon]);
-    return container;
+    return icon;
   }
 
   private renderEditIcon(onEdit: (message: MessageView) => void): BaseView {
@@ -136,16 +146,37 @@ class MessageView extends BaseView {
   }
 
   public setSendStatus(status: 'sent' | 'delivered' | 'read'): void {
-    if (!this.statusIcon || this.message.from !== getAuthUserLogin()) {
+    if (this.message.from !== getAuthUserLogin()) {
+      return;
+    }
+
+    if (status === 'sent') {
+      if (this.statusIcon) {
+        this.statusIcon.remove();
+        this.statusIcon = null;
+      }
       return;
     }
 
     if (status === 'delivered') {
-      this.statusIcon.src = StatusSent;
-      this.statusIcon.alt = 'status-delivered';
+      if (!this.statusIcon) {
+        const icon = new BaseView({ tag: 'img', classNames: ['message-status-icon'] });
+        const iconElement = icon.getView();
+
+        if (iconElement instanceof HTMLImageElement) {
+          iconElement.alt = 'status-delivered';
+          iconElement.src = StatusDelivered;
+          this.statusIcon = iconElement;
+          this.messageSendStatusContainer?.append(icon);
+        }
+      } else {
+        this.statusIcon.src = StatusDelivered;
+        this.statusIcon.alt = 'status-delivered';
+      }
+
     }
 
-    if (status === 'read') {
+    if (status === 'read' && this.statusIcon) {
       this.statusIcon.src = StatusRead;
       this.statusIcon.alt = 'status-read';
     }

@@ -23,8 +23,8 @@ export function startMessageListener() {
       chatview?.addIncomingMessageToFriend(newMsg);
     }
     if (message.type === 'MSG_DELIVER') {
-      const newMsg: Message = message.payload.message;
-      dialogue?.updateMessageStatus(newMsg.id, 'delivered');
+      const newMsg: { id: string, status: { isDelivered: boolean } } = message.payload.message;
+      dialogue?.updateSendMessageStatus(newMsg.id, 'delivered');
     }
     if (message.type === 'MSG_READ') {
       const newMsg: {
@@ -33,7 +33,7 @@ export function startMessageListener() {
           isReaded: boolean,
         }
       } = message.payload.message;
-      dialogue?.updateMessageStatus(newMsg.id, 'read');
+      dialogue?.updateSendMessageStatus(newMsg.id, 'read');
       chatview?.updateUnreadMessagesCounter(newMsg);
     }
     if (message.type === 'MSG_EDIT') {

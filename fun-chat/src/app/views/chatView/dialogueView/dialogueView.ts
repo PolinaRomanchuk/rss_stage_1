@@ -162,8 +162,7 @@ class DialogueView extends BaseView {
     }
   }
 
-  public updateMessageStatus(messageId: string, status: 'sent' | 'delivered' | 'read'): void {
-    console.log(`${messageId} ${status}`);
+  public updateSendMessageStatus(messageId: string, status: 'sent' | 'delivered' | 'read'): void {
     const messageView = this.findMessageById(messageId);
     if (messageView) {
       messageView.setSendStatus(status);
@@ -232,7 +231,6 @@ class DialogueView extends BaseView {
 
   public updateUserStatus(login: string, isActive: boolean): void {
     const userView = this.companionNameElement?.getView().textContent === login;
-    console.log(`login${login}, view ${this.companionNameElement?.getView().textContent}`)
     if (userView) {
       this.currentCompanionStatus?.setStatus(isActive);
     }

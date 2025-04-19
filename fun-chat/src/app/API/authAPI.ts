@@ -1,5 +1,5 @@
 import { clearAuth, setAuthUser } from "../states/authState";
-import {socket} from '../API/socketInstance';
+import { sendMessage, setMessageHandler, socket } from '../API/socketInstance';
 
 export async function authenticateUserApi(username: string, password: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -26,7 +26,7 @@ export async function authenticateUserApi(username: string, password: string): P
         if (isLogined) {
           setAuthUser(username, password);
           resolve();
-        } 
+        }
       }
 
       if (data.type === 'ERROR' && data.id === requestId) {
@@ -37,8 +37,8 @@ export async function authenticateUserApi(username: string, password: string): P
       }
     };
 
-    socket.addEventListener('message', handleMessage);
-    socket.send(JSON.stringify(message));
+    setMessageHandler(handleMessage);
+    sendMessage(JSON.stringify(message));
   });
 }
 
@@ -73,7 +73,7 @@ export async function logoutUserApi(username: string, password: string): Promise
       }
     };
 
-    socket.addEventListener('message', handleMessage);
-    socket.send(JSON.stringify(message));
+    setMessageHandler(handleMessage);
+    sendMessage(JSON.stringify(message));
   });
 }

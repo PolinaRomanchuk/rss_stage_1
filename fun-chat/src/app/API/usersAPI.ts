@@ -1,5 +1,5 @@
 import { User } from "../../types/types";
-import {socket} from "./socketInstance";
+import { sendMessage, setMessageHandler, socket } from "./socketInstance";
 
 export async function gettingAllAuthenticatedUsers(): Promise<User[]> {
   return new Promise((resolve, reject) => {
@@ -26,8 +26,8 @@ export async function gettingAllAuthenticatedUsers(): Promise<User[]> {
       }
     };
 
-    socket.addEventListener('message', handleMessage);
-    socket.send(JSON.stringify(message));
+    setMessageHandler(handleMessage);
+    sendMessage(JSON.stringify(message));
   });
 }
 
@@ -56,7 +56,7 @@ export async function gettingAllUnauthorizedUsers(): Promise<User[]> {
       }
     };
 
-    socket.addEventListener('message', handleMessage);
-    socket.send(JSON.stringify(message));
+    setMessageHandler(handleMessage);
+    sendMessage(JSON.stringify(message));
   });
 }

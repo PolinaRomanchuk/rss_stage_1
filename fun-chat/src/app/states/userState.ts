@@ -1,5 +1,5 @@
 import { User } from "../../types/types";
-import {socket} from "../API/socketInstance";
+import {setMessageHandler} from "../API/socketInstance";
 
 let loginHandler: ((user: User) => void) | null = null;
 let logoutHandler: ((user: User) => void) | null = null;
@@ -12,7 +12,7 @@ export function subscribeToUserStatusUpdates(callbacks: { onLogin?: (user: User)
   if (callbacks.onLogout) {
     logoutHandler = callbacks.onLogout;
   }
-  socket.addEventListener('message', handleUserStatusUpdate);
+  setMessageHandler(handleUserStatusUpdate);
 }
 
 function handleUserStatusUpdate(event: MessageEvent) {

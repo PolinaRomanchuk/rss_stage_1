@@ -1,5 +1,5 @@
 import { Message } from "../../types/types";
-import { socket } from "./socketInstance";
+import { sendMessage, setMessageHandler, socket } from "./socketInstance";
 
 export async function sendingMessageToUser(login: string, text: string): Promise<Message> {
   return new Promise((resolve, reject) => {
@@ -34,8 +34,8 @@ export async function sendingMessageToUser(login: string, text: string): Promise
       }
     };
 
-    socket.addEventListener('message', handleMessage);
-    socket.send(JSON.stringify(message));
+    setMessageHandler(handleMessage);
+    sendMessage(JSON.stringify(message));
   });
 }
 
@@ -69,8 +69,8 @@ export async function fetchingMessageHistoryWithUser(login: string): Promise<Mes
       }
     };
 
-    socket.addEventListener('message', handleMessage);
-    socket.send(JSON.stringify(message));
+    setMessageHandler(handleMessage);
+    sendMessage(JSON.stringify(message));
   });
 }
 
@@ -104,8 +104,8 @@ export async function messageReadStatusChange(messageId: string): Promise<void> 
       }
     };
 
-    socket.addEventListener('message', handleMessage);
-    socket.send(JSON.stringify(message));
+    setMessageHandler(handleMessage);
+    sendMessage(JSON.stringify(message));
   });
 }
 
@@ -140,8 +140,8 @@ export async function messageTextEditing(id: string, text: string): Promise<Mess
       }
     };
 
-    socket.addEventListener('message', handleMessage);
-    socket.send(JSON.stringify(message));
+    setMessageHandler(handleMessage);
+    sendMessage(JSON.stringify(message));
   });
 }
 
@@ -176,7 +176,7 @@ export async function messageDeletion(id: string): Promise<Message> {
       }
     };
 
-    socket.addEventListener('message', handleMessage);
-    socket.send(JSON.stringify(message));
+    setMessageHandler(handleMessage);
+    sendMessage(JSON.stringify(message));
   });
 }

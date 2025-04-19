@@ -229,5 +229,13 @@ class DialogueView extends BaseView {
       container.scrollTop = container.scrollHeight;
     }
   }
+
+  public updateUserStatus(login: string, isActive: boolean): void {
+    const userView = this.companionNameElement?.getView().textContent === login;
+    console.log(`login${login}, view ${this.companionNameElement?.getView().textContent}`)
+    if (userView) {
+      this.currentCompanionStatus?.setStatus(isActive);
+    }
+  }
 }
 export default DialogueView;

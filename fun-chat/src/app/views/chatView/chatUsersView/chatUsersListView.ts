@@ -1,6 +1,5 @@
 import { User } from "../../../../types/types";
 import { getAllUsers } from "../../../services/usersService";
-import { subscribeToUserStatusUpdates } from "../../../states/userState";
 import BaseView from "../../baseView";
 import DialogueView from "../dialogueView/dialogueView";
 import ChatUserView from "./chatUserView/chatUserView";
@@ -14,7 +13,6 @@ class ChatUsersListView extends BaseView {
     super({ tag: 'div', classNames: ['users-list-container'] });
     this.dialogueView = dialogueView;
     this.renderUsersList();
-    this.initStatusListeners();
   }
 
   private async renderUsersList(): Promise<void> {
@@ -29,24 +27,14 @@ class ChatUsersListView extends BaseView {
     friends.forEach((friend) => this.createNewUser(friend));
   }
 
-  private initStatusListeners(): void {
-    subscribeToUserStatusUpdates({
-      onLogin: (user) => {
-        this.checkIfUserExist(user)
-        this.updateUserStatus(user.login, true)
-      },
-      onLogout: (user) => this.updateUserStatus(user.login, false),
-    });
-  }
-
-  private updateUserStatus(login: string, isActive: boolean): void {
+  public updateUserStatus(login: string, isActive: boolean): void {
     const userView = this.friendsList.find(friend => friend.getFriendLogin() === login);
     if (userView) {
       userView.setFriendStatus(isActive);
     }
   }
 
-  private checkIfUserExist(user: User): void {
+  public checkIfUserExist(user: User): void {
     const userView = this.friendsList.find(friend => friend.getFriendLogin() === user.login);
     if (!userView) {
       this.createNewUser(user);

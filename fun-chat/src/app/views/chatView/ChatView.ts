@@ -11,6 +11,7 @@ import { registerChatViewInstance, registerDialogueInstance, startMessageListene
 import { Message } from "../../../types/types";
 import { fetchingMessageHistoryWithUser } from "../../API/messageAPI";
 import ChatUserView from "./chatUsersView/chatUserView/chatUserView";
+import { subscribeToUserStatusUpdates } from "../../states/userState";
 
 class ChatView extends BaseView {
   private dialogue: DialogueView | null = null;
@@ -27,6 +28,7 @@ class ChatView extends BaseView {
     this.renderContent();
     this.message();
     registerChatViewInstance(this);
+    this.initStatusListeners();
   }
 
   private renderContent(): void {
@@ -81,6 +83,20 @@ class ChatView extends BaseView {
     const messages = await fetchingMessageHistoryWithUser(friend.name);
     const unread = messages.filter(message => message.status.isReaded === false).length;
     return unread;
+  }
+
+  private initStatusListeners(): void {
+    subscribeToUserStatusUpdates({
+      onLogin: (user) => {
+        this.friends?.checkIfUserExist(user)
+        this.friends?.updateUserStatus(user.login, true)
+        this.dialogue?.updateUserStatus(user.login, true)
+      },
+      onLogout: (user) => {
+        this.friends?.updateUserStatus(user.login, false)
+        this.dialogue?.updateUserStatus(user.login, false)
+      },
+    });
   }
 }
 export default ChatView;

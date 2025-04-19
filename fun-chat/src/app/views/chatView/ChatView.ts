@@ -2,7 +2,7 @@ import router from "../../utils/router";
 import BaseView from "../baseView";
 import '../chatView/chat.css';
 import ChatFooterView from "./chatFooterView/chatFooterView";
-import { isAuthenticated } from "../../states/authState";
+import { getAuthUserLogin, isAuthenticated } from "../../states/authState";
 import ChatHeaderView from "./chatHeaderView/chatHeaderView";
 import ChatUsersListView from "./chatUsersView/chatUsersListView";
 import SearchUserView from "./chatUsersView/searchUserView/searchUserView";
@@ -95,7 +95,9 @@ class ChatView extends BaseView {
 
   private async getAllUnreadedMessages(friend: ChatUserView): Promise<number> {
     const messages = await fetchingMessageHistoryWithUser(friend.name);
-    const unread = messages.filter(message => message.status.isReaded === false).length;
+    const authUser = getAuthUserLogin();
+    const friendsMessages = messages.filter(message => message.from != authUser);
+    const unread = friendsMessages.filter(message => message.status.isReaded === false).length;
     return unread;
   }
 

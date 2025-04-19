@@ -30,6 +30,7 @@ class DialogueView extends BaseView {
     const companionName = this.renderCompanion();
     const messageContainer = new BaseView({ tag: 'div', classNames: ['messages-container'] });
     this.messagesContainer = messageContainer;
+
     const messagesWraper = new BaseView({ tag: 'div', classNames: ['messages-wrapper'] });
     this.messagesWraper = messagesWraper;
     messageContainer.appendChildren([messagesWraper]);
@@ -41,6 +42,11 @@ class DialogueView extends BaseView {
     const conf = new BaseView({ tag: 'div', classNames: ['configur-message-container'] });
     conf.appendChildren([messageInput, sendBtn]);
     this.appendChildren([companionName, messageContainer, conf]);
+
+
+    this.messagesWraper?.getView().addEventListener('click', () => {
+      this.removeUnreadMarker();
+    });
   }
 
   private async handleSendButtonClick(): Promise<void> {
@@ -49,8 +55,16 @@ class DialogueView extends BaseView {
     } else {
       await this.send();
     }
-
+    this.removeUnreadMarker();
     await this.getMessageHistory();
+  }
+
+  private removeUnreadMarker(): void {
+    if (this.firstUnreadMessageView?.unreadMarker) {
+      this.firstUnreadMessageView.unreadMarker.removeView();
+      this.firstUnreadMessageView.unreadMarker = null;
+      this.firstUnreadMessageView = null;
+    }
   }
 
   private async getMessageHistory(): Promise<void> {
@@ -76,18 +90,18 @@ class DialogueView extends BaseView {
 
   private renderMessages(messages: Message[]) {
     let foundUnread = false;
+    this.firstUnreadMessageView = null;
 
     messages.forEach(message => {
       if (this.messagesWraper) {
         const view = new MessageView(message, this.selectMessage.bind(this), this.setTextAreaByTextFromMessageToEdit.bind(this), this.deleteMessage.bind(this));
         this.messagesWraper.append(view);
         this.messageViews.push(view);
-        if (message.from != getAuthUserLogin()) {
-          if (!foundUnread && !message.status.isReaded) {
-            view.showUnreadMarker(this.messagesWraper.getView());
-            foundUnread = true;
-            this.firstUnreadMessageView = view;
-          }
+
+        if (!foundUnread && message.from !== getAuthUserLogin() && !message.status.isReaded) {
+          view.showUnreadMarker(this.messagesWraper.getView());
+          this.firstUnreadMessageView = view;
+          foundUnread = true;
         }
       }
     });
@@ -136,6 +150,7 @@ class DialogueView extends BaseView {
 
   public setCompanion(user: ChatUserView): void {
     this.currentCompanion = user;
+    this.removeUnreadMarker();
     if (this.companionNameElement && this.currentCompanionStatus) {
       this.companionNameElement.setTextContent(user.name);
       this.currentCompanionStatus.setStatus(user.isActive);

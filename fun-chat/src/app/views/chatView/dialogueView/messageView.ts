@@ -16,6 +16,8 @@ class MessageView extends BaseView {
   public editStatusContainer: BaseView | null = null;
   private messageSendStatusContainer: BaseView | null = null;
 
+  public unreadMarker: BaseView | null = null;
+
   constructor(message: Message, onSelect: (message: MessageView) => void, onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void) {
     super({ tag: 'div', classNames: ['message-content'], callback: () => onSelect(this) });
     this.contentContainer = this;
@@ -183,10 +185,14 @@ class MessageView extends BaseView {
   }
 
   public showUnreadMarker(parent: HTMLElement): void {
+    if (this.unreadMarker) {
+      this.unreadMarker.removeView();
+    }
     const unreadMarker = new BaseView({
       tag: 'div',
       classNames: ['unread-marker'],
     });
+    this.unreadMarker = unreadMarker;
 
     parent.insertBefore(unreadMarker.getView(), this.contentContainer.getView());
   }

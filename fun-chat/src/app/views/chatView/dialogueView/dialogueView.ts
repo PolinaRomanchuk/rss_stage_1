@@ -201,6 +201,13 @@ class DialogueView extends BaseView {
     }
   }
 
+  public deleteMessageView(messageId: string): void {
+    const messageView = this.findMessageById(messageId);
+    if (messageView) {
+      messageView.removeView();
+    }
+  }
+
   public async setTextAreaByTextFromMessageToEdit(message: MessageView): Promise<void> {
     this.selectedMessage = message;
     if (this.selectedMessage?.message.from === getAuthUserLogin()) {

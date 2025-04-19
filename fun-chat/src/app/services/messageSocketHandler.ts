@@ -41,8 +41,13 @@ export function startMessageListener() {
       dialogue?.updateMessageStatusEdit(newMsg.id, 'edit');
     }
     if (message.type === 'MSG_DELETE') {
-      //  const newMsg: Message = message.payload.message;
-      // dialogue?.updateMessageStatus(newMsg.id, 'read');
+        const newMsg: {
+          id: string,
+          status: {
+            isDeleted: boolean,
+          }
+        } = message.payload.message;
+       dialogue?.deleteMessageView(newMsg.id);
     }
   });
 }

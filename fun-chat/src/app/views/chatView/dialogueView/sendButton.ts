@@ -36,7 +36,7 @@ class SendButton extends BaseView {
     }
   }
 
-  private addEnterKeyListener(): void {
+  public addEnterKeyListener(): void {
     document.addEventListener('keydown', this.enterKeyHandler);
   }
 

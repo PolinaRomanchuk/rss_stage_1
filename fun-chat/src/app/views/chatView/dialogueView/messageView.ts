@@ -47,6 +47,10 @@ class MessageView extends BaseView {
     messageBodyContainer.appendChildren([messageText, messageDataContainer]);
     this.checkEditStatus();
     this.contentContainer.appendChildren([name, messageBodyContainer, messageOptionsContainer]);
+
+    if (message.from === getAuthUserLogin()) {
+      this.contentContainer.addClass('pointer');
+    }
   }
 
   private renderMessageOptions(onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void): BaseView {

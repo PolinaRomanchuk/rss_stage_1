@@ -171,6 +171,15 @@
   height: 20px;
 }
 
+.edit-icon-container,.delete-icon-container{
+  cursor: pointer;
+  background-color: var(--color-window-background);
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
 .message-date {
   font-size: 14px;
 }
@@ -252,4 +261,8 @@
 .edited-indicator {
   display: flex;
   justify-content: flex-end;
+}
+
+.pointer{
+  cursor: pointer;
 }

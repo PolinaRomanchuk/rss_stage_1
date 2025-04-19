@@ -21,6 +21,9 @@ class DialogueView extends BaseView {
 
   public sendButton: SendButton | null = null;
 
+  private isOpenOptions: boolean = false;
+  private isEditing: boolean = false;
+
   constructor() {
     super({ tag: 'div', classNames: ['dialogue-container'] });
     this.renderDialogue();
@@ -44,11 +47,13 @@ class DialogueView extends BaseView {
     this.appendChildren([companionName, messageContainer, conf]);
 
     if (!this.currentCompanion) {
-      const defaultMessage = new BaseView({ 
-        tag: 'div', 
-        classNames: ['say-hi-message'], 
-        textContent: 'Select user to start talking' 
+      const defaultMessage = new BaseView({
+        tag: 'div',
+        classNames: ['say-hi-message'],
+        textContent: 'Select user to start talking'
       });
+      sendBtn.disableButton();
+      this.newMessageInput?.getView().setAttribute('disabled', 'true');
       this.messagesWraper.append(defaultMessage);
     }
 
@@ -58,7 +63,7 @@ class DialogueView extends BaseView {
   }
 
   private async handleSendButtonClick(): Promise<void> {
-    if (this.selectedMessage) {
+    if (this.selectedMessage && this.isEditing) {
       await this.editSelectedMessage();
     } else {
       await this.send();
@@ -159,10 +164,18 @@ class DialogueView extends BaseView {
   public setCompanion(user: ChatUserView): void {
     this.currentCompanion = user;
     this.removeUnreadMarker();
+    const element = this.newMessageInput?.getView();
+    if (element instanceof HTMLTextAreaElement) {
+      element.value = '';
+    }
+
     if (this.companionNameElement && this.currentCompanionStatus) {
       this.companionNameElement.setTextContent(user.name);
       this.currentCompanionStatus.setStatus(user.isActive);
       this.currentCompanionStatus.changeClass('remove', 'hide');
+      this.sendButton?.enableButton();
+      this.newMessageInput?.getView().removeAttribute('disabled');
+
       this.getMessageHistory().then(() => {
         this.messageViews.forEach(msgView => {
           if (msgView.messageId && this.currentCompanion?.name === msgView.message.from) {
@@ -204,6 +217,11 @@ class DialogueView extends BaseView {
     if (this.selectedMessage?.message.from === getAuthUserLogin()) {
       await messageDeletion(message.messageId);
       message.contentContainer.removeView();
+      this.selectedMessage = null;
+      this.isOpenOptions = false;
+      this.sendButton?.enableButton();
+      this.sendButton?.addEnterKeyListener();
+      this.newMessageInput?.getView().removeAttribute('disabled');
     } else {
       return;
     }
@@ -213,29 +231,64 @@ class DialogueView extends BaseView {
     const messageView = this.findMessageById(messageId);
     if (messageView) {
       messageView.removeView();
+      this.selectedMessage = null;
     }
   }
 
   public async setTextAreaByTextFromMessageToEdit(message: MessageView): Promise<void> {
     this.selectedMessage = message;
     if (this.selectedMessage?.message.from === getAuthUserLogin()) {
+      this.isEditing = true;
       const textarea = this.newMessageInput?.getView();
       if (textarea instanceof HTMLTextAreaElement) {
         textarea.value = this.selectedMessage.message.text;
       }
+      this.sendButton?.enableButton();
+      this.sendButton?.addEnterKeyListener();
+      this.newMessageInput?.getView().removeAttribute('disabled');
     } else {
       return;
     }
   }
 
   public async selectMessage(message: MessageView): Promise<void> {
+    if (this.selectedMessage === message && !this.isEditing) {
+      message.messageOptionsContainer?.addClass('hide');
+      message.getView().style.backgroundColor = '';
+      this.selectedMessage = null;
+      this.isOpenOptions = false;
+      this.isEditing = false;
+      this.sendButton?.enableButton();
+      this.sendButton?.addEnterKeyListener();
+      this.newMessageInput?.getView().removeAttribute('disabled');
+      const textarea = this.newMessageInput?.getView();
+      if (textarea instanceof HTMLTextAreaElement) {
+        textarea.value = '';
+      }
+
+      return;
+    }
+
+    if (this.selectedMessage != null) {
+      return;
+    }
+
     this.selectedMessage = message;
+    this.isOpenOptions = true;
     if (this.selectedMessage?.message.from === getAuthUserLogin()) {
       message.messageOptionsContainer?.removeClass('hide');
+      this.selectedMessage.getView().style.backgroundColor = 'var(--color-btn-background-inactive)';
+      if (!this.isEditing) {
+        this.sendButton?.disableButton();
+        this.sendButton?.removeKeyHandler();
+        this.newMessageInput?.getView().setAttribute('disabled', 'true');
+      }
     } else {
       return;
     }
   }
+
+
 
   private async editSelectedMessage(): Promise<void> {
     const messageId = this.selectedMessage?.messageId;
@@ -248,6 +301,8 @@ class DialogueView extends BaseView {
         await messageTextEditing(messageId, text);
         textarea.value = '';
         this.selectedMessage = null;
+        this.isEditing = false;
+        this.isOpenOptions = false;
       }
     }
   }

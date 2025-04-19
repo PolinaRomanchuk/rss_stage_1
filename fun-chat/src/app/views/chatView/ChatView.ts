@@ -79,6 +79,20 @@ class ChatView extends BaseView {
     }
   }
 
+  public async updateUnreadMessagesCounter(message: { id: string, status: { isReaded: boolean } }) {
+    const messageView = this.dialogue?.messageViews.find(view => view.messageId === message.id) || null;
+    const messageSender = messageView?.message.from;
+    const friend = this.friends?.friendsList.find(x => x.name === messageSender);
+    if (friend) {
+      const counter = await this.getAllUnreadedMessages(friend);
+      friend?.unreadMessages?.setTextContent(String(counter));
+      friend?.unreadMessagesContainer?.removeClass('hide');
+      if (counter == 0) {
+        friend?.unreadMessagesContainer?.addClass('hide');
+      }
+    }
+  }
+
   private async getAllUnreadedMessages(friend: ChatUserView): Promise<number> {
     const messages = await fetchingMessageHistoryWithUser(friend.name);
     const unread = messages.filter(message => message.status.isReaded === false).length;

@@ -20,11 +20,11 @@ class ChatUsersListView extends BaseView {
     this.drawUsers(friends);
   }
 
-  private drawUsers(friends: User[]): void {
+  private async drawUsers(friends: User[]) {
     this.friendsList = [];
     this.removeAllChildren();
 
-    friends.forEach((friend) => this.createNewUser(friend));
+    await Promise.all(friends.map(async (user) => await this.createNewUser(user)));
   }
 
   public updateUserStatus(login: string, isActive: boolean): void {
@@ -41,11 +41,12 @@ class ChatUsersListView extends BaseView {
     }
   }
 
-  private createNewUser(user: User) {
+  private async createNewUser(user: User) {
     const newFriend = new ChatUserView(user, (userView) => {
       this.selectedUser = userView;
       this.dialogueView.setCompanion(userView);
     });
+    await newFriend.init();
     this.friendsList.push(newFriend);
     this.append(newFriend);
   }

@@ -13,7 +13,7 @@ class DialogueView extends BaseView {
   private companionNameElement: BaseView | null = null;
   private messagesWraper: BaseView | null = null;
   private newMessageInput: BaseView | null = null;
-  private messageViews: MessageView[] = [];
+  public messageViews: MessageView[] = [];
   private selectedMessage: MessageView | null = null;
 
   private messagesContainer: BaseView | null = null;

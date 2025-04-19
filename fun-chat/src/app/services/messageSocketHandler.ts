@@ -27,16 +27,22 @@ export function startMessageListener() {
       dialogue?.updateMessageStatus(newMsg.id, 'delivered');
     }
     if (message.type === 'MSG_READ') {
-      const newMsg: Message = message.payload.message;
+      const newMsg: {
+        id: string,
+        status: {
+          isReaded: boolean,
+        }
+      } = message.payload.message;
       dialogue?.updateMessageStatus(newMsg.id, 'read');
+      chatview?.updateUnreadMessagesCounter(newMsg);
     }
     if (message.type === 'MSG_EDIT') {
       const newMsg: Message = message.payload.message;
       dialogue?.updateMessageStatusEdit(newMsg.id, 'edit');
     }
     if (message.type === 'MSG_DELETE') {
-    //  const newMsg: Message = message.payload.message;
-     // dialogue?.updateMessageStatus(newMsg.id, 'read');
+      //  const newMsg: Message = message.payload.message;
+      // dialogue?.updateMessageStatus(newMsg.id, 'read');
     }
   });
 }

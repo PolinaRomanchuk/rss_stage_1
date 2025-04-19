@@ -26,19 +26,15 @@ class ChatUsersListView extends BaseView {
     this.friendsList = [];
     this.removeAllChildren();
 
-    friends.forEach((friend) => {
-      const newFriend = new ChatUserView(friend, (userView) => {
-        this.selectedUser = userView;
-        this.dialogueView.setCompanion(userView);
-      });
-      this.friendsList.push(newFriend);
-      this.append(newFriend);
-    });
+    friends.forEach((friend) => this.createNewUser(friend));
   }
 
   private initStatusListeners(): void {
     subscribeToUserStatusUpdates({
-      onLogin: (user) => this.updateUserStatus(user.login, true),
+      onLogin: (user) => {
+        this.checkIfUserExist(user)
+        this.updateUserStatus(user.login, true)
+      },
       onLogout: (user) => this.updateUserStatus(user.login, false),
     });
   }
@@ -48,6 +44,22 @@ class ChatUsersListView extends BaseView {
     if (userView) {
       userView.setFriendStatus(isActive);
     }
+  }
+
+  private checkIfUserExist(user: User): void {
+    const userView = this.friendsList.find(friend => friend.getFriendLogin() === user.login);
+    if (!userView) {
+      this.createNewUser(user);
+    }
+  }
+
+  private createNewUser(user: User) {
+    const newFriend = new ChatUserView(user, (userView) => {
+      this.selectedUser = userView;
+      this.dialogueView.setCompanion(userView);
+    });
+    this.friendsList.push(newFriend);
+    this.append(newFriend);
   }
 }
 

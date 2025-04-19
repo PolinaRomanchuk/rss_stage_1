@@ -114,5 +114,7 @@ class ChatView extends BaseView {
       },
     });
   }
+
+  
 }
 export default ChatView;

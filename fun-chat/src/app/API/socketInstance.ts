@@ -1,3 +1,4 @@
+import { getAllUsers } from "../services/usersService";
 import { getAuthUserLogin, getAuthUserPassword } from "../states/authState";
 import ReconnectView from "../views/generalComponents/reconnectView";
 import { authenticateUserApi } from "./authAPI";
@@ -9,6 +10,11 @@ let reconnectView: ReconnectView | null = null;
 let isReconnecting = false;
 const messageHandlers: ((event: MessageEvent) => void)[] = [];
 
+let resolveAuth: (() => void) | null = null;
+const onAuthenticated = new Promise<void>((resolve) => {
+  resolveAuth = resolve;
+});
+
 function createSocket(): WebSocket {
   const newSocket = new WebSocket(SERVER_URL);
 
@@ -19,7 +25,7 @@ function createSocket(): WebSocket {
   return newSocket;
 }
 
-function onOpen(): void {
+async function onOpen() {
   if (reconnectView) {
     reconnectView.removeView();
     reconnectView = null;
@@ -29,7 +35,10 @@ function onOpen(): void {
   const password = getAuthUserPassword();
 
   if (login && password) {
-    authenticateUserApi(login, password)
+    authenticateUserApi(login, password).then(async () => {
+      await getAllUsers();
+      resolveAuth?.();
+    })
       .catch((err) => console.error('Reauth error', err));
   }
 
@@ -74,6 +83,11 @@ function setMessageHandler(handler: (event: MessageEvent) => void): void {
   if (socket.readyState === WebSocket.OPEN) {
     socket.addEventListener('message', handler);
   }
+  else {
+    socket.addEventListener('open', () => {
+      socket.addEventListener('message', handler);
+    });
+  }
 }
 
 function sendMessage(data: string): void {
@@ -84,4 +98,4 @@ function sendMessage(data: string): void {
 
 socket = createSocket();
 
-export { socket, setMessageHandler, sendMessage };
+export { socket, setMessageHandler, sendMessage, onAuthenticated };

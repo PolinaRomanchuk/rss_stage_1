@@ -1,4 +1,5 @@
 import { User } from "../../../../types/types";
+import { onAuthenticated } from "../../../API/socketInstance";
 import { getAllUsers } from "../../../services/usersService";
 import BaseView from "../../baseView";
 import DialogueView from "../dialogueView/dialogueView";
@@ -16,6 +17,7 @@ class ChatUsersListView extends BaseView {
   }
 
   private async renderUsersList(): Promise<void> {
+    await onAuthenticated; 
     const friends = await getAllUsers();
     this.drawUsers(friends);
   }

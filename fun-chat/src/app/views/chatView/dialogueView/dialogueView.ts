@@ -43,6 +43,14 @@ class DialogueView extends BaseView {
     conf.appendChildren([messageInput, sendBtn]);
     this.appendChildren([companionName, messageContainer, conf]);
 
+    if (!this.currentCompanion) {
+      const defaultMessage = new BaseView({ 
+        tag: 'div', 
+        classNames: ['say-hi-message'], 
+        textContent: 'Select user to start talking' 
+      });
+      this.messagesWraper.append(defaultMessage);
+    }
 
     this.messagesWraper?.getView().addEventListener('click', () => {
       this.removeUnreadMarker();

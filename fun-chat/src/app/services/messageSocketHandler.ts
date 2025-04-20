@@ -38,7 +38,7 @@ export function startMessageListener() {
     }
     if (message.type === 'MSG_EDIT') {
       const newMsg: Message = message.payload.message;
-      dialogue?.updateMessageStatusEdit(newMsg.id, 'edit');
+      dialogue?.updateEditMessageStatus(newMsg.id, 'edit');
     }
     if (message.type === 'MSG_DELETE') {
         const newMsg: {

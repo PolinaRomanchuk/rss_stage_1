@@ -2,7 +2,7 @@ import router from './utils/router';
 import AuthenticationView from './views/authenticationView/authenticationView';
 import BaseView from './views/baseView';
 import ChatView from './views/chatView/chatView';
-import InfoView from './views/infoView/InfoView';
+import InfoView from './views/infoView/infoView';
 
 class App {
   private contentContainer: HTMLElement;

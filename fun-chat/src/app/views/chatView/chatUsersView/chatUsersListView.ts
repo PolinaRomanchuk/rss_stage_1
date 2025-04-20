@@ -13,11 +13,16 @@ class ChatUsersListView extends BaseView {
   constructor(dialogueView: DialogueView) {
     super({ tag: 'div', classNames: ['users-list-container'] });
     this.dialogueView = dialogueView;
+    this.init();
     this.renderUsersList();
+  }
+  private async init() {
+    const friends = await getAllUsers();
+    this.drawUsers(friends);
   }
 
   private async renderUsersList(): Promise<void> {
-    await onAuthenticated; 
+    await onAuthenticated;
     const friends = await getAllUsers();
     this.drawUsers(friends);
   }

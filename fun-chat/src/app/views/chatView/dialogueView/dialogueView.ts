@@ -52,6 +52,8 @@ class DialogueView extends BaseView {
     this.messagesWraper?.getView().addEventListener('click', () => {
       this.removeUnreadMarker();
     });
+
+
   }
 
   private renderStartDialogueMessage(): void {
@@ -236,11 +238,21 @@ class DialogueView extends BaseView {
       this.renderMessages(messages);
     }
 
+    this.scrollMessages();
+  }
+
+  private scrollMessages(): void {
     if (this.firstUnreadMessageView) {
       this.scrollToMessage(this.firstUnreadMessageView);
     } else {
       this.scrollToBottom();
     }
+
+    setTimeout(() => {
+      this.messagesContainer?.getView().addEventListener('scroll', () => {
+        this.removeUnreadMarker();
+      });
+    }, 1000);
   }
 
   private scrollToMessage(messageView: MessageView): void {

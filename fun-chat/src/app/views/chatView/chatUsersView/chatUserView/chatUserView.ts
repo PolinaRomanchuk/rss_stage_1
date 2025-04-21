@@ -35,7 +35,7 @@ class ChatUserView extends BaseView {
 
   private async renderFriend(): Promise<void> {
     const friendContainer = new BaseView({ tag: 'div', classNames: ['friend-content'] });
-    const friend = new BaseView({ tag: 'div', classNames: ['friend-name'], textContent: `${this.name}` });
+    const friend = new BaseView({ tag: 'span', classNames: ['friend-name'], textContent: `${this.name}` });
     const status = new OnlineUserStatus(this.isActive);
     friendContainer.appendChildren([status, friend]);
     const messages = await this.renderUnreadMessages();

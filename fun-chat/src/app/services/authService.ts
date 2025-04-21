@@ -14,8 +14,11 @@ export async function loginUser(usernameInput: string, passwordInput: string): P
 }
 
 export function checkLoginValid(login: string): string | 'ok' {
-  if (login.length < 4) {
+  if (login.length < 4 ) {
     return 'enter at least 4 characters';
+  }
+  if ( login.length > 14) {
+    return 'enter no more than 14 characters';
   }
   return 'ok';
 }

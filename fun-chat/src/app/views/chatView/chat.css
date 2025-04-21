@@ -246,7 +246,8 @@
 .friend-content {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  width: 90%;
 }
 
 .unread-marker {
@@ -268,15 +269,44 @@
   cursor: pointer;
 }
 
-@media (max-width: 900px) {
-  .chat-container{
-    width: 90vw !important;
-  }
- 
+.users-list-container {
+  max-height: 450px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-@media (max-width: 450px) {
-  .chat-name{
+.friend-name {
+  max-width: 70%;
+  display: block;
+  justify-content: flex-start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .chat-container {
+    width: 90vw !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .friend-name{
+    max-width: 94px;
+  }
+}
+
+@media (max-width: 565px) {
+  .friend-name{
+    max-width: 64px;
+  }
+}
+
+@media (max-width: 460px) {
+  .chat-name {
     font-size: 24px !important;
+  }
+  .friend-name{
+    max-width: 44px;
   }
 }

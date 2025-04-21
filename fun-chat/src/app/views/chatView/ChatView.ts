@@ -2,16 +2,16 @@ import router from "../../utils/router";
 import BaseView from "../baseView";
 import '../chatView/chat.css';
 import ChatFooterView from "./chatFooterView/chatFooterView";
-import { getAuthUserLogin, isAuthenticated } from "../../states/authState";
+import { isAuthenticated } from "../../states/authState";
 import ChatHeaderView from "./chatHeaderView/chatHeaderView";
 import ChatUsersListView from "./chatUsersView/chatUsersListView";
 import SearchUserView from "./chatUsersView/searchUserView/searchUserView";
 import DialogueView from "./dialogueView/dialogueView";
-import { registerChatViewInstance, registerDialogueInstance, startMessageListener } from "../../services/messageSocketHandler";
-import { Message } from "../../../types/types";
-import { fetchingMessageHistoryWithUser } from "../../API/messageAPI";
-import ChatUserView from "./chatUsersView/chatUserView/chatUserView";
+import { registerChatViewInstance, registerDialogueViewInstance, startMessageListener } from "../../states/messageState";
+import { Message, ReadMessageResponse } from "../../../types/types";
 import { subscribeToUserStatusUpdates } from "../../states/userState";
+import ChatUserView from "./chatUsersView/chatUserView/chatUserView";
+import { getUnreadMessagesCount } from "../../services/messagesService";
 
 class ChatView extends BaseView {
   private dialogue: DialogueView | null = null;
@@ -26,9 +26,9 @@ class ChatView extends BaseView {
       return;
     }
     this.renderContent();
-    this.message();
+    this.initMessagesListener();
     registerChatViewInstance(this);
-    this.initStatusListeners();
+    this.initUsersStatusListeners();
   }
 
   private renderContent(): void {
@@ -44,7 +44,7 @@ class ChatView extends BaseView {
     const content = new BaseView({ tag: 'div', classNames: ['chat-content-container'] });
     const dialogue = new DialogueView();
     this.dialogue = dialogue;
-    registerDialogueInstance(dialogue);
+    registerDialogueViewInstance(dialogue);
     const usersList = this.renderUsersBlock();
     content.appendChildren([usersList, dialogue]);
     return content;
@@ -66,42 +66,32 @@ class ChatView extends BaseView {
     return content;
   }
 
-  private message(): void {
-    startMessageListener();
-  }
-
-  public async addIncomingMessageToFriend(message: Message): Promise<void> {
+  public async setUnreadIncomingMessagesCounter(message: Message): Promise<void> {
     const friend = this.friends?.friendsList.find(x => x.name === message.from);
     if (friend) {
-      const counter = await this.getAllUnreadedMessages(friend);
-      friend?.unreadMessages?.setTextContent(String(counter));
-      friend?.unreadMessagesContainer?.removeClass('hide');
+      this.updateUnreadCounter(friend);
     }
   }
 
-  public async updateUnreadMessagesCounter(message: { id: string, status: { isReaded: boolean } }) {
+  public async handleUnreadMessagesCounter(message: ReadMessageResponse): Promise<void> {
     const messageView = this.dialogue?.messageViews.find(view => view.messageId === message.id) || null;
     const messageSender = messageView?.message.from;
     const friend = this.friends?.friendsList.find(x => x.name === messageSender);
     if (friend) {
-      const counter = await this.getAllUnreadedMessages(friend);
-      friend?.unreadMessages?.setTextContent(String(counter));
-      friend?.unreadMessagesContainer?.removeClass('hide');
-      if (counter == 0) {
-        friend?.unreadMessagesContainer?.addClass('hide');
-      }
+      this.updateUnreadCounter(friend);
     }
   }
 
-  private async getAllUnreadedMessages(friend: ChatUserView): Promise<number> {
-    const messages = await fetchingMessageHistoryWithUser(friend.name);
-    const authUser = getAuthUserLogin();
-    const friendsMessages = messages.filter(message => message.from != authUser);
-    const unread = friendsMessages.filter(message => message.status.isReaded === false).length;
-    return unread;
+  private async updateUnreadCounter(friend: ChatUserView): Promise<void> {
+    const counter = await getUnreadMessagesCount(friend);
+    friend?.unreadMessages?.setTextContent(String(counter));
+    friend?.unreadMessagesContainer?.removeClass('hide');
+    if (counter == 0) {
+      friend?.unreadMessagesContainer?.addClass('hide');
+    }
   }
 
-  private initStatusListeners(): void {
+  private initUsersStatusListeners(): void {
     subscribeToUserStatusUpdates({
       onLogin: (user) => {
         this.friends?.checkIfUserExist(user)
@@ -115,6 +105,8 @@ class ChatView extends BaseView {
     });
   }
 
-  
+  private initMessagesListener(): void {
+    startMessageListener();
+  }
 }
 export default ChatView;

@@ -1,5 +1,5 @@
 import { Message } from "../../types/types";
-import { sendMessage, setMessageHandler, socket } from "./socketInstance";
+import { sendMessage, setMessageHandler, socket } from "./socket";
 
 export async function sendingMessageToUser(login: string, text: string): Promise<Message> {
   return new Promise((resolve, reject) => {

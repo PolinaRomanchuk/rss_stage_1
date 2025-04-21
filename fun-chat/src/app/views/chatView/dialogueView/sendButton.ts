@@ -1,13 +1,12 @@
 import BaseView from "../../baseView";
 
 class SendButton extends BaseView {
-  private onClickHandler: () => void;
+  private onClick: () => void;
 
   constructor(onClick: () => void) {
-    super({ tag: 'button', classNames: ['send-button'], textContent: 'Send' });
+    super({ tag: 'button', classNames: ['send-button'], textContent: 'Send', callback: onClick });
 
-    this.onClickHandler = onClick;
-    this.addClickListener();
+    this.onClick = onClick;
     this.addEnterKeyListener();
   }
 
@@ -29,20 +28,13 @@ class SendButton extends BaseView {
     }
   }
 
-  private addClickListener(): void {
-    const btn = this.getView();
-    if (btn instanceof HTMLButtonElement) {
-      btn.addEventListener('click', this.onClickHandler);
-    }
-  }
-
   public addEnterKeyListener(): void {
     document.addEventListener('keydown', this.enterKeyHandler);
   }
 
   private enterKeyHandler = (event: KeyboardEvent): void => {
     if (event.key === 'Enter') {
-      this.onClickHandler();
+      this.onClick();
     }
   }
 }

@@ -50,7 +50,6 @@ class ChatUserView extends BaseView {
     this.unreadMessages = counter;
     this.unreadMessagesContainer = messages;
 
-
     const unreadMessagesNumber = await this.getUnreadMessages();
     if (unreadMessagesNumber != 0) {
       this.unreadMessages.setTextContent(String(unreadMessagesNumber));

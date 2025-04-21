@@ -24,3 +24,32 @@ export type MessageStatus = {
   isReaded: boolean,
   isEdited: boolean,
 }
+
+export type EditMessageResponse = {
+  id: string,
+  text: string,
+  status: {
+    isEdited: boolean,
+  }
+}
+
+export type DeleteMessageResponse = {
+  id: string,
+  status: {
+    isDeleted: boolean,
+  }
+}
+
+export type ReadMessageResponse = {
+  id: string,
+  status: {
+    isReaded: boolean,
+  }
+}
+
+export type DeliverMessageResponse = {
+  id: string,
+  status: {
+    isDelivered: boolean,
+  }
+}

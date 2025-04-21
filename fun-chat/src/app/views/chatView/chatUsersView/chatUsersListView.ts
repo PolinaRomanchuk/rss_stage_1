@@ -1,5 +1,5 @@
 import { User } from "../../../../types/types";
-import { onAuthenticated } from "../../../API/socketInstance";
+import { onAuthenticated } from "../../../API/socket";
 import { getAllUsers } from "../../../services/usersService";
 import BaseView from "../../baseView";
 import DialogueView from "../dialogueView/dialogueView";
@@ -16,7 +16,8 @@ class ChatUsersListView extends BaseView {
     this.init();
     this.renderUsersList();
   }
-  private async init() {
+
+  private async init(): Promise<void> {
     const friends = await getAllUsers();
     this.drawUsers(friends);
   }
@@ -27,7 +28,7 @@ class ChatUsersListView extends BaseView {
     this.drawUsers(friends);
   }
 
-  private async drawUsers(friends: User[]) {
+  private async drawUsers(friends: User[]): Promise<void> {
     this.friendsList = [];
     this.removeAllChildren();
 
@@ -48,7 +49,7 @@ class ChatUsersListView extends BaseView {
     }
   }
 
-  private async createNewUser(user: User) {
+  private async createNewUser(user: User): Promise<void> {
     const newFriend = new ChatUserView(user, (userView) => {
       this.selectedUser = userView;
       this.dialogueView.setCompanion(userView);

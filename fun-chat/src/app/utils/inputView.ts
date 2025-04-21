@@ -28,12 +28,6 @@ class InputView extends BaseView {
     return '';
   }
 
-  public setValue(value: string): void {
-    if (this.input) {
-      this.input.value = value;
-    }
-  }
-
   public setPlaceholder(value: string): void {
     if (this.input) {
       this.input.placeholder = value;
@@ -42,10 +36,6 @@ class InputView extends BaseView {
 
   public setType(type: string): void {
     if (this.input) this.input.type = type;
-  }
-
-  public reset(): void {
-    this.setValue('');
   }
 
   public isValid(value: string): void {

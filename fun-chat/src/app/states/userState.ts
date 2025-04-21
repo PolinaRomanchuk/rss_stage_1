@@ -1,5 +1,5 @@
 import { User } from "../../types/types";
-import {setMessageHandler} from "../API/socketInstance";
+import {setMessageHandler} from "../API/socket";
 
 let loginHandler: ((user: User) => void) | null = null;
 let logoutHandler: ((user: User) => void) | null = null;

@@ -44,10 +44,6 @@ class BaseView {
     this.changeClass('add', className);
   }
 
-  public toggleClass(className: string | string[]): void {
-    this.changeClass('toggle', className);
-  }
-
   public removeClass(className: string | string[]): void {
     this.changeClass('remove', className);
   }

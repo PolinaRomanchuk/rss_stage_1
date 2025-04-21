@@ -6,6 +6,7 @@ import { Message } from '../../../../types/types';
 import { getAuthUserLogin } from '../../../states/authState';
 import Delete from '../../../../assets/img/trash-can.png';
 import '../../../views/chatView/chat.css';
+import { formatTime } from '../../../utils/date';
 
 class MessageView extends BaseView {
   public contentContainer: BaseView;
@@ -46,17 +47,17 @@ class MessageView extends BaseView {
     const messageOptionsContainer = this.renderMessageOptions(onEdit, onDelete);
     messageBodyContainer.appendChildren([messageText, messageDataContainer]);
     this.checkEditStatus();
-    this.contentContainer.appendChildren([name, messageBodyContainer, messageOptionsContainer]);
+    this.appendChildren([name, messageBodyContainer, messageOptionsContainer]);
 
     if (message.from === getAuthUserLogin()) {
-      this.contentContainer.addClass('pointer');
+      this.addClass('pointer');
     }
   }
 
   private renderMessageOptions(onEdit: (message: MessageView) => void, onDelete: (message: MessageView) => void): BaseView {
     const messageOptionsContainer = new BaseView({ tag: 'div', classNames: ['message-options-container'] });
-    const editIconContainer = this.renderEditIcon(onEdit);
-    const deleteIconContainer = this.renderDeleteIcon(onDelete);
+    const editIconContainer = this.renderIconContainer(Edit, 'edit', 'edit', () => onEdit(this));
+    const deleteIconContainer = this.renderIconContainer(Delete, 'delete', 'delete', () => onDelete(this));
     this.messageOptionsContainer = messageOptionsContainer;
     this.messageOptionsContainer.addClass('hide');
     messageOptionsContainer.appendChildren([editIconContainer, deleteIconContainer]);
@@ -74,31 +75,24 @@ class MessageView extends BaseView {
   private renderMessageData(message: Message): BaseView {
     const container = new BaseView({ tag: 'div', classNames: ['message-data'] });
     const status = this.renderMessageSendStatus(this.getMessageStatus());
-    const datetime = this.getDate(message.datetime);
+    const datetime = formatTime(message.datetime);
     const date = new BaseView({ tag: 'div', classNames: ['message-date'], textContent: `${datetime}` });
     container.appendChildren([date, status]);
     return container;
   }
 
-  private renderDeleteIcon(onDelete: (message: MessageView) => void): BaseView {
-    const deleteIconContainer = new BaseView({ tag: 'div', classNames: ['delete-icon-container'] });
-    const icon = new BaseView({ tag: 'img', classNames: ['delete-icon'], callback: () => onDelete(this) });
-    const iconElement = icon.getView();
+  private renderIconContainer(iconSrc: string, alt: string, className: string, onClick: () => void): BaseView {
+    const container = new BaseView({ tag: 'div', classNames: [`${className}-icon-container`] });
+    const icon = new BaseView({ tag: 'img', classNames: [`${className}-icon`], callback: onClick });
+    const iconEl = icon.getView();
 
-    if (iconElement instanceof HTMLImageElement) {
-      iconElement.src = Delete;
-      iconElement.alt = 'delete';
+    if (iconEl instanceof HTMLImageElement) {
+      iconEl.src = iconSrc;
+      iconEl.alt = alt;
     }
 
-    deleteIconContainer.appendChildren([icon]);
-    return deleteIconContainer;
-  }
-
-  private getDate(date: number): string {
-    const newDate = new Date(date);
-    const hours = newDate.getHours().toString().padStart(2, '0');
-    const minutes = newDate.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes} `;
+    container.append(icon);
+    return container;
   }
 
   private renderMessageText(text: string): BaseView {
@@ -135,20 +129,6 @@ class MessageView extends BaseView {
       this.statusIcon = iconElement;
     }
     return icon;
-  }
-
-  private renderEditIcon(onEdit: (message: MessageView) => void): BaseView {
-    const edit = new BaseView({ tag: 'div', classNames: ['edit-icon-container'] });
-    const icon = new BaseView({ tag: 'img', classNames: ['edit-icon'], callback: () => onEdit(this) });
-    const iconElement = icon.getView();
-
-    if (iconElement instanceof HTMLImageElement) {
-      iconElement.src = Edit;
-      iconElement.alt = 'edit';
-    }
-
-    edit.appendChildren([icon]);
-    return edit;
   }
 
   public setSendStatus(status: 'sent' | 'delivered' | 'read'): void {
@@ -198,7 +178,7 @@ class MessageView extends BaseView {
     });
     this.unreadMarker = unreadMarker;
 
-    parent.insertBefore(unreadMarker.getView(), this.contentContainer.getView());
+    parent.insertBefore(unreadMarker.getView(), this.getView());
   }
 
   public setEditStatus(status: 'edit'): void {

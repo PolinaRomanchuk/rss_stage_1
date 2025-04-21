@@ -1,13 +1,12 @@
-import { setMessageHandler } from "../API/socketInstance";
 import DialogueView from "../views/chatView/dialogueView/dialogueView";
-import { Message } from "../../types/types";
+import { DeleteMessageResponse, DeliverMessageResponse, EditMessageResponse, Message, ReadMessageResponse } from "../../types/types";
 import ChatView from "../views/chatView/chatView";
+import { setMessageHandler } from "../API/socket";
 
 let dialogue: DialogueView | null = null;
 let chatview: ChatView | null = null;
 
-
-export function registerDialogueInstance(instance: DialogueView) {
+export function registerDialogueViewInstance(instance: DialogueView) {
   dialogue = instance;
 }
 export function registerChatViewInstance(instance: ChatView) {
@@ -20,34 +19,24 @@ export function startMessageListener() {
     if (message.type === 'MSG_SEND') {
       const newMsg: Message = message.payload.message;
       dialogue?.addIncomingMessageToView(newMsg);
-      chatview?.addIncomingMessageToFriend(newMsg);
+      chatview?.setUnreadIncomingMessagesCounter(newMsg);
     }
     if (message.type === 'MSG_DELIVER') {
-      const newMsg: { id: string, status: { isDelivered: boolean } } = message.payload.message;
+      const newMsg: DeliverMessageResponse = message.payload.message;
       dialogue?.updateSendMessageStatus(newMsg.id, 'delivered');
     }
     if (message.type === 'MSG_READ') {
-      const newMsg: {
-        id: string,
-        status: {
-          isReaded: boolean,
-        }
-      } = message.payload.message;
+      const newMsg: ReadMessageResponse = message.payload.message;
       dialogue?.updateSendMessageStatus(newMsg.id, 'read');
-      chatview?.updateUnreadMessagesCounter(newMsg);
+      chatview?.handleUnreadMessagesCounter(newMsg);
     }
     if (message.type === 'MSG_EDIT') {
-      const newMsg: Message = message.payload.message;
+      const newMsg: EditMessageResponse = message.payload.message;
       dialogue?.updateEditMessageStatus(newMsg.id, 'edit');
     }
     if (message.type === 'MSG_DELETE') {
-        const newMsg: {
-          id: string,
-          status: {
-            isDeleted: boolean,
-          }
-        } = message.payload.message;
-       dialogue?.deleteMessageView(newMsg.id);
+      const newMsg: DeleteMessageResponse = message.payload.message;
+      dialogue?.deleteMessageView(newMsg.id);
     }
   });
 }

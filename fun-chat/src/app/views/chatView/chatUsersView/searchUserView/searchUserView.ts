@@ -48,7 +48,7 @@ class SearchUserView extends BaseView {
     const input = this.searchInput?.getValue().trim().toLowerCase();
 
     if (!input || !this.users) {
-      this.users?.friendsList.forEach(user => user.changeClass('remove', 'hide'));
+      this.users?.friendsList.forEach(user => user.removeClass('hide'));
       return;
     }
 
@@ -56,9 +56,9 @@ class SearchUserView extends BaseView {
 
     this.users.friendsList.forEach(user => {
       if (matchedUsers.includes(user)) {
-        user.changeClass('remove', 'hide');
+        user.removeClass('hide');
       } else {
-        user.changeClass('add', 'hide');
+        user.addClass('hide');
       }
     });
   }

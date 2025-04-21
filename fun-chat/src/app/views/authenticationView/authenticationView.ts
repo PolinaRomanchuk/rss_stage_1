@@ -94,7 +94,7 @@ class AuthenticationView extends BaseView {
       this.passwordValidationSpan.getView().textContent = 'enter at least 4 characters';
     }
 
-    if (loginValidationText == '' && passwordValidationText == '') {
+    if (loginValidationText == '' && passwordValidationText == '' && username && password) {
       loginUser(username, password);
       this.removeEnterEventListener();
     }
